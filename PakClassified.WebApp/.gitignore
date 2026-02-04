@@ -1,0 +1,20 @@
+## Ignore Visual Studio cache files
+.vs/
+*.user
+*.suo
+*.cache
+*.db
+
+## Ignore build results
+bin/
+obj/
+
+## Ignore Rider, VS Code folders
+.idea/
+.vscode/
+
+## Ignore publish folders
+publish/
+
+## Ignore sensitive files
+appsettings.Development.json
