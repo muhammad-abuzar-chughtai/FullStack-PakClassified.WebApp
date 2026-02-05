@@ -1,5 +1,7 @@
 ﻿using b._PakClassified.WebApp.Services.Enitities.Services.UserServices;
+using c._PakClassified.WebApp.DTOs.User.DTOs;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PakClassified.WebApp.DTOs.User.DTOs;
 using System.Security.Claims;
@@ -57,16 +59,39 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Create([FromBody] UserModel request)
+        public async Task<IActionResult> Create([FromForm] UserCreateDto request)
         {
-            _logger.LogInformation("Creating User: {Name}", request.Name);
+            _logger.LogInformation("Creating UserModel from UserCreateDto");
+            var modelrequest = new UserModel
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Email = request.Email,
+                ContactNo = request.ContactNo,
+                DOB = request.DOB,
+                SecQues = request.SecQues,
+                SecAns = request.SecAns,
+                RoleId = request.RoleId
+            };
+
 
             string LoginUser = User.FindFirstValue(ClaimTypes.Name);     // Login User, Extracted from Token
-            request.CreatedBy = LoginUser;
+            modelrequest.CreatedBy = LoginUser;
 
-            // IFormFile → Byte[]
+            _logger.LogInformation("MemoryStream Converting IFormFile to Byte[]....");
 
-            var response = (await _userService.CreateAsync(request));
+            if (request.ProfilePic != null && request.ProfilePic.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.ProfilePic.CopyToAsync(memoryStream);
+                    modelrequest.ProfilePic = memoryStream.ToArray();
+                }
+            }
+
+            _logger.LogInformation("Creating User: {Name}", request.Name);
+
+            var response = (await _userService.CreateAsync(modelrequest));
 
             _logger.LogInformation("Successfully Created a User {Name}", response.Name);
 
@@ -75,18 +100,42 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromBody] UserModel request, int id)
+        public async Task<IActionResult> Update([FromForm] UserCreateDto request, int id)
         {
-            _logger.LogInformation("Fetching the User ({id}) to Update.", id);
+            _logger.LogInformation("Creating UserModel from UserCreateDto");
+            var modelrequest = new UserModel
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Email = request.Email,
+                ContactNo = request.ContactNo,
+                DOB = request.DOB,
+                SecQues = request.SecQues,
+                SecAns = request.SecAns,
+                CreatedBy = request.CreatedBy,
+                RoleId = request.RoleId
+            };
 
             string LoginUser = User.FindFirstValue(ClaimTypes.Name); // Login User, Extracted from Token
-            request.LastModifiedBy = LoginUser;
+            modelrequest.LastModifiedBy = LoginUser;
+
+            _logger.LogInformation("MemoryStream Converting IFormFile to Byte[]....");
+
+            if (request.ProfilePic != null && request.ProfilePic.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.ProfilePic.CopyToAsync(memoryStream);
+                    modelrequest.ProfilePic = memoryStream.ToArray();
+                }
+            }
 
 
-            // IFormFile → Byte[]
+
+            _logger.LogInformation("Fetching the User ({id}) to Update.", id);
 
 
-            var response = await _userService.UpdateAsync(id, request);
+            var response = await _userService.UpdateAsync(id, modelrequest);
 
             if (response == null)
             {

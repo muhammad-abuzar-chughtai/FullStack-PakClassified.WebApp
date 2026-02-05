@@ -40,7 +40,9 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             CreateMap<AdvertisementStatus, AdvertisementStatusModel>().ReverseMap();
             CreateMap<AdvertisementType, AdvertisementTypeModel>().ReverseMap();
             CreateMap<AdvertisementTag, AdvertisementTagModel>().ReverseMap();
-            CreateMap<AdvertisementImage, AdvertisementImageModel>().ReverseMap();
+            CreateMap<AdvertisementImage, AdvertisementImageModel>().ReverseMap()
+                .ReverseMap()
+                .ForMember(dest => dest.ContentFile, opt => opt.Ignore());
 
             #endregion
 

@@ -57,10 +57,19 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Create([FromBody] AdvertisementImageModel request)
+        public async Task<IActionResult> Create([FromForm] AdvertisementImageModel request)
         {
 
+            _logger.LogInformation("Converting IFormFile to Byte[]");
             // IFormFile → Byte[]
+            if (request.ContentFile != null && request.ContentFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.ContentFile.CopyToAsync(memoryStream);
+                    request.Content = memoryStream.ToArray();
+                }
+            }
 
 
             _logger.LogInformation("Creating Advertisement Image: {Name}", request.Name);
@@ -77,11 +86,19 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromBody] AdvertisementImageModel request, int id)
+        public async Task<IActionResult> Update([FromForm] AdvertisementImageModel request, int id)
         {
 
+            _logger.LogInformation("Converting IFormFile to Byte[]");
             // IFormFile → Byte[]
-
+            if (request.ContentFile != null && request.ContentFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await request.ContentFile.CopyToAsync(memoryStream);
+                    request.Content = memoryStream.ToArray();
+                }
+            }
 
 
             _logger.LogInformation("Fetching the Advertisement Image ({id}) to Update.", id);
