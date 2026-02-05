@@ -18,3 +18,6 @@ publish/
 
 ## Ignore sensitive files
 appsettings.Development.json
+
+## MyNotes
+Notes.txt
