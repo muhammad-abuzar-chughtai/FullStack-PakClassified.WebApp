@@ -34,6 +34,10 @@ namespace a._PakClassified.WebApp.Entities.AppDbContext
         public DbSet<Role> Roles { get; set; }
         #endregion
 
+        public AppDBContext() { }
+
+        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

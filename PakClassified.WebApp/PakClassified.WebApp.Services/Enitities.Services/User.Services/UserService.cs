@@ -39,7 +39,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.UserServices
             try
             {
                 var user = _mapper.Map<User>(request);
-                //Name, Email, Pass, ProfilePic, ContactNo, DOB, SecQues, SecAns, are coming from Controller
+                //Name, Email, ProfilePic, ContactNo, DOB, SecQues, SecAns, are coming from Controller
                 user.Id = 0; // Ensure the ID is zero for new entity [(EFcore will adjust the Id with Intelisense)]
                 user.IsActive = true;
                 user.Advertisements = new List<Advertisement>();

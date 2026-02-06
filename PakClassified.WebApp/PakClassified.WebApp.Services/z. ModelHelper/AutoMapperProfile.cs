@@ -10,6 +10,7 @@ using a._PakClassified.WebApp.Entities.Entities.Locations;
 using PakClassified.WebApp.DTOs.Location.DTOs;
 using a._PakClassified.WebApp.Entities.Entities.PakClassified;
 using PakClassified.WebApp.DTOs.PakClassified.DTOs;
+using PakClassified.WebApp.DTOs.Auth.DTO;
 
 namespace b._PakClassified.WebApp.Services.z._ModelHelper
 {
@@ -32,7 +33,7 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
 
             #endregion
 
-            #region Pak Calssified
+            #region PakCalssified
 
             CreateMap<Advertisement, AdvertisementModel>().ReverseMap();
             CreateMap<AdvertisementCategory, AdvertisementCategoryModel>().ReverseMap();
@@ -54,7 +55,16 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             CreateMap<Role, RoleModel>().ReverseMap();
 
             #endregion
-       
+
+            #region AuthMapping
+
+            CreateMap<SignupModel, User>()
+                .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
+
+
+            #endregion
+
         }
     }
 }

@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PakClassified.WebApp.DTOs.Auth.DTO
+namespace c._PakClassified.WebApp.DTOs.Auth.DTO
 {
-    public class SignupModel
+    public class FSignUpModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
-        public byte[] ProfilePic { get; set; }
+        public string Pass { get; set; }
+        public IFormFile ProfilePic { get; set; }
         public int ContactNo { get; set; }
         public DateTime DOB { get; set; }
         public string? SecQues { get; set; }
@@ -23,6 +23,5 @@ namespace PakClassified.WebApp.DTOs.Auth.DTO
         public string? LastModifiedBy { get; set; }
 
         public int RoleId { get; set; }
-
     }
 }

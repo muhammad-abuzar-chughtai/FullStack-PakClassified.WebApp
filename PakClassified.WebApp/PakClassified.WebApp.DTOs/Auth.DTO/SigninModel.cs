@@ -8,5 +8,7 @@ namespace PakClassified.WebApp.DTOs.Auth.DTO
 {
     public class SigninModel
     {
+        public string Email { get; set; }
+        public string Pass { get; set; }
     }
 }
