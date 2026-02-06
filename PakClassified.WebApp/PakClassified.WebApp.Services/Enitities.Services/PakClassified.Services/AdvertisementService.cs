@@ -1,4 +1,4 @@
-﻿using a._PakClassified.WebApp.Entities.AppDbContext;
+using a._PakClassified.WebApp.Entities.AppDbContext;
 using a._PakClassified.WebApp.Entities.Entities.PakClassified;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -125,8 +125,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
 
 
                     UpdateTag(found, advertisement);
-                    UpdateImages(found, advertisement);
-
                     
                     //country.LastModifiedBy is extracted from Payload of JWT Token in Controller
                     found.LastModifiedBy = advertisement.LastModifiedBy;
@@ -167,32 +165,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
-        //private async Task UpdateImages(Advertisement found, AdvertisementModel advertisement)
-        //{
-        //    var existingImageIds = found.Images.Select(i => i.Id).ToHashSet();
-
-        //    var incomingExistingIds = advertisement.Images.Where(i => i.Id > 0).Select(i => i.Id).ToHashSet();
-
-        //    var imagesToRemove = existingImageIds.Except(incomingExistingIds).ToList();
-
-        //    // NEW images
-        //    var newImages = advertisement.Images.Where(i => i.Id == 0 && i.Content != null).ToList();
-
-        //    if (imagesToRemove.Any())
-        //    {
-        //        await _advertisementImageService.SyncAsync(
-        //            found.Id,
-        //            removeIds: imagesToRemove
-        //        );
-        //    }
-
-        //    foreach (var img in newImages)
-        //    {
-        //        await _advertisementImageService.CreateAsync(img);
-        //    }
-
-
-        //}
         public async Task<AdvertisementModel?> DeleteAsync(int id, string username)      // Soft Delete Advertisement By Id
         {
             try
