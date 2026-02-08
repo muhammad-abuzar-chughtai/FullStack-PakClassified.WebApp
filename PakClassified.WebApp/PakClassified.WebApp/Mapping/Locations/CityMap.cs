@@ -13,7 +13,7 @@ namespace a._PakClassified.WebApp.Entities.Mapping.Locations
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
-            builder.ToTable("CIties");
+            builder.ToTable("Cities");
 
             builder.HasKey(c => c.Id);
 

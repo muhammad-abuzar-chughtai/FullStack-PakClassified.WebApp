@@ -19,7 +19,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         Task<AdvertisementImageModel> CreateAsync(AdvertisementImageModel advertisementImage);
         Task<AdvertisementImageModel?> UpdateAsync(int id, AdvertisementImageModel advertisementImage);
         Task<AdvertisementImageModel?> DeleteAsync(int id, string username);
-        Task SyncAsync(int advertisementId, IEnumerable<int> removeIds);
     }
     public class AdvertisementImageService : IAdvertisementImageService
     {
@@ -87,11 +86,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
+        private  async Task<AdvertisementImage?> GetById(int id)     // GetAll Active AdvertisementImages
+        {
+            try
+            {
+                return await _dbContext.AdvertisementImages.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<AdvertisementImageModel?> UpdateAsync(int id, AdvertisementImageModel advertisementImage)      // Update AdvertisementImage
         {
             try
             {
-                var found = _mapper.Map<AdvertisementImage>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = advertisementImage.Name;
@@ -103,7 +115,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = advertisementImage.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementImages.Update(found);
+                    //_dbContext.AdvertisementImages.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementImageModel>(found);
@@ -119,7 +131,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                var found = _mapper.Map<AdvertisementImage>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -128,7 +140,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementImages.Update(found);
+                    //_dbContext.AdvertisementImages.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementImageModel>(found);
@@ -140,19 +152,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
-        public async Task SyncAsync(int advertisementId, IEnumerable<int> removeIds)
-        {
-            if (removeIds.Any())
-            {
-                var toRemove = await _dbContext.AdvertisementImages
-                    .Where(i => removeIds.Contains(i.Id)
-                             && i.AdvertisementId == advertisementId && i.IsActive)
-                    .ToListAsync();
-
-                _dbContext.AdvertisementImages.RemoveRange(toRemove);
-            }
-            await _dbContext.SaveChangesAsync();
-        }
 
     }
 

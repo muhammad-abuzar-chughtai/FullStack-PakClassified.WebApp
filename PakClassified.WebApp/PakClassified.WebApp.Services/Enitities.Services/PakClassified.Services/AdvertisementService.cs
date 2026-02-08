@@ -100,6 +100,19 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
+        private async Task<Advertisement?> GetById(int id)      // Get Advertisement By Id
+        {
+            try
+            {
+                return await _dbContext.Advertisements.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<AdvertisementModel?> UpdateAsync(int id, AdvertisementModel advertisement)      // Update Advertisement By Id
         {
             try
@@ -158,6 +171,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             var tagIdsToAdd = incomingTagIds.Where(id => !existingTagIds.Contains(id)).ToList();
 
             var tagsToAdd = await _dbContext.AdvertisementTags.Where(t => tagIdsToAdd.Contains(t.Id)).ToListAsync();
+            await _dbContext.SaveChangesAsync();
 
             foreach (var tag in tagsToAdd)
             {
@@ -169,7 +183,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                var found = _mapper.Map<Advertisement>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;

@@ -57,7 +57,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] ProvinceModel request)
@@ -74,7 +74,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] ProvinceModel request, int id)

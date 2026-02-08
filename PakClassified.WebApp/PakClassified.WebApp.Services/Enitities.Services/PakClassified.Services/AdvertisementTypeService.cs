@@ -82,11 +82,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
+        private async Task<AdvertisementType?> GetById(int id)    // Get AdvertisementType By Id
+        {
+            try
+            {
+                return await _dbContext.AdvertisementTypes.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<AdvertisementTypeModel?> UpdateAsync(int id, AdvertisementTypeModel advertisementType)    // Update AdvertisementType By Id
         {
             try
             {
-                var found = _mapper.Map<AdvertisementType>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = advertisementType.Name;
@@ -95,7 +108,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = advertisementType.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementTypes.Update(found);
+                    //_dbContext.AdvertisementTypes.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementTypeModel>(found);
@@ -111,7 +124,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                var found = _mapper.Map<AdvertisementType>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -120,7 +133,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementTypes.Update(found);
+                    //_dbContext.AdvertisementTypes.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementTypeModel>(found);

@@ -86,11 +86,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
             }
         }
 
+        private async Task<Province?> GetById(int id)      // Get Province By Id
+        {
+            try
+            {
+                return await _dbContext.Provinces.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<ProvinceModel?> UpdateAsync(int id, ProvinceModel province)      // Update Province By Id
         {
             try
             {
-                var found = _mapper.Map<Province>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = province.Name;
@@ -100,7 +113,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = province.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Provinces.Update(found);
+                    //_dbContext.Provinces.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<ProvinceModel>(found);
@@ -116,7 +129,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
         {
             try
             {
-                var found = _mapper.Map<Province>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -125,7 +138,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Provinces.Update(found);
+                    //_dbContext.Provinces.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<ProvinceModel>(found);

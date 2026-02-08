@@ -20,7 +20,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllRoles()
@@ -39,7 +39,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -74,7 +74,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] RoleModel request, int id)

@@ -84,11 +84,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
             }
         }
 
+        private async Task<City?> GetById(int id)      // Get City By Id
+        {
+            try
+            {
+                return await _dbContext.Cities.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<CityModel?> UpdateAsync(int id, CityModel city)      // Update Province By Id
         {
             try
             {
-                var found = _mapper.Map<City>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = city.Name;
@@ -98,7 +111,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = city.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Cities.Update(found);
+                    //_dbContext.Cities.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<CityModel>(found);
@@ -114,7 +127,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
         {
             try
             {
-                var found = _mapper.Map<City>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -123,7 +136,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Cities.Update(found);
+                    //_dbContext.Cities.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<CityModel>(found);

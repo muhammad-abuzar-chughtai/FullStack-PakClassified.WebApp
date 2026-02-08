@@ -83,11 +83,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
+        private async Task<AdvertisementTag?> GetById(int id)    // Get AdvertisementTag By Id
+        {
+            try
+            {
+                return await _dbContext.AdvertisementTags.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<AdvertisementTagModel?> UpdateAsync(int id, AdvertisementTagModel advertisementTag)
         {
             try
             {
-                var found = _mapper.Map<AdvertisementTag>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = advertisementTag.Name;
@@ -97,7 +110,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = advertisementTag.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementTags.Update(found);
+                    //_dbContext.AdvertisementTags.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementTagModel>(found);
@@ -113,7 +126,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                var found = _mapper.Map<AdvertisementTag>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -122,7 +135,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.AdvertisementTags.Update(found);
+                    //_dbContext.AdvertisementTags.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementTagModel>(found);

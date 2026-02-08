@@ -22,7 +22,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllCountries()
@@ -41,7 +41,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -59,7 +59,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] CountryModel request)
@@ -98,7 +98,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)

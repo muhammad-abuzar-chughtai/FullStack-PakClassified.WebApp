@@ -12,7 +12,7 @@ namespace PakClassified.WebApp.DTOs.PakClassified.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public byte[] Content { get; set; }
+        public byte[]? Content { get; set; }
         public IFormFile ContentFile { get; set; }
         public string? Caption { get; set; }
         public string CreatedBy { get; set; }

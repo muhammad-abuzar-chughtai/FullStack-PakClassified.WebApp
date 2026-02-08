@@ -89,11 +89,25 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.UserServices
 
         }
 
+        private async Task<User?> GetById(int id)      // Get User By Id
+        {
+            try
+            {
+                return await _dbContext.Users.Where(u => u.IsActive && u.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+        }
+
         public async Task<UserModel?> UpdateAsync(int id, UserModel user)      // Update User By Id
         {
             try
             {
-                var found = _mapper.Map<User>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = user.Name;
@@ -127,7 +141,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.UserServices
         {
             try
             {
-                var found = _mapper.Map<User>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;

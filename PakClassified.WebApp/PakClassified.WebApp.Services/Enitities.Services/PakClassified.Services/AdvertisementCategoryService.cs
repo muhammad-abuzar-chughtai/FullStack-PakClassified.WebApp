@@ -85,11 +85,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
+        private async Task<AdvertisementCategory?> GetById(int id)      // Get AdvertisementCategory By Id
+        {
+            try
+            {
+                return await _dbContext.AdvertisementCategories.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<AdvertisementCategoryModel?> UpdateAsync(int id, AdvertisementCategoryModel advertisementCategory)      // Update AdvertisementCategory By Id
         {
             try
             {
-                var found = _mapper.Map<AdvertisementCategory>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = advertisementCategory.Name;
@@ -99,7 +112,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = advertisementCategory.LastModifiedBy; 
                     found.LastModifiedDate = DateTime.Now;
                     
-                    _dbContext.AdvertisementCategories.Update(found);
+                    //_dbContext.AdvertisementCategories.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementCategoryModel>(found);
@@ -115,7 +128,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                var found = _mapper.Map<AdvertisementCategory>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -124,7 +137,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                     found.LastModifiedBy = username; 
                     found.LastModifiedDate = DateTime.Now;
                     
-                    _dbContext.AdvertisementCategories.Update(found);
+                    //_dbContext.AdvertisementCategories.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<AdvertisementCategoryModel>(found);

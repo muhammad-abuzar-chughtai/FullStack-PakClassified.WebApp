@@ -24,7 +24,6 @@ namespace PakClassified.WebApp.DTOs.PakClassified.DTOs
         public int StatusId { get; set; }
         public int TypeId { get; set; }
         public int SubCategoryId { get; set; }
-        public ICollection<AdvertisementTagModel> Tags { get; set; }
-        public ICollection<AdvertisementImageModel> Images { get; set; }
+        public ICollection<AdvertisementTagModel?> Tags { get; set; }
     }
 }

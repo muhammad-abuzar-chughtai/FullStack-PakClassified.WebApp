@@ -88,11 +88,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.RoleServices
             }
         }
 
+        private async Task<Role?> GetById(int id)         // Get Country by Id
+        {
+            try
+            {
+                return await _dbContext.Roles.Where(r => r.IsActive && r.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<RoleModel?> UpdateAsync(int id, RoleModel role)       // Update Country by Id
         {
             try
             {
-                var found = _mapper.Map<Role>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = role.Name;
@@ -101,7 +114,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.RoleServices
                     found.LastModifiedBy = role.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Roles.Update(found);
+                    //_dbContext.Roles.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<RoleModel>(found);
@@ -117,15 +130,16 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.RoleServices
         {
             try
             {
-                var found = _mapper.Map<Role>(await GetByIdAsync(id));
+                var found = await GetById(id);
+
                 if (found != null)
                 {
                     found.IsActive = false;
-                   
+
                     //role.LastModifiedBy is extracted from Payload of JWT Token in Controller
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
-                   
+
                     _dbContext.Roles.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
