@@ -13,6 +13,7 @@ namespace c._PakClassified.WebApp.DTOs.User.DTOs
         public int Id { get; set; }
         public string Name { get; set; }
         public string? Email { get; set; }
+        public string? Pass { get; set; }
         public IFormFile ProfilePic { get; set; }
         public int ContactNo { get; set; }
         public DateTime DOB { get; set; }

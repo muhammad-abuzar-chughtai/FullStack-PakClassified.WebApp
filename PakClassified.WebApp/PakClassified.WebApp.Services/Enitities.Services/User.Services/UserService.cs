@@ -19,7 +19,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.UserServices
     {
         Task<IEnumerable<UserModel>> GetAllAsync();
         Task<UserModel?> GetByIdAsync(int id);
-        Task<UserModel> CreateAsync(UserModel user);
+        Task<UserModel> CreateAsync(UserModel user, string pass);
         Task<UserModel?> UpdateAsync(int id, UserModel user);
         Task<UserModel?> DeleteAsync(int id, string username);
     }
@@ -34,12 +34,13 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.UserServices
         }
 
         // Services Implementation of UserService
-        public async Task<UserModel?> CreateAsync(UserModel request)           // Create New User
+        public async Task<UserModel?> CreateAsync(UserModel request, string pass)           // Create New User
         {
             try
             {
                 var user = _mapper.Map<User>(request);
                 //Name, Email, ProfilePic, ContactNo, DOB, SecQues, SecAns, are coming from Controller
+                user.Password = pass;
                 user.Id = 0; // Ensure the ID is zero for new entity [(EFcore will adjust the Id with Intelisense)]
                 user.IsActive = true;
                 user.Advertisements = new List<Advertisement>();

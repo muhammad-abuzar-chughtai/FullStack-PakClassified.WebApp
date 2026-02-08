@@ -51,16 +51,14 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
 
             CreateMap<User, UserModel>()
                 .ReverseMap()
-                .ForMember(dest => dest.Password, opt => opt.Ignore()); // Ignore Password when mapping back to User
+                .ForMember(dest => dest.Password, opt => opt.Ignore()); 
             CreateMap<Role, RoleModel>().ReverseMap();
 
             #endregion
 
             #region AuthMapping
 
-            CreateMap<SignupModel, User>()
-                .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
-                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
+            CreateMap<SignupModel, User>();
 
 
             #endregion

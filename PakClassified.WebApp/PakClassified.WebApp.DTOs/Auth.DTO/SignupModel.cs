@@ -21,8 +21,5 @@ namespace PakClassified.WebApp.DTOs.Auth.DTO
 
         public string CreatedBy { get; set; }
         public string? LastModifiedBy { get; set; }
-
-        public int RoleId { get; set; }
-
     }
 }

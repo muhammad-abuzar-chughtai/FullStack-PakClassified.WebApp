@@ -2,6 +2,7 @@
 using b._PakClassified.WebApp.Services.Auth.Services;
 using c._PakClassified.WebApp.DTOs.Auth.DTO;
 using c._PakClassified.WebApp.DTOs.User.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PakClassified.WebApp.DTOs.Auth.DTO;
@@ -23,9 +24,9 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
             _logger = logger;
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
-        [Route("")]
+        [Route("signup/")]
         public async Task<IActionResult> Signup([FromForm] FSignUpModel request)
         {
             _logger.LogInformation("Creating SignUpModel from FSignUpModel");
@@ -39,7 +40,6 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
                 DOB = request.DOB,
                 SecQues = request.SecQues,
                 SecAns = request.SecAns,
-                RoleId = request.RoleId
             };
 
 
@@ -59,6 +59,11 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
 
             var response = await _authService.SignUpAsync(modelrequest);
 
+            if (response == null)
+            {
+                return BadRequest("User with Same Email already Exist.");
+            }
+
             UserModel responseModel = response.userModel;
             string token = response.Token;
 
@@ -69,13 +74,17 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
         }
 
 
-
-        [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> Signin([FromForm] SigninModel request)
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("Signin/")]
+        public async Task<IActionResult> Signin([FromBody] SigninModel request)
         {
            
             var response = await _authService.SignInAsync(request);
+            if(response.userModel == null || response.Token == null)
+            {
+                return Unauthorized("Invalid Credentials, User Not Found.");
+            }
 
             UserModel responseModel = response.userModel;
             string token = response.Token;

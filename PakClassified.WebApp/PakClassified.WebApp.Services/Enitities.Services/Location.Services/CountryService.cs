@@ -85,11 +85,24 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
             }
         }
 
+        private async Task<Country?> GetById(int id)          // Get Country By Id for update
+        {
+            try
+            {
+                return await _dbContext.Countries.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<CountryModel?> UpdateAsync(int id, CountryModel country)    // Update Country By Id
         {
             try
             {
-                var found = _mapper.Map<Country>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.Name = country.Name;
@@ -98,7 +111,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = country.LastModifiedBy;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Countries.Update(found);
+                    //_dbContext.Countries.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<CountryModel>(found);
@@ -114,7 +127,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
         {
             try
             {
-                var found = _mapper.Map<Country>(await GetByIdAsync(id));
+                var found = await GetById(id);
                 if (found != null)
                 {
                     found.IsActive = false;
@@ -123,7 +136,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.Location.Services
                     found.LastModifiedBy = username;
                     found.LastModifiedDate = DateTime.Now;
 
-                    _dbContext.Countries.Update(found);
+                    //_dbContext.Countries.Update(found);
                     await _dbContext.SaveChangesAsync();
                 }
                 return _mapper.Map<CountryModel>(found);

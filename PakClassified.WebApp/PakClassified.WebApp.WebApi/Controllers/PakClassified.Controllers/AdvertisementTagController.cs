@@ -1,4 +1,5 @@
 ﻿using b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PakClassified.WebApp.DTOs.PakClassified.DTOs;
@@ -20,6 +21,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllAdvertisementTags()
@@ -38,6 +40,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -55,6 +58,8 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
             return Ok(response);
         }
 
+
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] AdvertisementTagModel request)
@@ -71,6 +76,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
             return Created(string.Empty, response);
         }
 
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] AdvertisementTagModel request, int id)
@@ -93,6 +99,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)

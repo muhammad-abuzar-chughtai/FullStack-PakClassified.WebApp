@@ -89,7 +89,12 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
 
         public async Task<AuthResult> SignInAsync(SigninModel model)
         {
-            var user = await _dBContext.Users.Where(u => u.IsActive && u.Email == model.Email && u.Password == model.Pass).Include(u => u.Role).FirstOrDefaultAsync();
+            // Using IQuerable for DB Searching and optimizing API
+            var user = await _dBContext.Users.AsNoTracking().AsQueryable()
+                                .Where(u => u.IsActive && u.Email == model.Email && u.Password == model.Pass)
+                                .Include(u => u.Role)
+                                .FirstOrDefaultAsync();
+
 
             if (user == null)
             {
@@ -115,10 +120,12 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
 
             var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
 
+
             var Claims = new List<Claim>
             {
                 new Claim("Myapp_User_Id", user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+                new Claim(ClaimTypes.Name, user.Email),                   
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.Name)

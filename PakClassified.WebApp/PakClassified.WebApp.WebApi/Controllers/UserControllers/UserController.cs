@@ -1,5 +1,6 @@
 ﻿using b._PakClassified.WebApp.Services.Enitities.Services.UserServices;
 using c._PakClassified.WebApp.DTOs.User.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             _logger = logger;
         }
 
-
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllUsers()
@@ -40,6 +41,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -57,6 +59,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             return Ok(response);
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromForm] UserCreateDto request)
@@ -73,10 +76,11 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
                 SecAns = request.SecAns,
                 RoleId = request.RoleId
             };
+            string pass = request.Pass;
 
 
             string LoginUser = User.FindFirstValue(ClaimTypes.Name);     // Login User, Extracted from Token
-            modelrequest.CreatedBy = LoginUser;
+            modelrequest.CreatedBy = "Login";
 
             _logger.LogInformation("MemoryStream Converting IFormFile to Byte[]....");
 
@@ -91,13 +95,14 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
 
             _logger.LogInformation("Creating User: {Name}", request.Name);
 
-            var response = (await _userService.CreateAsync(modelrequest));
+            var response = (await _userService.CreateAsync(modelrequest, pass));
 
             _logger.LogInformation("Successfully Created a User {Name}", response.Name);
 
             return Created(string.Empty, response);
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromForm] UserCreateDto request, int id)
@@ -147,7 +152,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             return Ok(response);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)

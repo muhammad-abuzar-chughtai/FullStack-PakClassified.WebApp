@@ -1,4 +1,5 @@
 ﻿using b._PakClassified.WebApp.Services.Enitities.Services.Location.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PakClassified.WebApp.DTOs.Location.DTOs;
@@ -19,6 +20,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllCities()
@@ -37,6 +39,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -54,6 +57,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] CityModel request)
@@ -70,6 +74,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Created(string.Empty, response);
         }
 
+        [Authorize(Roles = "Admin, Manager, Head")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] CityModel request, int id)
@@ -92,6 +97,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
         }
 
 
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
