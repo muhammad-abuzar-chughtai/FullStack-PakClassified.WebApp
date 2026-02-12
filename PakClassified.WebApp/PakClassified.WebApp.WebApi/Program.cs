@@ -13,6 +13,8 @@ using PakClassified.WebApp.WebApi.Middlewares;
 using Serilog;
 using System.Text;
 
+// https://localhost:7053/swagger/index.html
+
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()                                                    // Configure Error Logs

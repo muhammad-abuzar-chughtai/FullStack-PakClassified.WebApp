@@ -23,7 +23,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("GetAll/Advertisement/{id}")]
+        [Route("Advertisement={id}")]
         public async Task<IActionResult> GetAllAdvertisementImages(int id)
         {
             _logger.LogInformation("Fetching all Advertisement Images.");
