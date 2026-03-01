@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardComponent } from '../../../shared/card.component/card.component';
 import { ModalComponent } from '../../../shared/modal.component/modal.component';
 import { CityArea } from '../../../core/models/location/cityarea-model';
 import { CityAreaService } from '../../../core/services/location/cityarea-service';
@@ -11,7 +10,7 @@ import { CityService } from '../../../core/services/location/city-service';
 @Component({
   selector: 'app-cityarea',
   standalone: true,
-  imports: [CommonModule, CardComponent, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './cityarea.component.html',
   styleUrls: ['./cityarea.component.css']
 })

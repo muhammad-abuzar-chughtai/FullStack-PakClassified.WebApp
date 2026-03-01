@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardComponent } from '../../../shared/card.component/card.component';
 import { ModalComponent } from '../../../shared/modal.component/modal.component';
 import { Country } from '../../../core/models/location/country-model';
 import { CountryService } from '../../../core/services/location/country-service';
@@ -9,7 +8,7 @@ import { CountryService } from '../../../core/services/location/country-service'
 @Component({
   selector: 'app-country',
   standalone: true,
-  imports: [CommonModule, CardComponent, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.css']
 })
