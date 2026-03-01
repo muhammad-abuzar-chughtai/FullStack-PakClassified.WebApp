@@ -4,4 +4,5 @@ export interface City {
     createdBy: string;
     lastModifiedBy?: string;
     provinceId: number;
+    provinceName?: string; // Optional for display purposes
 }

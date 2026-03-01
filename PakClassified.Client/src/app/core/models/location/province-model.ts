@@ -4,4 +4,5 @@ export interface Province {
     createdBy: string;
     lastModifiedBy?: string;
     countryId: number;
+    countryName?: string; // Optional for display purposes
 }

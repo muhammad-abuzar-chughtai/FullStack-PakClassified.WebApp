@@ -1,0 +1,33 @@
+<div class="modal-backdrop">
+  <div class="modal" *ngIf="model">
+    <!-- <div class="modal"> -->
+      <h3>
+        {{ mode === 'create' ? 'Add ' + entityName : 'Update ' + entityName }}
+      </h3>
+
+      <!-- <form action="post" (ngSubmit)="submit()"> -->
+        <div *ngFor="let field of fields">
+
+        <label>{{ field.label }}</label>
+
+        <!-- Text Input -->
+        <input *ngIf="field.type === 'text'" [(ngModel)]="model[field.key]" placeholder="{{ field.label }}" />
+
+        <!-- Dropdown -->
+        <select *ngIf="field.type === 'select'" [(ngModel)]="model[field.key]">
+          <option value="0">Select {{ field.label }}</option>
+          <option *ngFor="let option of field.options()" [value]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+
+      </div>
+      <!-- </form> -->
+
+      <div class="modal-actions">
+        <button class="save-btn" (click)="submit()">Save</button>
+        <button class="cancel-btn" (click)="close.emit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+<!-- </div> -->

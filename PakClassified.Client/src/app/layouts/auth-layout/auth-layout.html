@@ -1,0 +1,90 @@
+<div class="auth-wrapper">
+
+  <div class="auth-card">
+
+    <!-- LEFT BRAND SIDE -->
+    <div class="auth-brand">
+      <h1>PakClassified</h1>
+      <p class="tagline">
+        Geo-Targeting Advertisement WebApp
+      </p>
+
+      <p class="description">
+        PakClassified is a smart geo-location based advertisement platform 
+        that allows users to post, discover and manage classified ads 
+        targeted to specific cities and areas across Pakistan. 
+        It ensures precise visibility, better reach, and localized engagement.
+      </p>
+
+      <p class="normal-text">
+        Design & Developed by Muhammad Abuzar Chughtai
+      </p>
+    </div>
+
+    <!-- RIGHT FORM SIDE -->
+    <div class="auth-form">
+
+      <h1>{{ title() }}</h1>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        @if (isSignUp()) {
+          <div class="form-group">
+            <input type="text" placeholder="Full Name" formControlName="name">
+          </div>
+        }
+
+        <div class="form-group">
+          <input type="email" placeholder="Email" formControlName="email">
+        </div>
+
+        <div class="form-group">
+          <input type="password" placeholder="Password" formControlName="pass">
+        </div>
+
+        @if (isSignUp()) {
+
+          <div class="form-group">
+            <input type="file" (change)="onFileChange($event)">
+          </div>
+
+          <div class="form-group">
+            <input type="number" placeholder="Contact No" formControlName="contactNo">
+          </div>
+
+          <div class="form-group">
+            <input type="date" formControlName="dob">
+          </div>
+
+          <div class="form-group">
+            <input type="text" placeholder="Security Question" formControlName="secQuestion">
+          </div>
+
+          <div class="form-group">
+            <input type="text" placeholder="Security Answer" formControlName="secAnswer">
+          </div>
+        }
+
+        <button type="submit">
+          {{ buttonText() }}
+        </button>
+
+      </form>
+
+      <div class="switch-mode">
+        @if (!isSignUp()) {
+          <span>Don't have an account?
+            <a (click)="toggleMode()">Sign Up</a>
+          </span>
+        } @else {
+          <span>Already have an account?
+            <a (click)="toggleMode()">Sign In</a>
+          </span>
+        }
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

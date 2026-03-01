@@ -1,0 +1,118 @@
+/* RESET INHERITED PROPERTIES */
+.modal-backdrop,
+.modal {
+  all: unset; 
+}
+
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  z-index: 1000;          
+  padding: 10px;         
+  box-sizing: border-box;
+}
+
+/* Modal */
+.modal {
+  background: #fff;
+  width: 100%;
+  max-width: 600px;       /* optimal width for desktops */
+  min-width: 280px;       /* minimal width for mobiles */
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal inputs and selects */
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: #2563eb;
+}
+
+/* Modal actions (buttons) */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.save-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.save-btn:hover {
+  background-color: #1e40af;
+}
+
+.cancel-btn {
+  background-color: #333;
+  color: #e5e7eb;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cancel-btn:hover {
+  background-color: #1f2937;
+}
+
+/* Fade-in animation for modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .modal {
+    padding: 20px 15px;
+  }
+  .modal input,
+  .modal select {
+    font-size: 13px;
+  }
+  .save-btn,
+  .cancel-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}

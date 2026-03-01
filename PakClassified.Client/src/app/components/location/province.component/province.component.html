@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+
+  <div class="table-header">
+    <h2>Province Management</h2>
+
+    <button *ngIf="userRole==='Admin'" 
+    class="primary-btn" (click)="addProvince()">
+      <i class="fas fa-plus plus"></i> Add 
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="province-table">
+    
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Province Name</th>
+          <th>Country</th>
+          <th>Created By</th>
+          <th *ngIf="userRole==='Admin'">Actions</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <tr *ngFor="let province of provinces(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ province.name }}</td>
+          
+          <td>{{ province.countryName }}</td>
+          
+          <td>{{ province.createdBy || '' }}</td>
+          
+          <td *ngIf="userRole==='Admin'" class="actions">
+            <button class="edit-btn" (click)="editProvince(province)"><i class="fas fa-edit icon"></i></button>
+            <button class="delete-btn" (click)="deleteProvince(province.id)"><i class="fas fa-trash icon"></i></button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="provinces().length === 0">
+          <td colspan="5" class="empty">No provinces found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal
+  *ngIf="modalOpen()"
+  [fields]="provinceFields"
+  [model]="selectedProvince() || {}"
+  [mode]="modalMode()"
+  entityName="Province"
+  (save)="saveProvince($event)"
+  (close)="modalOpen.set(false)">
+</app-modal>

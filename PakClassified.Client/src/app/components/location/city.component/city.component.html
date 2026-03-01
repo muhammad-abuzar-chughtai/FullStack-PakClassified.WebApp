@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+
+  <div class="table-header">
+    <h2>City Management</h2>
+
+    <button *ngIf="userRole==='Admin'" 
+    class="primary-btn" (click)="addCity()">
+      <i class="fas fa-plus plus"></i> Add 
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="city-table">
+    
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>City Name</th>
+          <th>Province</th>
+          <th>Created By</th>
+          <th *ngIf="userRole==='Admin'">Actions</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <tr *ngFor="let city of cities(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ city.name }}</td>
+          
+          <td>{{ city.provinceName }}</td>
+          
+          <td>{{ city.createdBy || '' }}</td>
+          
+          <td *ngIf="userRole==='Admin'" class="actions">
+            <button class="edit-btn" (click)="editCity(city)"><i class="fas fa-edit icon"></i></button>
+            <button class="delete-btn" (click)="deleteCity(city.id)"><i class="fas fa-trash icon"></i></button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="cities().length === 0">
+          <td colspan="5" class="empty">No cities found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal
+  *ngIf="modalOpen()"
+  [fields]="cityFields"
+  [model]="selectedCity() || {}"
+  [mode]="modalMode()"
+  entityName="City"
+  (save)="saveCity($event)"
+  (close)="modalOpen.set(false)">
+</app-modal>    

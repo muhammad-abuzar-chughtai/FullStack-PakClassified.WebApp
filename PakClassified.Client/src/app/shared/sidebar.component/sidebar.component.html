@@ -1,0 +1,67 @@
+
+<nav class="sidebar" [class.collapsed]="isCollapsed">
+
+  <div class="sidebar-header">
+    <h2 class="logo" (click)="navigate('')">Pak Classified</h2>
+    <button class="collapse-btn" (click)="toggleSidebar()">
+      <i class="fas fa-bars icon"></i>
+    </button>
+  </div>
+
+  <ul class="menu">
+    <!-- Locations -->
+    <li class="menu-group">
+      <div class="menu-title" (click)="toggleGroup('locations')">
+        <i class="fas fa-map-marker-alt icon"></i> 
+        <span class="ul">Locations</span>
+        <span class="arrow" [class.open]="openGroup === 'locations'">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </div>
+
+      <ul class="submenu" [class.open]="openGroup === 'locations'">
+        <li (click)="navigate('countries')">Countries</li>
+        <li (click)="navigate('provinces')">Provinces</li>
+        <li (click)="navigate('cities')">Cities</li>
+        <li (click)="navigate('cityareas')">City Areas</li>
+      </ul>
+    </li>
+
+    <!-- Advertisement -->
+    <li class="menu-group">
+      <div class="menu-title" (click)="toggleGroup('ads')">
+        <i class="fas fa-bullhorn icon"></i> 
+        <span class="ul">Advertisement</span>
+        <span class="arrow" [class.open]="openGroup === 'ads'">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </div>
+
+      <ul class="submenu" [class.open]="openGroup === 'ads'">
+        <li (click)="navigate('ads')">Ads</li>
+        <li (click)="navigate('adImages')">Ad Images</li>
+        <li (click)="navigate('categories')">Categories</li>
+        <li (click)="navigate('subcategories')">Sub Categories</li>
+        <li (click)="navigate('tags')">Tags</li>
+        <li (click)="navigate('statuses')">Status</li>
+        <li (click)="navigate('typeses')">Types</li>
+      </ul>
+    </li>
+
+    <!-- Users -->
+    <li class="menu-group">
+      <div class="menu-title" (click)="toggleGroup('users')">
+        <i class="fas fa-users icon"></i> 
+        <span class="ul">Users</span>
+        <span class="arrow" [class.open]="openGroup === 'users'">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </div>
+
+      <ul class="submenu" [class.open]="openGroup === 'users'">
+        <li (click)="navigate('users')">Users</li>
+        <li (click)="navigate('roles')">Roles</li>
+      </ul>
+    </li>
+  </ul>
+</nav>

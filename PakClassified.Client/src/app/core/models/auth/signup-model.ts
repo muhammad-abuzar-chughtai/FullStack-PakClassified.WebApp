@@ -2,7 +2,7 @@ export interface SignUp {
     id: number;
     name: string;
     email: string;
-    password: string;
+    pass: string;
     profilePic: File;
     contactNo: number;
     dob: Date;

@@ -1,0 +1,50 @@
+.header {
+  /* height: px; */
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 5px;
+  border-bottom: 4px solid #1d4ed8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.normal-text {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.username {
+  font-size: 14px;
+  font-weight: 450;
+}
+
+.user-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+button {
+  background-color: #2563eb;
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}

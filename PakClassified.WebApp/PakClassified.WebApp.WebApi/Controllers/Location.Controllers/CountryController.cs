@@ -22,6 +22,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             _logger = logger;
         }
 
+        //[Authorize(Roles = "Admin, Manager, Customer")]
         [AllowAnonymous]
         [HttpGet]
         [Route("")]
@@ -41,7 +42,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -59,7 +60,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromBody] CountryModel request)
@@ -76,7 +77,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromBody] CountryModel request, int id)
@@ -98,7 +99,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Location.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)

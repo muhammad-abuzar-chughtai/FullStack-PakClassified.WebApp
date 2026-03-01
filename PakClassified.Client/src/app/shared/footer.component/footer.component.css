@@ -1,0 +1,10 @@
+.footer{
+    background-color: black;
+    color: white;
+    border-top: 3px solid #3b82f6;
+}
+
+.normal-text {
+  font-size: 12px;
+  font-weight: 400;
+}

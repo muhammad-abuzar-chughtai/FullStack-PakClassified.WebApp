@@ -1,0 +1,10 @@
+<div class="card">
+  <div *ngFor="let key of getKeys()">
+    <strong>{{ key }}:</strong> {{ item[key] }}
+  </div>
+
+  <div class="actions" *ngIf="role==='Admin'">
+    <button (click)="edit.emit(item)">✏️</button>
+    <button (click)="delete.emit(item)">🗑️</button>
+  </div>
+</div>

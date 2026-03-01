@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+
+  <div class="table-header">
+    <h2>City Area Management</h2>
+
+    <button *ngIf="userRole==='Admin'" 
+    class="primary-btn" (click)="addCityArea()">
+      <i class="fas fa-plus plus"></i> Add 
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="cityArea-table">
+    
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>City Area Name</th>
+          <th>City</th>
+          <th>Created By</th>
+          <th *ngIf="userRole==='Admin'">Actions</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <tr *ngFor="let cityarea of cityareas(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ cityarea.name }}</td>
+          
+          <td>{{ cityarea.cityName }}</td>
+          
+          <td>{{ cityarea.createdBy || '' }}</td>
+          
+          <td *ngIf="userRole==='Admin'" class="actions">
+            <button class="edit-btn" (click)="editCityArea(cityarea)"><i class="fas fa-edit icon"></i></button>
+            <button class="delete-btn" (click)="deleteCityArea(cityarea.id)"><i class="fas fa-trash icon"></i></button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="cityareas().length === 0">
+          <td colspan="5" class="empty">No city areas found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal
+  *ngIf="modalOpen()"
+  [fields]="cityAreaFields"
+  [model]="selectedCityArea() || {}"
+  [mode]="modalMode()"
+  entityName="City Area"
+  (save)="saveCityArea($event)"
+  (close)="modalOpen.set(false)">
+</app-modal>    

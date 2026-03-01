@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './core/services/auth/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,13 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
+
   protected readonly title = signal('PakClassified.Client');
+  
+  constructor(private auth: AuthService) { }
+
+  ngOnInit() {
+    this.auth.initialize();
+  }
+
 }

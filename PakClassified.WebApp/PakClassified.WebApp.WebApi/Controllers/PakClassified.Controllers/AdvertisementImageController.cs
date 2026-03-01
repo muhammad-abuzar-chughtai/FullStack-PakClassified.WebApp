@@ -21,7 +21,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [HttpGet]
         [Route("Advertisement={id}")]
         public async Task<IActionResult> GetAllAdvertisementImages(int id)
@@ -41,7 +41,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Manager, Customer")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -60,7 +60,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Create([FromForm] AdvertisementImageModel request)
@@ -91,7 +91,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
         
-        [Authorize(Roles = "Admin, Manager, Head")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromForm] AdvertisementImageModel request, int id)

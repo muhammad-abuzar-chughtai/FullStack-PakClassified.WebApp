@@ -1,0 +1,17 @@
+/* Container centers the card */
+.dashboard-container {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: #1e293b;
+    padding: 50px;
+    box-sizing: border-box;
+
+    h1 {
+        font-size: 70px;
+    }
+
+    .username {
+        color: #3b82f6;
+    }
+}

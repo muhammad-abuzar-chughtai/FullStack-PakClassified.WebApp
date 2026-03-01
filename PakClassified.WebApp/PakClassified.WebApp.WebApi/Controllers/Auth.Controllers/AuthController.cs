@@ -83,7 +83,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
             var response = await _authService.SignInAsync(request);
             if(response.userModel == null || response.Token == null)
             {
-                return Unauthorized("Invalid Credentials, User Not Found.");
+                return NotFound("Invalid Credentials, User Not Found.");
             }
 
             UserModel responseModel = response.userModel;

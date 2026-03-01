@@ -4,4 +4,5 @@ export interface CityArea {
     createdBy: string;
     lastModifiedBy?: string;
     cityId: number;
+    cityName?: string; // For display purposes
 }
