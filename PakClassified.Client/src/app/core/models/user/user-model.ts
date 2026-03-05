@@ -10,6 +10,7 @@ export interface UserGet {
   createdBy: string;
   lastmodifiedBy: string;
   roleId: number;
+  roleName: string;
 }
 
 export interface UserPost {

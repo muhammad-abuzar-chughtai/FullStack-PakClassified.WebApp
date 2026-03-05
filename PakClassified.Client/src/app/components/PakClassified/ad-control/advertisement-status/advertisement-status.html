@@ -1,0 +1,53 @@
+<div class="table-wrapper">
+
+    <div class="table-header">
+        <h2>Status Management</h2>
+
+        <button *ngIf="isAdmin()" class="primary-btn" (click)="addStatus()">
+            <i class="fas fa-plus plus"></i> Add
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="component-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Created By</th>
+                    <th *ngIf="isAdmin()">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let status of statuses(); let i = index">
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ status.name }}</td>
+                    <td>{{ status.createdBy || '' }}</td>
+
+                    <td *ngIf="isAdmin()" class="actions">
+                        <button class="edit-btn" (click)="editStatus(status)"><i class="fas fa-edit icon"></i></button>
+                        <button class="delete-btn" (click)="deleteStatus(status.id)"><i
+                                class="fas fa-trash icon"></i></button>
+                    </td>
+
+                </tr>
+
+                <tr *ngIf="statuses().length === 0">
+                    <td colspan="4" class="empty">
+                        No statuses found.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<app-modal *ngIf="modalOpen()" [fields]="statusFields" [model]="selectedStatus() || {}" [mode]="modalMode()"
+    entityName="Status" (save)="saveStatus($event)" (close)="modalOpen.set(false)">
+</app-modal>

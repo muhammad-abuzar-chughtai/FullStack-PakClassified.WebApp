@@ -3,14 +3,14 @@
   <div class="table-header">
     <h2>Province Management</h2>
 
-    <button *ngIf="userRole==='Admin'" 
+    <button *ngIf="isAdmin()" 
     class="primary-btn" (click)="addProvince()">
       <i class="fas fa-plus plus"></i> Add 
     </button>
   </div>
 
   <div class="table-container">
-    <table class="province-table">
+    <table class="component-table">
     
       <thead>
         <tr>
@@ -18,7 +18,7 @@
           <th>Province Name</th>
           <th>Country</th>
           <th>Created By</th>
-          <th *ngIf="userRole==='Admin'">Actions</th>
+          <th *ngIf="isAdmin()">Actions</th>
         </tr>
       </thead>
      
@@ -31,7 +31,7 @@
           
           <td>{{ province.createdBy || '' }}</td>
           
-          <td *ngIf="userRole==='Admin'" class="actions">
+          <td *ngIf="isAdmin()" class="actions">
             <button class="edit-btn" (click)="editProvince(province)"><i class="fas fa-edit icon"></i></button>
             <button class="delete-btn" (click)="deleteProvince(province.id)"><i class="fas fa-trash icon"></i></button>
           </td>

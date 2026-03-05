@@ -21,6 +21,7 @@ export class AuthService {
   user = computed(() => this._user());
   isAuthenticated = computed(() => !!this._token());
   roleId = computed(() => this._user()?.roleId ?? null);
+  roleName = computed(() => this._user()?.roleName ?? null);
 
   private baseUrl = `${environment.apiUrl}/${API_ENDPOINTS.Auth}`;
 

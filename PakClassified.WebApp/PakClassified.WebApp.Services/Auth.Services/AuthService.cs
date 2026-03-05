@@ -60,7 +60,7 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
                 user.IsActive = true;
                 user.Advertisements = new List<Advertisement>();
 
-                user.RoleId = 1;
+                user.RoleId = 1;   // RoleId is set default to customer [(HardCode)]
 
                 //country.CreatedBy is extracted from Payload of JWT Token in Controller
                 user.CreatedDate = DateTime.Now;
@@ -70,12 +70,15 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
 
                 await _dBContext.Entry(user).Reference(u => u.Role).LoadAsync();
 
+                var response = _mapper.Map<UserModel>(user);
+                response.RoleName = user.Role.Name;
+
                 _logger.LogInformation("Issueing Token.");
                 string token = IssueToken(user);
 
                 AuthResult authResult = new AuthResult
                 {
-                    userModel = _mapper.Map<UserModel>(user),
+                    userModel = response,
                     Token = token
                 };
                 return authResult;
@@ -102,12 +105,15 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
                 return new AuthResult();
             }
 
+            var response = _mapper.Map<UserModel>(user);
+            response.RoleName = user.Role.Name;
+
             _logger.LogInformation("Issueing Token.");
             string token = IssueToken(user);
 
             AuthResult authResult = new AuthResult
             {
-                userModel = _mapper.Map<UserModel>(user),
+                userModel = response,
                 Token = token
             };
 
@@ -124,8 +130,8 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
             var Claims = new List<Claim>
             {
                 new Claim("Myapp_User_Id", user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
-                new Claim(ClaimTypes.Name, user.Email),                   
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.Name)

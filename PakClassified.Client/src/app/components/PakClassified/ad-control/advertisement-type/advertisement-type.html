@@ -1,0 +1,53 @@
+<div class="table-wrapper">
+
+    <div class="table-header">
+        <h2>Type Management</h2>
+
+        <button *ngIf="isAdmin()" class="primary-btn" (click)="addType()">
+            <i class="fas fa-plus plus"></i> Add
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="component-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Created By</th>
+                    <th *ngIf="isAdmin()">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let type of types(); let i = index">
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ type.name }}</td>
+                    <td>{{ type.createdBy || '' }}</td>
+
+                    <td *ngIf="isAdmin()" class="actions">
+                        <button class="edit-btn" (click)="editType(type)"><i class="fas fa-edit icon"></i></button>
+                        <button class="delete-btn" (click)="deleteType(type.id)"><i
+                                class="fas fa-trash icon"></i></button>
+                    </td>
+
+                </tr>
+
+                <tr *ngIf="types().length === 0">
+                    <td colspan="4" class="empty">
+                        No types found.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<app-modal *ngIf="modalOpen()" [fields]="typeFields" [model]="selectedType() || {}" [mode]="modalMode()"
+    entityName="Type" (save)="saveType($event)" (close)="modalOpen.set(false)">
+</app-modal>

@@ -1,6 +1,24 @@
 <div class="dashboard-container">
-    <div class="card-header">
-      <h1>Admin Dashboard</h1>
-      <p>Welcome Dear <b class="username">"{{ currentUser() }}"</b>. Hope you're doing great. Here's your Admin Dashboard of Pak Classified...</p>
+  <div class="card-header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome Dear <b class="bold-primary">"{{ currentUser() }}"</b>. Hope you're doing great. Here's your Admin
+      Dashboard of Pak Classified...</p>
+
+    <div class="notes-card">
+      <h3><i class="fas fa-pen"></i> Development Notes</h3>
+
+      <textarea rows="12" placeholder="Write your Notes Here.....">
+Admin will have:
+- Locations BreadCrumbs, Search Remaining.
+- Advertisement and Advertisement Image is remaining.
+
+Manager will have: 
+- Full Access to advertisement management, Ad Taxonomy, Ad Media
+- View Only Access to Ad Control and Location
+- No Access to User Management and Roles Management
+Customer will have:
+- View Only Access to Advertisement Cards. 
+- SearchBars and Search Query</textarea>
     </div>
+  </div>
 </div>

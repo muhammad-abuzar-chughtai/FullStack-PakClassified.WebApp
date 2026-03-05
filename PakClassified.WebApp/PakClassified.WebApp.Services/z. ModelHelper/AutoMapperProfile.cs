@@ -50,6 +50,7 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             #region UserMapping
 
             CreateMap<User, UserModel>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name))
                 .ReverseMap()
                 .ForMember(dest => dest.Password, opt => opt.Ignore()); 
             CreateMap<Role, RoleModel>().ReverseMap();

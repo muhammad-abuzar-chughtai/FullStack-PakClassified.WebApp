@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+.page-container {
+  padding: 25px;
+  background: #f8fafc;
+}
+
+/* Header */
+.page-header h2 {
+  margin: 0;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.breadcrumb {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #64748b;
+}
+.breadcrumb-link {
+  color: #64748b;
+  text-decoration: none;
+}
+.breadcrumb-link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* Tabs */
+.tab-container {
+  display: flex;
+  justify-content: end;
+  padding: 0px 80px;
+  gap: 30px;
+  margin-top: -25px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-link {
+  text-decoration: none;
+  padding: 12px 5px;
+  font-weight: 500;
+  color: #475569;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.tab-link:hover {
+  color: #2563eb;
+}
+
+.active-tab {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.active-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 3px;
+  background: #2563eb;
+  border-radius: 2px;
+}
+
+/* Content Area */
+.tab-content {
+  margin-top: 25px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}

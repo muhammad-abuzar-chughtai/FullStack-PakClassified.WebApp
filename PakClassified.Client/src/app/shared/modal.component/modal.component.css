@@ -1,7 +1,7 @@
 /* RESET INHERITED PROPERTIES */
 .modal-backdrop,
 .modal {
-  all: unset; 
+  all: unset;
 }
 
 
@@ -14,10 +14,10 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
-  justify-content: center; 
-  align-items: center;     
-  z-index: 1000;          
-  padding: 10px;         
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
   box-sizing: border-box;
 }
 
@@ -25,8 +25,10 @@
 .modal {
   background: #fff;
   width: 100%;
-  max-width: 600px;       /* optimal width for desktops */
-  min-width: 280px;       /* minimal width for mobiles */
+  max-width: 600px;
+  /* optimal width for desktops */
+  min-width: 280px;
+  /* minimal width for mobiles */
   padding: 30px 20px;
   border-radius: 12px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
@@ -37,11 +39,21 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Modal inputs and selects */
+/* Modal Field Labels */
+.modal label {
+  font-size: medium;
+  font-weight: 600;
+  color: #000000;
+}
+
+
+/* Modal Fields */
 .modal input,
+.modal textarea,
 .modal select {
   width: 100%;
   padding: 10px 12px;
+  margin-top: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
@@ -50,6 +62,7 @@
 }
 
 .modal input:focus,
+.modal textarea,
 .modal select:focus {
   border-color: #2563eb;
 }
@@ -72,6 +85,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .save-btn:hover {
   background-color: #1e40af;
 }
@@ -85,6 +99,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .cancel-btn:hover {
   background-color: #1f2937;
 }
@@ -95,6 +110,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -106,10 +122,13 @@
   .modal {
     padding: 20px 15px;
   }
+
   .modal input,
+  .modal textarea,
   .modal select {
     font-size: 13px;
   }
+
   .save-btn,
   .cancel-btn {
     padding: 6px 12px;

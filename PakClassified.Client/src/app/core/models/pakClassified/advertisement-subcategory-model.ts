@@ -5,4 +5,5 @@ export interface AdvertisementSubCategory {
     createdBy: string;
     lastModifiedBy?: string;
     categoryId: number;
+    categoryName?: string;
 }

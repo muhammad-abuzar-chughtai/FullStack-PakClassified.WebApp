@@ -21,7 +21,8 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        //[Authorize(Roles = "Admin, Manager, Customer")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllAdvertisementCategories()

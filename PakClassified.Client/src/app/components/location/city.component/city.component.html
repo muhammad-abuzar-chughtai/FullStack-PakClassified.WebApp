@@ -3,14 +3,14 @@
   <div class="table-header">
     <h2>City Management</h2>
 
-    <button *ngIf="userRole==='Admin'" 
+    <button *ngIf="isAdmin()" 
     class="primary-btn" (click)="addCity()">
       <i class="fas fa-plus plus"></i> Add 
     </button>
   </div>
 
   <div class="table-container">
-    <table class="city-table">
+    <table class="component-table">
     
       <thead>
         <tr>
@@ -18,7 +18,7 @@
           <th>City Name</th>
           <th>Province</th>
           <th>Created By</th>
-          <th *ngIf="userRole==='Admin'">Actions</th>
+          <th *ngIf="isAdmin()">Actions</th>
         </tr>
       </thead>
      
@@ -31,7 +31,7 @@
           
           <td>{{ city.createdBy || '' }}</td>
           
-          <td *ngIf="userRole==='Admin'" class="actions">
+          <td *ngIf="isAdmin()" class="actions">
             <button class="edit-btn" (click)="editCity(city)"><i class="fas fa-edit icon"></i></button>
             <button class="delete-btn" (click)="deleteCity(city.id)"><i class="fas fa-trash icon"></i></button>
           </td>

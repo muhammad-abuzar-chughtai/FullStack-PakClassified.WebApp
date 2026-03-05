@@ -1,0 +1,56 @@
+<div class="table-wrapper">
+
+  <div class="table-header">
+    <h2>Category Management</h2>
+
+    <button *ngIf="isAdmin()" 
+    class="primary-btn" (click)="addCategory()">
+      <i class="fas fa-plus plus"></i> Add 
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="component-table">
+    
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Category Name</th>
+          <th>Description</th>
+          <th>Created By</th>
+          <th *ngIf="isAdmin()">Actions</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <tr *ngFor="let category of categories(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>   
+          <td>{{ category.createdBy || '' }}</td>
+          
+          <td *ngIf="isAdmin()" class="actions">
+            <button class="edit-btn" (click)="editCategory(category)"><i class="fas fa-edit icon"></i></button>
+            <button class="delete-btn" (click)="deleteCategory(category.id)"><i class="fas fa-trash icon"></i></button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="categories().length === 0">
+          <td colspan="5" class="empty">No categories found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal
+  *ngIf="modalOpen()"
+  [fields]="categoryFields"
+  [model]="selectedCategory() || {}"
+  [mode]="modalMode()"
+  entityName="Category"
+  (save)="saveCategory($event)"
+  (close)="modalOpen.set(false)">
+</app-modal>

@@ -12,6 +12,9 @@
 
         <!-- Text Input -->
         <input *ngIf="field.type === 'text'" [(ngModel)]="model[field.key]" placeholder="{{ field.label }}" />
+        
+        <!-- Text Area Input -->
+        <textarea rows="8" *ngIf="field.type === 'textarea'" [(ngModel)]="model[field.key]" placeholder="{{ field.label }}"></textarea>
 
         <!-- Dropdown -->
         <select *ngIf="field.type === 'select'" [(ngModel)]="model[field.key]">

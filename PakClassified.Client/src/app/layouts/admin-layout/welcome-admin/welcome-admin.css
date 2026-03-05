@@ -11,7 +11,37 @@
         font-size: 70px;
     }
 
-    .username {
+    .bold-primary {
         color: #3b82f6;
     }
+}
+
+.card-header{
+    width: 100%;
+}
+
+
+.notes-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.notes-card h3 {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #cbcbcb;
+    border-radius: 5px;
+    color: #1e293b;
+}
+
+.notes-card textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-family: monospace;
+    resize: vertical;
 }

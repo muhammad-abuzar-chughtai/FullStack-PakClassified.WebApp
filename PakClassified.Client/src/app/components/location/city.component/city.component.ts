@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../../shared/modal.component/modal.component';
@@ -6,6 +6,7 @@ import { City } from '../../../core/models/location/city-model';
 import { CityService } from '../../../core/services/location/city-service';
 import { Province } from '../../../core/models/location/province-model';
 import { ProvinceService } from '../../../core/services/location/province-service';
+import { AuthService } from '../../../core/services/auth/auth-service';
 
 @Component({
   selector: 'app-city',
@@ -22,10 +23,11 @@ export class CityComponent implements OnInit {
   selectedCity = signal<City | null>(null);
   modalOpen = signal(false);
   modalMode = signal<'create' | 'update'>('create');
-  userRole = 'Admin';
+  // --- Auth Signals ---
+  roleName = computed(() => this.auth.roleName());
+  isAdmin = computed(() => this.roleName() === 'Admin');
 
-
-  constructor(private cityService: CityService, private provinceService: ProvinceService) { }
+  constructor(private cityService: CityService, private provinceService: ProvinceService, private auth: AuthService) { }
 
   ngOnInit() {
     // this.loadCities();

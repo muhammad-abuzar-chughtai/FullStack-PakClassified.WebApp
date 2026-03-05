@@ -3,21 +3,20 @@
   <div class="table-header">
     <h2>Country Management</h2>
 
-    <button *ngIf="userRole==='Admin'" 
-             class="primary-btn" (click)="addCountry()">
-      <i class="fas fa-plus plus"></i> Add 
+    <button *ngIf="isAdmin()" class="primary-btn" (click)="addCountry()">
+      <i class="fas fa-plus plus"></i> Add
     </button>
   </div>
 
   <div class="table-container">
-    <table class="country-table">
- 
+    <table class="component-table">
+
       <thead>
         <tr>
           <th>#</th>
           <th>Name</th>
           <th>Created By</th>
-          <th *ngIf="userRole==='Admin'">Actions</th>
+          <th *ngIf="isAdmin()">Actions</th>
         </tr>
       </thead>
 
@@ -28,7 +27,7 @@
           <td>{{ country.name }}</td>
           <td>{{ country.createdBy || '' }}</td>
 
-          <td *ngIf="userRole==='Admin'" class="actions">
+          <td *ngIf="isAdmin()" class="actions">
             <button class="edit-btn" (click)="editCountry(country)"><i class="fas fa-edit icon"></i></button>
             <button class="delete-btn" (click)="deleteCountry(country.id)"><i class="fas fa-trash icon"></i></button>
           </td>
@@ -48,12 +47,6 @@
 
 </div>
 
-<app-modal 
-  *ngIf="modalOpen()"
-  [fields]="countryFields"
-  [model]="selectedCountry() || {}"
-  [mode]="modalMode()" 
-  entityName="Country"      
-  (save)="saveCountry($event)" 
-  (close)="modalOpen.set(false)">
+<app-modal *ngIf="modalOpen()" [fields]="countryFields" [model]="selectedCountry() || {}" [mode]="modalMode()"
+  entityName="Country" (save)="saveCountry($event)" (close)="modalOpen.set(false)">
 </app-modal>

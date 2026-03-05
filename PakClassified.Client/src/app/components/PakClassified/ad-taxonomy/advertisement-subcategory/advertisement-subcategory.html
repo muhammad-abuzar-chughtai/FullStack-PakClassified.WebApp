@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+
+  <div class="table-header">
+    <h2>Sub-Category Management</h2>
+
+    <button *ngIf="isAdmin()" 
+    class="primary-btn" (click)="addSubCategory()">
+      <i class="fas fa-plus plus"></i> Add 
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="component-table">
+    
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SubCategory Name</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Created By</th>
+          <th *ngIf="isAdmin()">Actions</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <tr *ngFor="let subCategory of subCategories(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ subCategory.name }}</td>
+          <td>{{ subCategory.description }}</td>   
+          <td>{{ subCategory.categoryName }}</td>   
+          <td>{{ subCategory.createdBy || '' }}</td>
+          
+          <td *ngIf="isAdmin()" class="actions">
+            <button class="edit-btn" (click)="editSubCategory(subCategory)"><i class="fas fa-edit icon"></i></button>
+            <button class="delete-btn" (click)="deleteSubCategory(subCategory.id)"><i class="fas fa-trash icon"></i></button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="subCategories().length === 0">
+          <td colspan="5" class="empty">No sub-categories found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<app-modal
+  *ngIf="modalOpen()"
+  [fields]="subCategoryFields"
+  [model]="selectedSubCategory() || {}"
+  [mode]="modalMode()"
+  entityName="Sub-Category"
+  (save)="saveSubCategory($event)"
+  (close)="modalOpen.set(false)">
+</app-modal>

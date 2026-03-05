@@ -1,0 +1,55 @@
+<div class="table-wrapper">
+
+    <div class="table-header">
+        <h2>Tags Management</h2>
+
+        <button *ngIf="isAdmin()" class="primary-btn" (click)="addTags()">
+            <i class="fas fa-plus plus"></i> Add
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="component-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>No. of Search</th>
+                    <th>Created By</th>
+                    <th *ngIf="isAdmin()">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let tags of tags(); let i = index">
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ tags.name }}</td>
+                    <td>{{ tags.noOfSearch }}</td>
+                    <td>{{ tags.createdBy || '' }}</td>
+
+                    <td *ngIf="isAdmin()" class="actions">
+                        <button class="edit-btn" (click)="editTags(tags)"><i class="fas fa-edit icon"></i></button>
+                        <button class="delete-btn" (click)="deleteTags(tags.id)"><i
+                                class="fas fa-trash icon"></i></button>
+                    </td>
+
+                </tr>
+
+                <tr *ngIf="tags().length === 0">
+                    <td colspan="4" class="empty">
+                        No Tags found.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<app-modal *ngIf="modalOpen()" [fields]="tagFields" [model]="selectedTags() || {}" [mode]="modalMode()"
+    entityName="Tags" (save)="saveTags($event)" (close)="modalOpen.set(false)">
+</app-modal>

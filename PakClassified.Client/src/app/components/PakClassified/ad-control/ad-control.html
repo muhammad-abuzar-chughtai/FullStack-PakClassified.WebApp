@@ -1,0 +1,35 @@
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Ad Control</h2>
+    <p class="breadcrumb">Home / <a class="breadcrumb-link" routerLink="/admin/advertisements">Advertisements</a> / Ad Control</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-container">
+    <a routerLink="status"
+       routerLinkActive="active-tab"
+       class="tab-link">
+      Status
+    </a>
+
+    <a routerLink="type"
+       routerLinkActive="active-tab"
+       class="tab-link">
+      Type
+    </a>
+
+    <a routerLink="tags"
+       routerLinkActive="active-tab"
+       class="tab-link">
+      Tags
+    </a>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

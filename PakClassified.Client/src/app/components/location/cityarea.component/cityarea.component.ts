@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../../shared/modal.component/modal.component';
@@ -6,6 +6,7 @@ import { CityArea } from '../../../core/models/location/cityarea-model';
 import { CityAreaService } from '../../../core/services/location/cityarea-service';
 import { City } from '../../../core/models/location/city-model';
 import { CityService } from '../../../core/services/location/city-service';
+import { AuthService } from '../../../core/services/auth/auth-service';
 
 @Component({
   selector: 'app-cityarea',
@@ -23,10 +24,11 @@ export class CityAreaComponent implements OnInit {
   selectedCityArea = signal<CityArea | null>(null);
   modalOpen = signal(false);
   modalMode = signal<'create' | 'update'>('create');
-  userRole = 'Admin';
- 
+   // --- Auth Signals ---
+  roleName = computed(() => this.auth.roleName());
+  isAdmin = computed(() => this.roleName() === 'Admin');
 
-  constructor(private cityareaService: CityAreaService, private cityService: CityService) { }
+  constructor(private cityareaService: CityAreaService, private cityService: CityService, private auth: AuthService) { }
 
   ngOnInit() {
       // this.loadCityareas();

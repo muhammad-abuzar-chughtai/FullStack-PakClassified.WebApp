@@ -1,14 +1,15 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../../shared/modal.component/modal.component';
 import { Country } from '../../../core/models/location/country-model';
 import { CountryService } from '../../../core/services/location/country-service';
+import { AuthService } from '../../../core/services/auth/auth-service';
 
 @Component({
   selector: 'app-country',
   standalone: true,
-  imports: [CommonModule, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.css']
 })
@@ -19,11 +20,13 @@ export class CountryComponent implements OnInit {
   selectedCountry = signal<Country | null>(null);
   modalOpen = signal(false);
   modalMode = signal<'create' | 'update'>('create');
-  userRole = 'Admin';
+  // --- Auth Signals ---
+  roleName = computed(() => this.auth.roleName());
+  isAdmin = computed(() => this.roleName() === 'Admin');
 
 
 
-  constructor(private countryService: CountryService) { }
+  constructor(private countryService: CountryService, private auth: AuthService) { }
 
   ngOnInit() {
     this.loadCountries();

@@ -38,13 +38,10 @@
       </div>
 
       <ul class="submenu" [class.open]="openGroup === 'ads'">
-        <li (click)="navigate('ads')">Ads</li>
-        <li (click)="navigate('adImages')">Ad Images</li>
-        <li (click)="navigate('categories')">Categories</li>
-        <li (click)="navigate('subcategories')">Sub Categories</li>
-        <li (click)="navigate('tags')">Tags</li>
-        <li (click)="navigate('statuses')">Status</li>
-        <li (click)="navigate('typeses')">Types</li>
+        <li (click)="navigate('advertisements')">—— AD MANAGER ——</li>
+        <li (click)="navigate('ad-images')"><i class="fa-solid fa-images sub-icons"></i>Ad Media</li>
+        <li (click)="navigate('ad-taxonomy')"><i class="fa-solid fa-sitemap sub-icons"></i>Ad Taxonomy</li>
+        <li (click)="navigate('ad-control')"><i class="fa-solid fa-gears sub-icons"></i>Ad Controls</li>
       </ul>
     </li>
 

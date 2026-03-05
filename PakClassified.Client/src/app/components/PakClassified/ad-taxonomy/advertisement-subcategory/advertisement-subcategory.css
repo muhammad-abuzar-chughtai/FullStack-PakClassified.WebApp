@@ -1,0 +1,42 @@
+/* Column Widths */
+.component-table th:nth-child(1),
+/* # */
+.component-table td:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+
+.component-table th:nth-child(2),
+/* Name */
+.component-table td:nth-child(2) {
+  width: 20%;
+  text-align: left;
+}
+
+.component-table th:nth-child(3),
+/* Description */
+.component-table td:nth-child(3) {
+  width: 30%;
+  text-align: left;
+}
+
+.component-table th:nth-child(4),
+/* Category */
+.component-table td:nth-child(4) {
+  width: 20%;
+  text-align: left;
+}
+
+.component-table th:nth-child(5),
+/* Created By */
+.component-table td:nth-child(5) {
+  width: 10%;
+  text-align: left;
+}
+
+.component-table th:nth-child(6),
+/* Actions */
+.component-table td:nth-child(6) {
+  width: 10%;
+  text-align: center;
+}
