@@ -76,33 +76,7 @@
   flex-wrap: wrap;
 }
 
-.save-btn {
-  background-color: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
 
-.save-btn:hover {
-  background-color: #1e40af;
-}
-
-.cancel-btn {
-  background-color: #333;
-  color: #e5e7eb;
-  border: none;
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.cancel-btn:hover {
-  background-color: #1f2937;
-}
 
 /* Fade-in animation for modal */
 @keyframes fadeIn {
@@ -129,9 +103,4 @@
     font-size: 13px;
   }
 
-  .save-btn,
-  .cancel-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
 }

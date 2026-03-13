@@ -1,0 +1,189 @@
+<div class="page-header align-items-center justify-content-between d-flex">
+
+  <div>
+    <h1>
+      {{ mode() === 'create' ? 'Create Advertisement' : 'Edit Advertisement' }}
+    </h1>
+
+    <p class="breadcrumb">
+      Home /
+      <a class="breadcrumb-link" routerLink="/admin/advertisements">
+        Advertisements
+      </a>
+      / Ad Taxonomy
+    </p>
+  </div>
+
+  <button class="back-btn" (click)="back()">
+    <i class="fas fa-angle-double-left"> </i> Back
+  </button>
+
+</div>
+
+
+
+<div class="form-page m-0">
+
+  <!-- BASIC INFO -->
+  <div class="form-section">
+
+    <h3>Basic Information</h3>
+
+    <div class="form-grid">
+
+      <div class="form-field">
+        <label>Name</label>
+        <input [(ngModel)]="advertisement().name" placeholder="Advertisement Name">
+      </div>
+
+      <div class="form-field">
+        <label>Title</label>
+        <input [(ngModel)]="advertisement().title" placeholder="Advertisement Title">
+      </div>
+
+      <div class="form-field full-width">
+        <label>Description</label>
+        <textarea rows="10" [(ngModel)]="advertisement().description"
+          placeholder="Write a detailed description"></textarea>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- PRICE + DATE -->
+  <div class="form-section">
+
+    <h3>Pricing & Schedule</h3>
+
+    <div class="form-grid">
+
+      <div class="form-field full-width">
+        <label>Price</label>
+        <input type="number" [(ngModel)]="advertisement().price">
+        <small class="hint">Enter product price (e.g. 5000)</small>
+      </div>
+
+      <div class="form-field">
+        <label>Starts On</label>
+        <input type="date" [value]="toDateInput(advertisement().startsOn)"
+          (change)="onStartsOnChange($any($event.target).value)">
+      </div>
+
+      <div class="form-field">
+        <label>Ends On</label>
+        <input type="date" [value]="toDateInput(advertisement().endsOn)"
+          (change)="onEndsOnChange($any($event.target).value)">
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- CATEGORY -->
+  <div class="form-section">
+
+    <h3>Category & Location</h3>
+
+    <div class="form-grid">
+
+      <div class="form-field">
+        <label>Sub Category</label>
+        <select [(ngModel)]="advertisement().subCategoryId">
+          <option [ngValue]="0" selected disabled>Select Sub Category</option>
+          <option *ngFor="let sc of subCategories()" [ngValue]="sc.id">
+            {{ sc.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>City Area</label>
+        <select [(ngModel)]="advertisement().cityAreaId">
+          <option [ngValue]="0" disabled selected>Select City Area</option>
+          <option *ngFor="let c of cityAreas()" [ngValue]="c.id">
+            {{ c.name }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- SETTINGS -->
+  <div class="form-section">
+
+    <h3>Advertisement Settings</h3>
+
+    <div class="settings-grid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+
+        <div class="form-field">
+          <label>Status</label>
+          <select [(ngModel)]="advertisement().statusId">
+            <option [ngValue]="0" disabled selected>Select Status</option>
+            <option *ngFor="let s of statuses()" [ngValue]="s.id">
+              {{ s.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Type</label>
+          <select [(ngModel)]="advertisement().typeId">
+            <option [ngValue]="0" disabled selected>Select Type</option>
+            <option *ngFor="let t of types()" [ngValue]="t.id">
+              {{ t.name }}
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+
+
+      <!-- RIGHT COLUMN -->
+      <div class="tag-container">
+
+        <label>Tags</label>
+
+        <div class="tag-list">
+
+          <div class="tag-chip" *ngFor="let tag of tags()" (click)="toggleTag(tag.id)"
+            [class.active]="advertisement().tagsId?.includes(tag.id)">
+            {{ tag.name }}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ACTIONS -->
+  <div class="form-actions Justify-content-between">
+
+    <button class="cancel-btn" (click)="back()">
+      Cancel
+    </button>
+
+    <button class="save-btn" (click)="save()">
+      {{ mode() === 'create' ? 'Create Advertisement' : 'Update Advertisement' }}
+    </button>
+
+  </div>
+
+</div>

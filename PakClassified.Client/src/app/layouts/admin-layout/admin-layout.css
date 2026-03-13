@@ -1,5 +1,6 @@
 .admin-container {
   display: flex;
+  /* height: 655px; */
   min-height: calc(100vh - 80px);
 }
 
@@ -7,4 +8,8 @@
   flex: 1;
   background: #f1f5f9;
   padding: 20px;
+}
+
+.sidebar{
+  background-color: #1e293b;
 }

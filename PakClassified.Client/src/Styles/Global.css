@@ -1,0 +1,119 @@
+/* Main Page Container */
+.page-container {
+    padding: 25px;
+    background: #f8fafc;
+}
+
+/* Header */
+.page-header h2 {
+    margin: 0;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.breadcrumb {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.breadcrumb-link {
+    color: #64748b;
+    text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+
+/* Normal Text */
+.normal-text{
+    font-size: 15px;
+    color: #64748b; 
+}
+
+.text {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Add Button */
+.primary-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: #1e293b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.plus {
+    font-size: 12px;
+    margin-right: 5px;
+    margin-left: -7px;
+}
+
+.primary-btn:hover {
+    background: #334155;
+}
+
+/* Save & Cancel Buttons */
+
+
+.save-btn {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.save-btn:hover {
+    background-color: #1e40af;
+}
+
+.cancel-btn {
+    background-color: #333;
+    color: #e5e7eb;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+    background-color: #1f2937;
+}
+
+.back-btn{
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #1d4ed8;
+}
+
+
+@media (max-width: 768px) {
+
+    .save-btn,
+    .cancel-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}

@@ -53,17 +53,17 @@ export class AdvertisementSubcategoryComponent {
     });
   }
 
-  // --- Load categories from API ---
-  loadSubCategories() {
-    this.subCategoryService.getAll().subscribe((data) => {
-      this.subCategories.set(data);  // set signal value — template auto updates
-    });
-  }
+  // // --- Load categories from API ---
+  // loadSubCategories() {
+  //   this.subCategoryService.getAll().subscribe((data) => {
+  //     this.subCategories.set(data);  // set signal value — template auto updates
+  //   });
+  // }
 
   subCategoryFields = [
     { key: 'name', label: 'Category Name', type: 'text' },
-    { key: 'category', label: 'Parent Category', type: 'select', options: this.categories },
-    { key: 'Description', label: 'Description', type: 'textarea' },
+    { key: 'categoryId', label: 'Parent Category', type: 'select', options: this.categories },
+    { key: 'description', label: 'Description', type: 'textarea' },
   ];
 
   // --- Add Category ---
@@ -74,30 +74,28 @@ export class AdvertisementSubcategoryComponent {
   }
 
   // --- Edit Category ---
-  editSubCategory(category: AdvertisementSubCategory) {
-    this.selectedSubCategory.set({ ...category });
+  editSubCategory(subCategory: AdvertisementSubCategory) {
+    this.selectedSubCategory.set({ ...subCategory });
     this.modalMode.set('update');
     this.modalOpen.set(true);
   }
 
   // --- Delete Category ---
   deleteSubCategory(id: number) {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-    this.subCategoryService.delete(id).subscribe(() => {
-      this.loadSubCategories();
-    });
+    if (!confirm('Are you sure you want to delete this Sub category?')) return;
+    this.subCategoryService.delete(id).subscribe(() =>  this.loadParent());
   }
 
   // --- Save Category ---
   saveSubCategory(category: AdvertisementSubCategory) {
     if (this.modalMode() === 'create') {
       this.subCategoryService.create(category).subscribe(() => {
-        this.loadSubCategories();
+        this.loadParent();
         this.modalOpen.set(false);
       });
     } else {
       this.subCategoryService.update(category.id, category).subscribe(() => {
-        this.loadSubCategories();
+        this.loadParent();
         this.modalOpen.set(false);
       });
     }

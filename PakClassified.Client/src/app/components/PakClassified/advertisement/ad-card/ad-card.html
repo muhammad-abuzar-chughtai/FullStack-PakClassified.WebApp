@@ -1,0 +1,53 @@
+<div class="ad-card">
+
+  <div class="ad-image" (click)="onView()">
+    <img [src]="ad.imagesId || './ad-placeholder.jpg'" />
+    <span class="status-badge active">
+      {{ ad.status }}
+    </span>
+  </div>
+
+  <div class="ad-content">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <h3 class="ad-title">
+        {{ ad.title }}
+      </h3>
+
+      <div class="ad-price">
+        PKR {{ ad.price | number }}
+      </div>
+    </div>
+    <p class="">
+      {{ ad.name }}
+    </p>
+
+    <div class="ad-meta">
+      <span>
+        📍 {{ ad.cityArea }}
+      </span>
+
+      <span>
+        {{ ad.subCategory }}
+      </span>
+    </div>
+
+    <div class="ad-footer">
+
+      <span class="ad-date">
+        Started: {{ ad.startsOn | date:'dd MMM yyyy' }}
+        <br>
+        Ended: {{ ad.endsOn | date:'dd MMM yyyy' }}
+      </span>
+
+      <div class="actions">
+        <button class="btn-view" (click)="onView()">View</button>
+        <button class="btn-edit" (click)="onEdit()">Edit</button>
+        <button class="btn-delete" (click)="onDelete()">Delete</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

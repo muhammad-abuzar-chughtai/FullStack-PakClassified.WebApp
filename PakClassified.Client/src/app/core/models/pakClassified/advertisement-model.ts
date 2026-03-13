@@ -1,6 +1,6 @@
-import { AdvertisementTag } from "./advertisement-tag-model";
+import { UserGet } from "../user/user-model";
 
-export interface Advertisement {
+export interface AdvertisementGetPost {
     id: number;
     name: string;
     title: string;
@@ -11,11 +11,19 @@ export interface Advertisement {
     endsOn: Date;
     createdBy: string;
     lastModifiedBy?: string;
-    citiyAreaId: number;
+    cityAreaId: number;
     postedById: number;
     statusId: number;
     typeId: number;
     subCategoryId: number;
-    tags: AdvertisementTag[];
-    
+    tagsId: number[];
+    imagesId: number[];
+}
+export interface Advertisement extends AdvertisementGetPost {
+    cityArea?: string;
+    postedBy?: UserGet;
+    status?: string;
+    type?: string;
+    subCategory?: string;
+    tagNames?: string[];
 }

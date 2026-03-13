@@ -16,6 +16,8 @@ import { AdvertisementCategoryComponent } from './components/PakClassified/ad-ta
 import { AdvertisementSubcategoryComponent } from './components/PakClassified/ad-taxonomy/advertisement-subcategory/advertisement-subcategory';
 import { AdvertisementComponent } from './components/PakClassified/advertisement/advertisement';
 import { AdvertisementImageComponent } from './components/PakClassified/advertisement-image/advertisement-image';
+import { AdPage } from './components/PakClassified/advertisement/ad-page/ad-page';
+import { CreateEdit } from './components/PakClassified/advertisement/create-edit/create-edit';
 
 export const routes: Routes = [
   {
@@ -30,6 +32,9 @@ export const routes: Routes = [
       { path: 'cityareas', component: CityAreaComponent },
 
       { path: 'advertisements', component: AdvertisementComponent },
+      { path: 'advertisement/create', component: CreateEdit },
+      { path: 'advertisement/edit/:id', component: CreateEdit },
+      { path: 'advertisement/:id', component: AdPage },
       { path: 'ad-images', component: AdvertisementImageComponent },
 
       {
@@ -48,7 +53,7 @@ export const routes: Routes = [
         children: [
           { path: 'category', component: AdvertisementCategoryComponent },
           { path: 'subcategory', component: AdvertisementSubcategoryComponent },
-          { path: '', redirectTo: 'category', pathMatch: 'full' } // default to status
+          { path: '', redirectTo: 'category', pathMatch: 'full' } // default to Category
         ]
       },
 

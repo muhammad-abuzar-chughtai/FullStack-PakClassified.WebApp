@@ -1,7 +1,9 @@
-using a._PakClassified.WebApp.Entities.AppDbContext;
+﻿using a._PakClassified.WebApp.Entities.AppDbContext;
+using a._PakClassified.WebApp.Entities.Entities.Locations;
 using a._PakClassified.WebApp.Entities.Entities.PakClassified;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using PakClassified.WebApp.DTOs.PakClassified.DTOs;
 using System;
 using System.Collections.Generic;
@@ -78,7 +80,29 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                return _mapper.Map<IEnumerable<AdvertisementModel>>(await _dbContext.Advertisements.Where(c => c.IsActive).OrderByDescending(c => c.CreatedDate).ToListAsync());
+                return await _dbContext.Advertisements.Where(a => a.IsActive)
+                .Select(a => new AdvertisementModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Title = a.Title,
+                    Description = a.Description,
+                    Price = a.Price,
+                    Likes = a.Likes,
+                    StartsOn = a.StartsOn,
+                    EndsOn = a.EndsOn,
+                    CreatedBy = a.CreatedBy,
+                    CreatedDate = a.CreatedDate,
+                    LastModifiedBy = a.LastModifiedBy,
+                    CityAreaId = a.CityAreaId,
+                    PostedById = a.PostedById,
+                    StatusId = a.StatusId,
+                    TypeId = a.TypeId,
+                    SubCategoryId = a.SubCategoryId,
+                    TagsId = a.Tags.Where(t => t.IsActive).Select(t => t.Id).ToList(),
+                    Images = a.Images.Where(i => i.IsActive).Select(i => i.Id).ToList()
+                })
+                .OrderByDescending(a => a.CreatedDate).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -91,7 +115,29 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         {
             try
             {
-                return _mapper.Map<AdvertisementModel>(await _dbContext.Advertisements.Where(c => c.IsActive && c.Id == id).FirstOrDefaultAsync());
+                return await _dbContext.Advertisements.Where(a => a.IsActive && a.Id == id)
+                .Select(a => new AdvertisementModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Title = a.Title,
+                    Description = a.Description,
+                    Price = a.Price,
+                    Likes = a.Likes,
+                    StartsOn = a.StartsOn,
+                    EndsOn = a.EndsOn,
+                    CreatedBy = a.CreatedBy,
+                    CreatedDate = a.CreatedDate,
+                    LastModifiedBy = a.LastModifiedBy,
+                    CityAreaId = a.CityAreaId,
+                    PostedById = a.PostedById,
+                    StatusId = a.StatusId,
+                    TypeId = a.TypeId,
+                    SubCategoryId = a.SubCategoryId,
+                    TagsId = a.Tags.Where(t => t.IsActive).Select(t => t.Id).ToList(),
+                    Images = a.Images.Where(i => i.IsActive).Select(i => i.Id).ToList()
+                })
+                .OrderByDescending(a => a.CreatedDate).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -99,6 +145,8 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                 throw;
             }
         }
+
+
 
         private async Task<Advertisement?> GetById(int id)      // Get Advertisement By Id
         {
@@ -113,70 +161,78 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
         }
 
-        public async Task<AdvertisementModel?> UpdateAsync(int id, AdvertisementModel advertisement)      // Update Advertisement By Id
+        public async Task<AdvertisementModel?> UpdateAsync(int id, AdvertisementModel dto)
         {
-            try
+            var ad = await _dbContext.Advertisements
+                .Include(a => a.Images)
+                .Include(a => a.Tags)
+                .FirstOrDefaultAsync(a => a.IsActive && a.Id == id);
+            if (ad == null) return null;
+
+            ad.Name = dto.Name;
+            ad.Title = dto.Title;
+            ad.Description = dto.Description;
+            ad.Price = dto.Price;
+            ad.Likes = dto.Likes;
+            ad.StartsOn = dto.StartsOn;
+            ad.EndsOn = dto.EndsOn;
+
+            ad.CityAreaId = dto.CityAreaId;
+            ad.PostedById = dto.PostedById;
+            ad.StatusId = dto.StatusId;
+            ad.TypeId = dto.TypeId;
+            ad.SubCategoryId = dto.SubCategoryId;
+
+            //country.LastModifiedBy is extracted from Payload of JWT Token in Controller
+            ad.LastModifiedBy = dto.LastModifiedBy;
+            ad.LastModifiedDate = DateTime.Now;
+
+            // ✅ Handle Images (One-to-Many)
+
+            // REMOVE
+            var imagesToRemove = ad.Images
+                .Where(i => !dto.Images.Contains(i.Id))
+                .ToList();
+            foreach (var img in imagesToRemove)
+                ad.Images.Remove(img);
+
+            // ADD
+            var currentImageIds = ad.Images.Select(i => i.Id).ToHashSet();
+            var imageIdsToAdd = dto.Images.Except(currentImageIds).ToList();
+            if (imageIdsToAdd.Any())
             {
-
-                var found = await _dbContext.Advertisements.Where(c => c.IsActive && c.Id == id).Include(a => a.Tags).Include(a => a.Images).FirstOrDefaultAsync();
-                if (found != null)
-                {
-
-                    found.Name = advertisement.Name;
-                    found.Title = advertisement.Title;
-                    found.Description = advertisement.Description;
-                    found.Price = advertisement.Price;
-                    found.Likes = advertisement.Likes;
-                    found.StartsOn = advertisement.StartsOn;
-                    found.EndsOn = advertisement.EndsOn;
-
-                    found.CityAreaId = advertisement.CityAreaId;
-                    found.PostedById = advertisement.PostedById;
-                    found.StatusId = advertisement.StatusId;
-                    found.TypeId = advertisement.TypeId;
-                    found.SubCategoryId = advertisement.SubCategoryId;
-
-
-                    UpdateTag(found, advertisement);
-                    
-                    //country.LastModifiedBy is extracted from Payload of JWT Token in Controller
-                    found.LastModifiedBy = advertisement.LastModifiedBy;
-                    found.LastModifiedDate = DateTime.Now;
-
-                    //_dbContext.Advertisements.Update(found);
-                    await _dbContext.SaveChangesAsync();
-                }
-                return _mapper.Map<AdvertisementModel>(found);
+                var imagesToAdd = await _dbContext.AdvertisementImages
+                    .Where(i => imageIdsToAdd.Contains(i.Id) && i.IsActive)
+                    .ToListAsync();
+                foreach (var img in imagesToAdd)
+                    ad.Images.Add(img);
             }
-            catch (Exception ex)
+
+            // ✅ Handle Tags (Many-to-Many)
+            var currentTagIds = ad.Tags.Select(t => t.Id).ToHashSet();
+            var desiredTagIds = dto.TagsId.ToHashSet();
+
+            // ADD
+            var tagIdsToAdd = desiredTagIds.Except(currentTagIds).ToList();
+            if (tagIdsToAdd.Any())
             {
-                Console.WriteLine(ex.Message);
-                throw;
+                var tagsToAdd = await _dbContext.AdvertisementTags
+                    .Where(t => tagIdsToAdd.Contains(t.Id) && t.IsActive)
+                    .ToListAsync();
+                foreach (var tag in tagsToAdd)
+                    ad.Tags.Add(tag);
             }
-        }
 
-        private async Task UpdateTag(Advertisement found, AdvertisementModel advertisement)
-        {
-            var existingTagIds = found.Tags.Select(t => t.Id).ToHashSet();
-
-            var incomingTagIds = advertisement.Tags != null ? advertisement.Tags.Select(t => t.Id).ToHashSet() : new HashSet<int>();
-
-            var tagsToRemove = found.Tags.Where(t => !incomingTagIds.Contains(t.Id)).ToList();
-
+            // REMOVE
+            var tagsToRemove = ad.Tags
+                .Where(t => currentTagIds.Except(desiredTagIds).Contains(t.Id))
+                .ToList();
             foreach (var tag in tagsToRemove)
-            {
-                found.Tags.Remove(tag);
-            }
+                ad.Tags.Remove(tag); // EF handles AdvertisementTagMapping delete automatically
 
-            var tagIdsToAdd = incomingTagIds.Where(id => !existingTagIds.Contains(id)).ToList();
-
-            var tagsToAdd = await _dbContext.AdvertisementTags.Where(t => tagIdsToAdd.Contains(t.Id)).ToListAsync();
             await _dbContext.SaveChangesAsync();
+            return _mapper.Map<AdvertisementModel>(ad);
 
-            foreach (var tag in tagsToAdd)
-            {
-                found.Tags.Add(tag);
-            }
         }
 
         public async Task<AdvertisementModel?> DeleteAsync(int id, string username)      // Soft Delete Advertisement By Id
@@ -239,12 +295,14 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             }
 
             // CityArea filter
-            if (filter.PostedById.HasValue)
+            if (filter.CityAreaId.HasValue)
             {
                 query = query.Where(a => a.CityAreaId == filter.CityAreaId.Value);
             }
 
             return _mapper.Map<IEnumerable<AdvertisementModel>>(await query.OrderByDescending(a => a.CreatedDate).ToListAsync());
         }
+
+        
     }
 }

@@ -21,7 +21,8 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        //[Authorize(Roles = "Admin, Manager, Customer")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllAdvertisements()
@@ -40,7 +41,8 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        //[Authorize(Roles = "Admin, Manager, Customer")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)

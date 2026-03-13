@@ -1,24 +1,29 @@
 <div class="dashboard-container">
   <div class="card-header">
     <h1>Admin Dashboard</h1>
-    <p>Welcome Dear <b class="bold-primary">"{{ currentUser() }}"</b>. Hope you're doing great. Here's your Admin
+    <p>Welcome Dear <b class="bold-primary" title="Active Admin">"{{ currentUser() }}"</b>. Hope you're doing great.
+      Here's your Admin
       Dashboard of Pak Classified...</p>
 
     <div class="notes-card">
-      <h3><i class="fas fa-pen"></i> Development Notes</h3>
+      <h3><i class="fas fa-pen"></i> Daily Release Notes</h3>
 
-      <textarea rows="12" placeholder="Write your Notes Here.....">
-Admin will have:
-- Locations BreadCrumbs, Search Remaining.
-- Advertisement and Advertisement Image is remaining.
+      <p rows="12" placeholder="Write your daily Release Notes Here....." class="normal-text">
+        <b>"Advertisement Image Flow. CRUD. Select images like tags in Advertisement"</b>
+        <br><br>
+        "Category Field Add in Create form. Images Testing in Advertisement"
+<br>
+        <b>Admin will have:</b>
+        <br>
+        - Locations BreadCrumbs, Search Remaining. Add icons to sidebar options. <br>
+        - Reduce the text size in Category and SubCategory description Column. <br>
+        - Advertisement SearchBar is not functional <br>
 
-Manager will have: 
-- Full Access to advertisement management, Ad Taxonomy, Ad Media
-- View Only Access to Ad Control and Location
-- No Access to User Management and Roles Management
-Customer will have:
-- View Only Access to Advertisement Cards. 
-- SearchBars and Search Query</textarea>
+        <b>Customer will have:</b>
+        <br>
+        - View Only Access to Advertisement Cards.  <br>
+        - SearchBars and Search Query
+      </p>
     </div>
   </div>
 </div>

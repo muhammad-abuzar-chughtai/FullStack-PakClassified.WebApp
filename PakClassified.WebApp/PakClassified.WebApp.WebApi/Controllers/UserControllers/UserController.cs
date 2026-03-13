@@ -22,7 +22,8 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "Admin, Manager")]
+        //[Authorize(Roles = "Admin, Manager")]
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllUsers()

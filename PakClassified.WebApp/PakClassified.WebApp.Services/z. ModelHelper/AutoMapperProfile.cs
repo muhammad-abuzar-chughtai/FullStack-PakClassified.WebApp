@@ -35,7 +35,23 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
 
             #region PakCalssified
 
-            CreateMap<Advertisement, AdvertisementModel>().ReverseMap();
+            // ✅ Advertisement → AdvertisementModel
+            CreateMap<Advertisement, AdvertisementModel>()
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+                 .ForMember(dest => dest.TagsId, opt => opt.MapFrom(src => src.Tags
+                                                            .Where(t => t.IsActive)
+                                                            .Select(t => t.Id)
+                                                            .ToList()))
+                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images
+                                                            .Where(i => i.IsActive)
+                                                            .Select(i => i.Id)
+                                                            .ToList()));
+            // ✅ Reverse: AdvertisementModel → Advertisement
+            // Tags aur Images auto-handled in UpdateAsync of advertisement
+            CreateMap<AdvertisementModel, Advertisement>()
+                .ForMember(dest => dest.Tags, opt => opt.Ignore())
+                .ForMember(dest => dest.Images, opt => opt.Ignore());
+
             CreateMap<AdvertisementCategory, AdvertisementCategoryModel>().ReverseMap();
             CreateMap<AdvertisementSubCategory, AdvertisementSubCategoryModel>().ReverseMap();
             CreateMap<AdvertisementStatus, AdvertisementStatusModel>().ReverseMap();
@@ -52,7 +68,7 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             CreateMap<User, UserModel>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name))
                 .ReverseMap()
-                .ForMember(dest => dest.Password, opt => opt.Ignore()); 
+                .ForMember(dest => dest.Password, opt => opt.Ignore());
             CreateMap<Role, RoleModel>().ReverseMap();
 
             #endregion
@@ -60,7 +76,6 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             #region AuthMapping
 
             CreateMap<SignupModel, User>();
-
 
             #endregion
 

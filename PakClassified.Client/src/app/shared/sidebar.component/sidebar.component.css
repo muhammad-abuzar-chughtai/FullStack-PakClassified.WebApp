@@ -1,6 +1,6 @@
 .sidebar {
     width: 260px;
-    height: 100vh;
+    height: 655px;
     background: #1e293b;
     color: #f1f5f9;
     display: flex;
@@ -76,12 +76,6 @@
 
 .submenu li:hover {
     background: rgba(255, 255, 255, 0.08);
-}
-
-.submenu li.active {
-    background: rgba(37, 99, 235, 0.2);
-    border-left: 30px solid #3b82f6 !important;
-    font-weight: 500px;
 }
 
 .arrow {

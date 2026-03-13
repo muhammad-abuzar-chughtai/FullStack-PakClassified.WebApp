@@ -1,1 +1,44 @@
-<p>advertisement-image works!</p>
+<div class="page-container">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header d-flex justify-content-between align-items-center">
+    <div class="page-header">
+    <h2>Ad Media</h2>
+    <p class="breadcrumb">Home / <a class="breadcrumb-link" routerLink="/admin/advertisements">Advertisements</a> / Ad Media</p>
+  </div>
+
+    <button class="primary-btn"><i class="fas fa-cloud-arrow-up icon me-1"></i> Upload New Image</button>
+  </div>
+
+
+  <!-- TOOLBAR -->
+  <div class="toolbar col-12">
+
+    <!-- <div class="toolbar-left"> -->
+
+      <input class="search-input col-8" type="text"  placeholder="Search Image...">
+
+      <select class="filter-select col-4">
+        <option>Search by Advertisement</option>
+        <option>Active</option>
+        <option>Inactive</option>
+        <option>Pending</option>
+      </select>
+
+    <!-- </div> -->
+
+
+
+  </div>
+
+
+  <!-- CATALOGUE SECTION -->
+  <div class="catalogue">
+
+    <app-image-card>
+
+    </app-image-card>
+
+  </div>
+  
+</div>

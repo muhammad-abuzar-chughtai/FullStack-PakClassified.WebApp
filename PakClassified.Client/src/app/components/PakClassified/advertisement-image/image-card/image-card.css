@@ -1,0 +1,91 @@
+.media-card-overlay {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 220px;
+}
+
+.media-card-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    padding: 12px;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.855) 0%,
+            rgba(0, 0, 0, 0.721) 50%,
+            rgba(0, 0, 0, 0.455) 80%,
+            rgba(0, 0, 0, 0) 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: 0.25s;
+}
+
+.media-card-overlay:hover .overlay-content {
+    transform: translateY(0);
+}
+
+.overlay-content h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.caption {
+    font-size: 12px;
+    opacity: .85;
+}
+
+.meta {
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+}
+
+.btn-edit {
+    padding-bottom: 2px;
+    padding-top: 2px;
+
+    background: #e0f2fe;
+    color: #0284c7;
+    width: 48.5%;
+
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    color: #0284c7;
+    background: #c4ebfe;
+}
+
+.btn-delete {
+    padding-bottom: 2px;
+    padding-top: 2px;
+
+    background: #fee2e2;
+    color: #dc2626;
+    width: 48.5%;
+    
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    color: #dc2626;
+    background: #fec4c4;
+}

@@ -22,7 +22,7 @@ export class HeaderComponent {
 
     return photo
       ? `data:image/png;base64,${photo}`
-      : 'assets/user.png';
+      : './user.png';
   });
 
   login() {

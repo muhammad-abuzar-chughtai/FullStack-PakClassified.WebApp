@@ -1,7 +1,7 @@
 <header class="header px-4">
 
   <div class="left-section">
-    <div class="logo"><span class="normal-text">PakClassified — Geo-Targeting Advertising WebApp</span></div>
+    <div class="logo"><span class="text">PakClassified — Geo-Targeting Advertising WebApp</span></div>
   </div>
 
   <div class="right-section">
@@ -13,9 +13,9 @@
       </span>
     </div>
  
-    <button *ngIf="!isLoggedIn()" (click)="login()">Sign In</button>
-    <button *ngIf="!isLoggedIn()" (click)="signup()">Sign Up</button>
-    <button *ngIf="isLoggedIn()" (click)="logout()">Logout</button>
+    <button *ngIf="!isLoggedIn()" (click)="login()" title="Signin">Sign In</button>
+    <button *ngIf="!isLoggedIn()" (click)="signup()" title="SignUp">Sign Up</button>
+    <button *ngIf="isLoggedIn()" (click)="logout()" title="Logout">Logout</button>
   </div>
 
 </header>

@@ -18,12 +18,14 @@ namespace PakClassified.WebApp.DTOs.PakClassified.DTOs
         public DateTime StartsOn { get; set; }
         public DateTime EndsOn { get; set; }
         public string CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string? LastModifiedBy { get; set; }
         public int CityAreaId { get; set; }
         public int PostedById { get; set; }
         public int StatusId { get; set; }
         public int TypeId { get; set; }
         public int SubCategoryId { get; set; }
-        public ICollection<AdvertisementTagModel?> Tags { get; set; }
+        public ICollection<int> TagsId { get; set; } = new List<int>();
+        public ICollection<int> Images { get; set; } = new List<int>();
     }
 }

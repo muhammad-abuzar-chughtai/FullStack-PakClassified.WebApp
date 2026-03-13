@@ -1,0 +1,69 @@
+<div *ngIf="ad" class="ad-detail-container">
+    <div class="page-header align-items-center justify-content-end d-flex">
+        <button class="back-btn" (click)="back()">
+            <i class="fas fa-angle-double-left"> </i> Back
+        </button>
+    </div>
+
+    <div class="detail-header">
+        <h1>{{ ad().title }}</h1>
+        <div class="status-badge active">{{ ad().status }}</div>
+    </div>
+
+
+    <div class="detail-main">
+        <div class="image-section">
+            <div class="main-image">
+                <img id="displayframe" [src]="ad().imagesId || './ad-placeholder.jpg'" alt="Advertisement Image">
+            </div>
+            <div class="thumbnail-row">
+                <img *ngFor="let img of ad().imagesId" [src]="img" (click)="changeImage($event)">
+            </div>
+        </div>
+
+        <div class="info-section justify-content-between">
+            <div>
+                <div class="price">PKR {{ ad().price | number }}</div>
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <span class="label">Type</span>
+                        <span class="value">{{ ad().type }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Sub Category</span>
+                        <span class="value">{{ ad().subCategory }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Location</span>
+                        <span class="value">{{ ad().cityArea }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Posted By</span>
+                        <span class="value">{{ ad().postedBy?.name }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Posted On</span>
+                        <span class="value">{{ ad().startsOn | date:'dd MMM yyyy' }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Expires On</span>
+                        <span class="value">{{ ad().endsOn | date:'dd MMM yyyy' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tags-section">
+                <h2>Tags</h2>
+                <div class="tags">
+                    <span *ngFor="let tag of ad().tagNames" class="tag">{{ tag }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="description-section">
+        <h2>Description</h2>
+        <p>{{ ad().description }}</p>
+    </div>
+
+</div>

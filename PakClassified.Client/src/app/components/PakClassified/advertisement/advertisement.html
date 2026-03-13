@@ -1,1 +1,55 @@
-<p>advertisement works!</p>
+<div class="page-container">
+
+  <!-- PAGE HEADER -->
+  <div *ngIf="isAdmin()" class="page-header d-flex justify-content-between align-items-center">
+    <div>
+      <h1>Advertisement Management</h1>
+      <p>Manage all advertisements posted in Pak Classified.</p>
+    </div>
+
+    <button class="add-btn" (click)="addAdvertisement()"><i class="fas fa-bullhorn icon me-1"></i> Post New Ad</button>
+  </div>
+
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+
+    <div class="toolbar-left">
+
+      <input type="text" class="search-input" placeholder="Search advertisements...">
+
+      <select class="filter-select">
+        <option>All Categories</option>
+        <option>Vehicles</option>
+        <option>Property</option>
+        <option>Electronics</option>
+      </select>
+
+      <select class="filter-select">
+        <option>Status</option>
+        <option>Active</option>
+        <option>Inactive</option>
+        <option>Pending</option>
+      </select>
+
+    </div>
+
+
+
+  </div>
+
+
+  <!-- CATALOGUE SECTION -->
+  <div class="catalogue">
+
+    <app-ad-card 
+    *ngFor="let ad of advertisements()" 
+    [ad]="ad" 
+    (view)="viewAdvertisement($event)" 
+    (edit)="editAdvertisement($event)" 
+    (delete)="deleteAdvertisement($event)">
+    </app-ad-card>
+
+  </div>
+  
+</div>
