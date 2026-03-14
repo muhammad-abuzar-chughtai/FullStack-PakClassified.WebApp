@@ -1,21 +1,22 @@
 <div class="media-card-overlay">
 
-  <img src="./ad.jpg" />
+  <img [src]="'data:image/jpeg;base64,' + image.content || './ad.jpg'" [alt]="image.name" />
 
   <div class="overlay-content">
+    <div class="cursor-pointer" (click)="onView()">
+      <h3> {{ image.name }} </h3>
 
-    <h3>Engine Interior</h3>
+      <p class="caption">{{ image.caption }}</p>
 
-    <p class="caption">Close view of engine bay</p>
-
-    <div class="meta">
-      <span>Toyota Corolla 2018</span>
-      <span>Uploaded by Ali</span>
+      <div class="meta">
+        <span>{{ image.advertisement }}</span>
+        <span>Uploaded by {{ image.createdBy }}</span>
+      </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-edit">Edit</button>
-      <button class="btn btn-delete">Delete</button>
+      <button class="btn btn-edit" (click)="onEdit()">Edit</button>
+      <button class="btn btn-delete" (click)="onDelete()">Delete</button>
     </div>
 
   </div>

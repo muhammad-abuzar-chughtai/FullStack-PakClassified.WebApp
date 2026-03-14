@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Advertisement } from '../../../../core/models/pakClassified/advertisement-model';
 import { CommonModule } from '@angular/common';
 import { AdvertisementService } from '../../../../core/services/pakClassified/advertisement-service';
+import { AdvertisementImageGet } from '../../../../core/models/pakClassified/advertisement-image-model';
+import { AdvertisementImageService } from '../../../../core/services/pakClassified/advertisement-image-service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-ad-page',
@@ -12,10 +15,15 @@ import { AdvertisementService } from '../../../../core/services/pakClassified/ad
 })
 export class AdPage implements OnInit {
 
+  // --- Images ---
+  images = signal<AdvertisementImageGet[]>([]);
+activeImage = signal<string | null>(null);
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private adService: AdvertisementService
+    private adService: AdvertisementService,
+    private imageService: AdvertisementImageService
   ) { }
 
   ad = signal<Advertisement>({
@@ -36,31 +44,41 @@ export class AdPage implements OnInit {
     imagesId: [],
   });
 
-  ngOnInit() {
-    // First, try to get from state (most reliable)
-    const adData = history.state?.ad;
+  
 
-    if (adData) {
-      this.ad.set(adData);
-    } else {
-      // Fallback: get ID from route param and fetch from service
-      this.route.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id) {
-          // TODO: Fetch ad by ID from your service
-          this.adService.getById(+id).subscribe(ad => this.ad.set(ad));
-        }
-      });
-    }
+ngOnInit() {
+  const adData = history.state?.ad;
+  if (adData) {
+    this.ad.set(adData);
+    this.images.set(adData.adImages ?? []);         
+    this.activeImage.set(adData.adImages?.[0]?.content ?? null);  
+  } else {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        forkJoin({
+          ad: this.adService.getById(+id),
+          images: this.imageService.getAll(+id)    
+        }).subscribe(({ ad, images }) => {
+          this.ad.set(ad);
+          this.images.set(images);
+          this.activeImage.set(images[0]?.content ?? null);
+        });
+      }
+    });
   }
+}
 
-  changeImage(event: Event): void {
-    const thumbnail = event.target as HTMLImageElement;
-    const mainImage = document.getElementById("displayframe") as HTMLImageElement | null;
-    if (mainImage) {
-      mainImage.src = thumbnail.src;
-    }
-  }
+getMainImage(): string {
+  const active = this.activeImage();
+  if (active) return `data:image/jpeg;base64,${active}`;
+  return './ad-placeholder.jpg';
+}
+
+changeImage(content: string): void {
+  this.activeImage.set(content);
+}
+
 
   back() {
     this.router.navigate(['/admin/advertisements']);

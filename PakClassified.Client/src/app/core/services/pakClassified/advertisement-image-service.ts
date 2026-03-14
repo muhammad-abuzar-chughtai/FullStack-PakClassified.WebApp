@@ -13,7 +13,14 @@ export class AdvertisementImageService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<AdvertisementImageGet[]> {
+  getAll(): Observable<AdvertisementImageGet[]>;
+  getAll(id: number): Observable<AdvertisementImageGet[]>;
+
+  getAll(id?: number): Observable<AdvertisementImageGet[]> {
+
+    if (id !== undefined) {
+      return this.http.get<AdvertisementImageGet[]>(`${this.baseUrl}/${id}`);
+    }
     return this.http.get<AdvertisementImageGet[]>(this.baseUrl);
   }
 
@@ -27,7 +34,7 @@ export class AdvertisementImageService {
 
     formData.append('id', model.id.toString());
     formData.append('name', model.name);
-    formData.append('content', model.content); // File
+    formData.append('contentFile', model.contentFile); // File
     formData.append('advertisementId', model.advertisementId.toString());
     formData.append('createdBy', model.createdBy);
 
@@ -47,8 +54,9 @@ export class AdvertisementImageService {
     const formData = new FormData();
 
     formData.append('name', model.name);
-    formData.append('content', model.content); // File
+    formData.append('contentFile', model.contentFile); // File
     formData.append('advertisementId', model.advertisementId.toString());
+    formData.append('createdBy', model.createdBy);
 
     if (model.caption) {
       formData.append('caption', model.caption);

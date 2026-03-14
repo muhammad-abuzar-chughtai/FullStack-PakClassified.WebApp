@@ -1,8 +1,7 @@
 <div class="ad-card">
 
   <div class="ad-image" (click)="onView()">
-    <img [src]="ad.imagesId || './ad-placeholder.jpg'" />
-    <span class="status-badge active">
+<img [src]="ad.firstImage ? 'data:image/jpeg;base64,' + ad.firstImage : './ad-placeholder.jpg'" />    <span class="status-badge active">
       {{ ad.status }}
     </span>
   </div>

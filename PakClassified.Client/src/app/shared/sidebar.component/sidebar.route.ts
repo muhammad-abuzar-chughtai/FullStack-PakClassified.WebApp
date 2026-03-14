@@ -14,6 +14,9 @@ import { AdvertisementCategoryComponent } from '../../components/PakClassified/a
 import { AdvertisementSubcategoryComponent } from '../../components/PakClassified/ad-taxonomy/advertisement-subcategory/advertisement-subcategory';
 import { AdvertisementComponent } from '../../components/PakClassified/advertisement/advertisement';
 import { AdvertisementImageComponent } from '../../components/PakClassified/advertisement-image/advertisement-image';
+import { UserSettings } from '../../components/user-settings/user-settings';
+import { UserComponent } from '../../components/user-settings/user.component/user.component';
+import { RoleComponent } from '../../components/user-settings/role.component/role.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -24,7 +27,7 @@ export const AdminRoutes: Routes = [
       { path: 'provinces', component: ProvinceComponent },
       { path: 'cities', component: CityComponent },
       { path: 'cityareas', component: CityAreaComponent },
-      
+
       { path: 'advertisements', component: AdvertisementComponent },
       { path: 'ad-images', component: AdvertisementImageComponent },
       {
@@ -47,7 +50,15 @@ export const AdminRoutes: Routes = [
         ]
       },
 
-
+      {
+        path: 'user-settings',
+        component: UserSettings,
+        children: [
+          { path: 'users', component: UserComponent },
+          { path: 'roles', component: RoleComponent },
+          { path: '', redirectTo: 'users', pathMatch: 'full' } // default to users
+        ]
+      },
 
       { path: '', component: WelcomeAdmin }, // default dashboard
     ]

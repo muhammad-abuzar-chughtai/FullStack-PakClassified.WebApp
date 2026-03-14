@@ -5,24 +5,25 @@ export interface UserGet {
   profilePic: string;
   contactNo: number;
   dob: Date;
-  secQuestion: string;
-  secAnswer: string;
+  secQuestion?: string;
+  secAnswer?: string;
   createdBy: string;
-  lastmodifiedBy: string;
+  lastmodifiedBy?: string;
   roleId: number;
-  roleName: string;
+  roleName?: string;
 }
 
 export interface UserPost {
   id: number;
   name: string;
   email: string;
+  password: string;
   profilePic: File;
   contactNo: number;
   dob: Date;
-  secQuestion: string;
-  secAnswer: string;
+  secQuestion?: string;
+  secAnswer?: string;
   createdBy: string;
-  lastmodifiedBy: string;
+  lastmodifiedBy?: string;
   roleId: number;
 }

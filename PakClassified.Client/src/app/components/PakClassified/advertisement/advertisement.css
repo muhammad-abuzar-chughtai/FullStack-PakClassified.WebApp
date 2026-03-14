@@ -33,14 +33,11 @@
   margin-bottom: 20px;
 }
 
-.toolbar-left {
-  display: flex;
-  gap: 10px;
-}
 
 .search-input {
   padding: 8px 12px;
-  width: 260px;
+  /* width: 260px; */
+  margin-right: 8px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
 }

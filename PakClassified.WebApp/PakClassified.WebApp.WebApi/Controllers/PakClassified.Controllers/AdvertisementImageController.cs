@@ -21,12 +21,31 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetAllImages()
+        {
+            _logger.LogInformation("Fetching all Advertisement Images.");
+
+            var response = (await _advertisementImageService.GetAllAsync());
+
+            if (response.Count() <= 0)
+            {
+                _logger.LogWarning("No Images for this advertisement Found in Database.");
+                return NotFound(new { message = "No Image for Advertisement Found." });
+            }
+
+            _logger.LogInformation("Successfully retrived {Count} Advertisement Images", response.Count());
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Admin, Manager")]
         [HttpGet]
         [Route("Advertisement={id}")]
         public async Task<IActionResult> GetAllAdvertisementImages(int id)
         {
-            _logger.LogInformation("Fetching all Advertisement Images.");
+            _logger.LogInformation("Fetching all Advertisement Images of Advertisement {id}.", id);
 
             var response = (await _advertisementImageService.GetAllAsync(id));
 
@@ -41,7 +60,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         }
 
 
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Authorize(Roles = "Admin, Manager")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)

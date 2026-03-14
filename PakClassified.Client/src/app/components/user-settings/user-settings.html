@@ -1,0 +1,25 @@
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h2>User Settings</h2>
+    <p class="breadcrumb"><a class="breadcrumb-link" routerLink="/admin">Home</a> / User Settings</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-container">
+    <a routerLink="users" routerLinkActive="active-tab" class="tab-link">
+      Users
+    </a>
+
+    <a routerLink="roles" routerLinkActive="active-tab" class="tab-link">
+      Roles
+    </a>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

@@ -13,12 +13,21 @@
 
     <div class="detail-main">
         <div class="image-section">
+
             <div class="main-image">
-                <img id="displayframe" [src]="ad().imagesId || './ad-placeholder.jpg'" alt="Advertisement Image">
+                <img [src]="getMainImage()" alt="Advertisement Image" />
             </div>
-            <div class="thumbnail-row">
-                <img *ngFor="let img of ad().imagesId" [src]="img" (click)="changeImage($event)">
+
+            <div class="thumbnail-row" *ngIf="images().length > 1">
+                <img *ngFor="let img of images()" [src]="'data:image/jpeg;base64,' + img.content" [alt]="img.name"
+                    (click)="changeImage(img.content)" [class.active-thumb]="activeImage() === img.content" />
             </div>
+
+            <div *ngIf="images().length === 0" class="no-images">
+                <i class="fas fa-image"></i>
+                <span>No images uploaded</span>
+            </div>
+
         </div>
 
         <div class="info-section justify-content-between">

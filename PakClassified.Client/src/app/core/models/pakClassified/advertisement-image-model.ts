@@ -1,11 +1,12 @@
 export interface AdvertisementImagePost {
     id: number;
     name: string;
-    content: File;
+    contentFile: File;
     caption?: string;
     createdBy: string;
     lastModifiedBy?: string;
     advertisementId: number;
+    advertisement?: string;
 }
 
 export interface AdvertisementImageGet {
@@ -16,4 +17,5 @@ export interface AdvertisementImageGet {
     createdBy: string;
     lastModifiedBy?: string;
     advertisementId: number;
+    advertisement?: string;
 }

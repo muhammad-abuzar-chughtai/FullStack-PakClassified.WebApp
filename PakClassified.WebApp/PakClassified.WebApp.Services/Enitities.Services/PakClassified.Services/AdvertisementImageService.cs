@@ -15,6 +15,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
     public interface IAdvertisementImageService
     {
         Task<IEnumerable<AdvertisementImageModel>> GetAllAsync(int advertisementId);
+        Task<IEnumerable<AdvertisementImageModel>> GetAllAsync();
         Task<AdvertisementImageModel?> GetByIdAsync(int id);
         Task<AdvertisementImageModel> CreateAsync(AdvertisementImageModel advertisementImage);
         Task<AdvertisementImageModel?> UpdateAsync(int id, AdvertisementImageModel advertisementImage);
@@ -65,6 +66,19 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
             try
             {
                 return _mapper.Map<IEnumerable<AdvertisementImageModel>>(await _dbContext.AdvertisementImages.Where(c => c.IsActive && c.AdvertisementId == advertisementId).OrderByDescending(c => c.CreatedDate).ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<AdvertisementImageModel>> GetAllAsync()     // GetAll Active AdvertisementImages
+        {
+            try
+            {
+                return _mapper.Map<IEnumerable<AdvertisementImageModel>>(await _dbContext.AdvertisementImages.Where(c => c.IsActive).OrderByDescending(c => c.CreatedDate).ToListAsync());
             }
             catch (Exception ex)
             {

@@ -1,0 +1,50 @@
+<div class="table-wrapper">
+
+    <div class="table-header">
+        <h2>Province Management</h2>
+
+        <button *ngIf="isAdmin()" class="primary-btn" (click)="addUser()">
+            <i class="fas fa-plus plus"></i> Add
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="component-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Province Name</th>
+                    <th>Country</th>
+                    <th>Created By</th>
+                    <th *ngIf="isAdmin()">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let user of getUsers(); let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.roleName }}</td>
+                    <td>{{ user.createdBy || '' }}</td>
+
+                    <td *ngIf="isAdmin()" class="actions">
+                        <button class="edit-btn" (click)="editUser(user)"><i class="fas fa-edit icon"></i></button>
+                        <button class="delete-btn" (click)="deleteUser(user.id)"><i
+                                class="fas fa-trash icon"></i></button>
+                    </td>
+
+                </tr>
+
+                <tr *ngIf="getUsers().length === 0">
+                    <td colspan="5" class="empty">No Users found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<app-modal *ngIf="modalOpen()" [fields]="userFields" [model]="selectedUser() || {}" [mode]="modalMode()"
+    entityName="User" (save)="saveUser($event)" (close)="modalOpen.set(false)">
+</app-modal>

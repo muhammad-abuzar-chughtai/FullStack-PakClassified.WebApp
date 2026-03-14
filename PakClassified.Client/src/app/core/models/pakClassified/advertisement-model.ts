@@ -1,4 +1,5 @@
 import { UserGet } from "../user/user-model";
+import { AdvertisementImageGet } from "./advertisement-image-model";
 
 export interface AdvertisementGetPost {
     id: number;
@@ -26,4 +27,6 @@ export interface Advertisement extends AdvertisementGetPost {
     type?: string;
     subCategory?: string;
     tagNames?: string[];
+    firstImage?: string | null;
+    adImages?: AdvertisementImageGet[];
 }

@@ -18,6 +18,9 @@ import { AdvertisementComponent } from './components/PakClassified/advertisement
 import { AdvertisementImageComponent } from './components/PakClassified/advertisement-image/advertisement-image';
 import { AdPage } from './components/PakClassified/advertisement/ad-page/ad-page';
 import { CreateEdit } from './components/PakClassified/advertisement/create-edit/create-edit';
+import { UserSettings } from './components/user-settings/user-settings';
+import { UserComponent } from './components/user-settings/user.component/user.component';
+import { RoleComponent } from './components/user-settings/role.component/role.component';
 
 export const routes: Routes = [
   {
@@ -54,6 +57,16 @@ export const routes: Routes = [
           { path: 'category', component: AdvertisementCategoryComponent },
           { path: 'subcategory', component: AdvertisementSubcategoryComponent },
           { path: '', redirectTo: 'category', pathMatch: 'full' } // default to Category
+        ]
+      },
+
+      {
+        path: 'user-settings',
+        component: UserSettings,
+        children: [
+          { path: 'users', component: UserComponent },
+          { path: 'roles', component: RoleComponent },
+          { path: '', redirectTo: 'users', pathMatch: 'full' } // default to users
         ]
       },
 

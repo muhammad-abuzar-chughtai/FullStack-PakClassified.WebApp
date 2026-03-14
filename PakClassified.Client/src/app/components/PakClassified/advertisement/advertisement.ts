@@ -18,6 +18,8 @@ import { AdvertisementTagService } from '../../../core/services/pakClassified/ad
 import { AdvertisementStatusService } from '../../../core/services/pakClassified/advertisement-status-service';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+import { AdvertisementImageGet } from '../../../core/models/pakClassified/advertisement-image-model';
+import { AdvertisementImageService } from '../../../core/services/pakClassified/advertisement-image-service';
 
 @Component({
   selector: 'app-advertisement',
@@ -47,6 +49,8 @@ export class AdvertisementComponent {
   subCategories = signal<AdvertisementSubCategory[]>([]);
   types = signal<AdvertisementType[]>([]);
   tags = signal<AdvertisementTag[]>([]);
+  // --- Images ---
+  images = signal<AdvertisementImageGet[]>([]);
 
 
   constructor(
@@ -58,7 +62,8 @@ export class AdvertisementComponent {
     private statusService: AdvertisementStatusService,
     private subCategoryService: AdvertisementSubCategoryService,
     private typeService: AdvertisementTypeService,
-    private tagService: AdvertisementTagService
+    private tagService: AdvertisementTagService,
+    private imageService: AdvertisementImageService
   ) { }
 
   ngOnInit() {
@@ -73,13 +78,15 @@ export class AdvertisementComponent {
       subCategories: this.subCategoryService.getAll(),
       types: this.typeService.getAll(),
       tags: this.tagService.getAll(),
-    }).subscribe(({ cityAreas, statuses, subCategories, types, tags }) => {
+      images: this.imageService.getAll(),
+    }).subscribe(({ cityAreas, statuses, subCategories, types, tags, images }) => {
       // Set all signals FIRST
       this.cityAreas.set(cityAreas);
       this.statuses.set(statuses);
       this.subCategories.set(subCategories);
       this.types.set(types);
       this.tags.set(tags);
+      this.images.set(images);
 
       // THEN load and enrich advertisements
       this.loadUsers();
@@ -113,6 +120,7 @@ export class AdvertisementComponent {
       const subCategoryList = this.subCategories();
       const typesList = this.types();
       const tagsList = this.tags();
+      const ImageList = this.images();
 
       const enrichedAdvertisements = adData.map(ad => ({
         ...ad,
@@ -122,6 +130,8 @@ export class AdvertisementComponent {
         subCategory: subCategoryList.find(sc => sc.id === ad.subCategoryId)?.name || '',
         type: typesList.find(t => t.id === ad.typeId)?.name || '',
         tagNames: tagsList.filter(tag => ad.tagsId.includes(tag.id)).map(tag => tag.name),
+        firstImage: ImageList.find(img => img.advertisementId === ad.id)?.content ?? null,
+        adImages: ImageList.filter(img => img.advertisementId === ad.id),
       }));
 
       this.advertisements.set(enrichedAdvertisements);

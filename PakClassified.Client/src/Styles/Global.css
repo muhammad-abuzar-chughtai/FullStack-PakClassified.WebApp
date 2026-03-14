@@ -108,6 +108,10 @@
   background: #1d4ed8;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 
 @media (max-width: 768px) {
 

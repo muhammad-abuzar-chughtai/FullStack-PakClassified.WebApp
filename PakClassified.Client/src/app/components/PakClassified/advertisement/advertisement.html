@@ -11,45 +11,25 @@
   </div>
 
 
+
   <!-- TOOLBAR -->
-  <div class="toolbar">
+  <div class="toolbar col-12">
+    <input class="search-input col-10" type="text" placeholder="Search Advertisement...">
 
-    <div class="toolbar-left">
-
-      <input type="text" class="search-input" placeholder="Search advertisements...">
-
-      <select class="filter-select">
-        <option>All Categories</option>
-        <option>Vehicles</option>
-        <option>Property</option>
-        <option>Electronics</option>
-      </select>
-
-      <select class="filter-select">
-        <option>Status</option>
-        <option>Active</option>
-        <option>Inactive</option>
-        <option>Pending</option>
-      </select>
-
-    </div>
-
-
-
+    <select class="filter-select col-2">
+      <option>Apply Filters</option>
+      <option>Active</option>
+      <option>Inactive</option>
+      <option>Pending</option>
+    </select>
   </div>
-
 
   <!-- CATALOGUE SECTION -->
   <div class="catalogue">
 
-    <app-ad-card 
-    *ngFor="let ad of advertisements()" 
-    [ad]="ad" 
-    (view)="viewAdvertisement($event)" 
-    (edit)="editAdvertisement($event)" 
-    (delete)="deleteAdvertisement($event)">
+    <app-ad-card *ngFor="let ad of advertisements()" [ad]="ad" (view)="viewAdvertisement($event)"
+      (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
     </app-ad-card>
 
   </div>
-  
 </div>

@@ -3,42 +3,44 @@
   <!-- PAGE HEADER -->
   <div class="page-header d-flex justify-content-between align-items-center">
     <div class="page-header">
-    <h2>Ad Media</h2>
-    <p class="breadcrumb">Home / <a class="breadcrumb-link" routerLink="/admin/advertisements">Advertisements</a> / Ad Media</p>
-  </div>
+      <h2>Ad Media</h2>
+      <p class="breadcrumb"><a class="breadcrumb-link" routerLink="/admin">Home</a> / <a class="breadcrumb-link" routerLink="/admin/advertisements">Advertisements</a> / Ad Media</p>
+      <!-- <p class="breadcrumb">Home / <a class="breadcrumb-link" routerLink="/admin/advertisements">Advertisements</a> / Ad Media</p> -->
+    </div>
 
-    <button class="primary-btn"><i class="fas fa-cloud-arrow-up icon me-1"></i> Upload New Image</button>
+    <button class="primary-btn" (click)="addImage()">
+      <i class="fas fa-cloud-arrow-up icon me-1"></i> Upload New Image
+    </button>
   </div>
 
 
   <!-- TOOLBAR -->
   <div class="toolbar col-12">
+    <input class="search-input col-8" type="text" placeholder="Search Image...">
 
-    <!-- <div class="toolbar-left"> -->
-
-      <input class="search-input col-8" type="text"  placeholder="Search Image...">
-
-      <select class="filter-select col-4">
-        <option>Search by Advertisement</option>
-        <option>Active</option>
-        <option>Inactive</option>
-        <option>Pending</option>
-      </select>
-
-    <!-- </div> -->
-
-
-
+    <select class="filter-select col-4">
+      <option>Search by Advertisement</option>
+      <option>Active</option>
+      <option>Inactive</option>
+      <option>Pending</option>
+    </select>
   </div>
 
 
   <!-- CATALOGUE SECTION -->
   <div class="catalogue">
 
-    <app-image-card>
+    <app-image-card *ngFor="let image of imagesGet()" [image]="image" (view)="viewImage($event)"
+      (edit)="editImage($event)" (delete)="deleteImage($event)">
 
     </app-image-card>
 
+
   </div>
-  
+
+
 </div>
+
+<app-view-modal [open]="modalOpen()" [mode]="modalMode()" [image]="selectedImage()" [advertisements]="advertisements()"
+  (close)="closeModal()" (save)="saveImage($event)">
+</app-view-modal>

@@ -20,10 +20,10 @@
       </div>
 
       <ul class="submenu" [class.open]="openGroup === 'locations'">
-        <li (click)="navigate('countries')">Countries</li>
-        <li (click)="navigate('provinces')">Provinces</li>
-        <li (click)="navigate('cities')">Cities</li>
-        <li (click)="navigate('cityareas')">City Areas</li>
+        <li (click)="navigate('countries')"><i class="fa-solid fa-earth-asia sub-icons"></i>Countries</li>
+        <li (click)="navigate('provinces')"><i class="fa-solid fa-map-location-dot sub-icons"></i>Provinces</li>
+        <li (click)="navigate('cities')"><i class="fa-solid fa-map-pin sub-icons"></i>Cities</li>
+        <li (click)="navigate('cityareas')"><i class="fa-solid fa-location-crosshairs sub-icons"></i>City Areas</li>
       </ul>
     </li>
 
@@ -49,15 +49,14 @@
     <li class="menu-group">
       <div class="menu-title" (click)="toggleGroup('users')">
         <i class="fas fa-users icon"></i> 
-        <span class="ul">Users</span>
+        <span class="ul">User Management</span>
         <span class="arrow" [class.open]="openGroup === 'users'">
           <i class="fas fa-chevron-down"></i>
         </span>
       </div>
 
       <ul class="submenu" [class.open]="openGroup === 'users'">
-        <li (click)="navigate('users')">Users</li>
-        <li (click)="navigate('roles')">Roles</li>
+        <li (click)="navigate('user-settings')"><i class="fa-solid fa-users-gear sub-icons"></i>Settings</li>
       </ul>
     </li>
   </ul>

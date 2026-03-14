@@ -194,7 +194,7 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                 .Where(i => !dto.Images.Contains(i.Id))
                 .ToList();
             foreach (var img in imagesToRemove)
-                ad.Images.Remove(img);
+                _dbContext.AdvertisementImages.Remove(img);
 
             // ADD
             var currentImageIds = ad.Images.Select(i => i.Id).ToHashSet();
