@@ -1,7 +1,23 @@
 <app-header></app-header>
 <app-carousel></app-carousel>
 <app-about-section></app-about-section>
-<app-cta-section></app-cta-section>
+<section *ngIf="!isAuthenticated()" class="login-cta">
+    <div class="cta-inner">
+        <i class="fa fa-sign-in-alt cta-icon"></i>
+        <h3>Ready to get started?</h3>
+        <p>Sign in to explore classified ads across Pakistan.</p>
+        <a routerLink="/login" class="primary-btn">
+            Login to Explore Ads on PakClassified
+        </a>
+    </div>
+</section>
+<div id="adSec" *ngIf="isAuthenticated()" class="login-cta">
+    <div class="page-header d-flex justify-content-between align-items-center mx-4">
+      <h1>Latest Advertisements</h1>
+      <button class="primary-btn" routerLink="advertisement-page/">Explore More Advertisement <i class="fa-solid fa-arrow-right-long ms-2"></i></button>
+  </div>
+<app-advertisement [showToolbar]="false"></app-advertisement>
+</div>
 <app-footer-section></app-footer-section>
 <app-footer></app-footer>
 

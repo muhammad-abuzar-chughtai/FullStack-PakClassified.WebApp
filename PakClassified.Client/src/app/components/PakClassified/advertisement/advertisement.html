@@ -13,7 +13,7 @@
 
 
   <!-- TOOLBAR -->
-  <div class="toolbar col-12">
+  <div *ngIf="showToolbar()" class="toolbar col-12">
     <input class="search-input col-10" type="text" placeholder="Search Advertisement..." [(ngModel)]="searchTerm"
       (input)="searchTerm.set($event.target.value)">
     <button class="filter-select col-2"><i class="fa-solid fa-filter"></i> Apply Filters</button>
@@ -25,10 +25,13 @@
     <p class="mt-3 text-secondary">Loading...</p>
   </div>
   <div *ngIf="!isLoading()" class="catalogue">
-
+    
+    @if(filteredAdvertisements().length === 0){
+      <p class="mt-3 text-secondary">No Advertisement Found...</p>
+    }
     <app-ad-card *ngFor="let ad of filteredAdvertisements()" [ad]="ad" (view)="viewAdvertisement($event)"
-      (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
-    </app-ad-card>
-
-  </div>
+    (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
+  </app-ad-card>
+  
+</div>
 </div>

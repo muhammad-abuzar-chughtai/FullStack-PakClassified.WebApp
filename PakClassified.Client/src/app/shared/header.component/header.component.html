@@ -16,8 +16,8 @@
       </span>
     </div>
 
-    <button *ngIf="!isLoggedIn()" (click)="login()" title="Signin">Sign In</button>
-    <button *ngIf="!isLoggedIn()" (click)="signup()" title="SignUp">Sign Up</button>
+    <button *ngIf="!isLoggedIn()" routerLink="/login" title="Signin">Sign In</button>
+    <button *ngIf="!isLoggedIn()" routerLink="/login" title="SignUp">Sign Up</button>
     <button *ngIf="isLoggedIn()" (click)="logout()" title="Logout">Logout</button>
   </div>
 

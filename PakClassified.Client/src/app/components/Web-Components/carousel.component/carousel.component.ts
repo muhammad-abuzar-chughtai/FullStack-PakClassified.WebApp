@@ -19,7 +19,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       subtext: 'From electronics to real estate, cars to services — discover thousands of verified classified ads posted daily across all major cities.',
       bgImage: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=80',
       btnText: 'Discover More',
-      btnLink: 'login/'
+      btnLink: 'advertisement-page/'
     },
     {
       icon: 'fa-shield-halved',
@@ -27,7 +27,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       subtext: 'Every ad is reviewed for authenticity. Deal with confidence knowing you\'re interacting with real people and genuine offers.',
       bgImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1600&q=80',
       btnText: 'Learn More',
-      btnLink: 'login/'
+      btnLink: 'advertisement-page/'
     },
     {
       icon: 'fa-rocket',
@@ -35,7 +35,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
       subtext: 'List your products, property, or services in minutes. No hidden charges. No listing fees. Just pure exposure to buyers nationwide.',
       bgImage: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=80',
       btnText: 'Explore More',
-      btnLink: 'login/'
+      btnLink: 'advertisement-page/'
     }
   ];
 

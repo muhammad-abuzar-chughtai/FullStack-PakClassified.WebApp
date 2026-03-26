@@ -1,12 +1,12 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth-service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -24,14 +24,6 @@ export class HeaderComponent {
       ? `data:image/png;base64,${photo}`
       : './user.png';
   });
-
-  login() {
-    this.router.navigate(['/login']);
-  }
-
-  signup() {
-    this.router.navigate(['/login']);
-  }
 
   logout() {
     this.auth.logout();

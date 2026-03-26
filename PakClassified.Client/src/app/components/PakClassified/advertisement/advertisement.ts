@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, input, Input, Output, signal } from '@angular/core';
 import { AdCardComponent } from "./ad-card/ad-card";
 import { CommonModule } from '@angular/common';
 import { Advertisement } from '../../../core/models/pakClassified/advertisement-model';
@@ -56,10 +56,14 @@ export class AdvertisementComponent {
   searchTerm = signal('');
   // Loading
   isLoading = signal(false);
-
+  // Toolbar Hide on default page
+  showToolbar = input<boolean>(true);
 
   // Add filtered computed signal
   filteredAdvertisements = computed(() => {
+    if (!this.showToolbar()) {
+      return this.advertisements();
+    }
     const term = this.searchTerm().toLowerCase();
     if (!term) return this.advertisements();
 
@@ -160,7 +164,7 @@ export class AdvertisementComponent {
     if (!ad) return;
 
     this.selectedAdvertisement.set(ad);
-    this.router.navigate(['/admin/advertisement', id], { state: { ad } });
+    this.router.navigate(['/advertisement', id], { state: { ad } });
   }
 
   // --- Edit Advertisement ---

@@ -1,4 +1,4 @@
-import { provideRouter, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { CountryComponent } from './components/location/country.component/country.component';
 import { ProvinceComponent } from './components/location/province.component/province.component';
@@ -22,10 +22,9 @@ import { UserSettings } from './components/user-settings/user-settings';
 import { UserComponent } from './components/user-settings/user.component/user.component';
 import { RoleComponent } from './components/user-settings/role.component/role.component';
 import { guestGuard } from './core/guards/guest.guard';
-import { CustomerLayout } from './layouts/customer-layout/customer-layout';
 import { DefaultLayout } from './layouts/default-layout/default-layout';
-import { CarouselComponent } from './components/Web-Components/carousel.component/carousel.component';
 import { AboutSectionComponent } from './components/Web-Components/about-section.component/about-section.component';
+import { AdvertisementPageLayout } from './layouts/advertisement-page-layout/advertisement-page-layout';
 
 export const routes: Routes = [
   {
@@ -42,7 +41,6 @@ export const routes: Routes = [
       { path: 'advertisements', component: AdvertisementComponent },
       { path: 'advertisement/create', component: CreateEdit },
       { path: 'advertisement/edit/:id', component: CreateEdit },
-      { path: 'advertisement/:id', component: AdPage },
       { path: 'ad-images', component: AdvertisementImageComponent },
 
       {
@@ -79,10 +77,16 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '', component: DefaultLayout },
-  
+  { path: 'advertisement/:id', component: AdPage },
 
-  { path: 'testComponent', component: AboutSectionComponent },
+
+  { path: '', component: DefaultLayout, },
+
+  { path: 'advertisement-page', component: AdvertisementPageLayout, },
+  // { path: '**', redirectTo: '', pathMatch: 'full' },  // Wild Card
+
+
+
 
   {
     path: 'login',

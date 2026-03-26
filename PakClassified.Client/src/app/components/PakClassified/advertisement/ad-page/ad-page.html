@@ -1,6 +1,9 @@
 <div *ngIf="ad" class="ad-detail-container">
     <div class="page-header align-items-center justify-content-end d-flex">
-        <button class="back-btn" (click)="back()">
+        <button *ngIf="isAdmin()" class="back-btn" (click)="back()">
+            <i class="fas fa-angle-double-left"> </i> Back
+        </button>
+        <button *ngIf="!isAdmin()" class="back-btn" routerLink="~./home/#adSec">
             <i class="fas fa-angle-double-left"> </i> Back
         </button>
     </div>

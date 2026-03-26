@@ -1,5 +1,4 @@
 .login-cta {
-    border-top: 5px solid #2563eb;
   padding: 72px 24px;
   background: #ffffff;
   text-align: center;
@@ -39,4 +38,13 @@
 
 .primary-btn:hover {
   transform: translateY(-2px);
+}
+
+.container{
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 60px;
+    align-items: start;
 }

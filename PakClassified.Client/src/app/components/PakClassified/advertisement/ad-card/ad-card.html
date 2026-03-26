@@ -1,7 +1,8 @@
 <div class="ad-card">
 
   <div class="ad-image" (click)="onView()">
-<img [src]="ad.firstImage ? 'data:image/jpeg;base64,' + ad.firstImage : './ad-placeholder.jpg'" />    <span class="status-badge active">
+    <img [src]="ad.firstImage ? 'data:image/jpeg;base64,' + ad.firstImage : './ad-placeholder.jpg'" /> <span
+      class="status-badge active">
       {{ ad.status }}
     </span>
   </div>
@@ -17,9 +18,7 @@
         PKR {{ ad.price | number }}
       </div>
     </div>
-    <p class="">
-      {{ ad.name }}
-    </p>
+    <p style="text-align: left;"> {{ ad.name }} </p>
 
     <div class="ad-meta">
       <span>
@@ -39,7 +38,7 @@
         <i class="fa fa-calendar sub-icon"></i> Ended: {{ ad.endsOn | date:'dd MMM yyyy' }}
       </span>
 
-      <div class="actions">
+      <div *ngIf="isAdmin()" class="actions">
         <button class="btn-view" (click)="onView()">View</button>
         <button class="btn-edit" (click)="onEdit()">Edit</button>
         <button class="btn-delete" (click)="onDelete()">Delete</button>
