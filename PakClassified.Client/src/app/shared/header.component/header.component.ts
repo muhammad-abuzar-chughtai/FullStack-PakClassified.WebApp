@@ -30,12 +30,11 @@ export class HeaderComponent {
   }
 
   signup() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/login']);
   }
 
   logout() {
     this.auth.logout();
-    this.router.navigate(['/login']);
   }
 
   navigate(route: string) {

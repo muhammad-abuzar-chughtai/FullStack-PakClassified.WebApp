@@ -88,7 +88,7 @@ export class AuthService {
     localStorage.clear();
     this._token.set(null);
     this._user.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
     initialize() {

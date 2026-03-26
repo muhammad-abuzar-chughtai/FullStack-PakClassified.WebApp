@@ -27,8 +27,7 @@
       <div class="error-msg">{{ apiError() }}</div>
       }
 
-      <form [formGroup]="form" (ngSubmit)="submit()">
-
+      <form [formGroup]="form" (ngSubmit)="submit()" class="overflow">
         @if (isSignUp()) {
         <div class="form-group">
           <!-- ✅ validation bindings added -->
@@ -86,8 +85,8 @@
           {{ buttonText() }}
           }
         </button>
-
       </form>
+
 
       <div class="switch-mode">
         @if (!isSignUp()) {

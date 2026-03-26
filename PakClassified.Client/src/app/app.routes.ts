@@ -23,13 +23,16 @@ import { UserComponent } from './components/user-settings/user.component/user.co
 import { RoleComponent } from './components/user-settings/role.component/role.component';
 import { guestGuard } from './core/guards/guest.guard';
 import { CustomerLayout } from './layouts/customer-layout/customer-layout';
+import { DefaultLayout } from './layouts/default-layout/default-layout';
+import { CarouselComponent } from './components/Web-Components/carousel.component/carousel.component';
+import { AboutSectionComponent } from './components/Web-Components/about-section.component/about-section.component';
 
 export const routes: Routes = [
   {
     path: 'admin',
-    component: AdminLayout,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['Admin'] },
+    data: { roleId: [4] },
+    component: AdminLayout,
     children: [
       { path: 'countries', component: CountryComponent },
       { path: 'provinces', component: ProvinceComponent },
@@ -76,7 +79,10 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '', component: CustomerLayout },
+  { path: '', component: DefaultLayout },
+  
+
+  { path: 'testComponent', component: AboutSectionComponent },
 
   {
     path: 'login',

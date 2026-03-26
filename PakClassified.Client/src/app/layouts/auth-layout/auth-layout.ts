@@ -104,7 +104,7 @@ export class AuthComponent {
   async submit() {
 
     this.apiError.set('');
-    this.isLoading.set(true);          // ← start
+    this.isLoading.set(true);          
     const value = this.form.getRawValue();
 
     const request$ = this.isSignUp()
@@ -124,7 +124,7 @@ export class AuthComponent {
             : 'Invalid email or password.'
       );
     } finally {
-      this.isLoading.set(false);       // ← always stop
+      this.isLoading.set(false);       
     }
   }
 

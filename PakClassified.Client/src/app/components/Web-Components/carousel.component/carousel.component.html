@@ -1,0 +1,31 @@
+<section class="hero-carousel">
+  <div class="slides-wrapper">
+    <div
+      class="slide"
+      *ngFor="let slide of slides; let i = index"
+      [class.active]="i === currentSlide"
+      [style.background-image]="'url(' + slide.bgImage + ')'"
+    >
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="content-box">
+          <i class="fa {{ slide.icon }} slide-icon"></i>
+          <h1>{{ slide.heading }}</h1>
+          <p>{{ slide.subtext }}</p>
+          <a *ngIf="slide.btnText" [routerLink]="slide.btnLink" class="slide-btn">
+            {{ slide.btnText }} <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dot-indicators">
+    <span
+      *ngFor="let slide of slides; let i = index"
+      class="dot"
+      [class.active]="i === currentSlide"
+      (click)="goToSlide(i)"
+    ></span>
+  </div>
+</section>
