@@ -25,6 +25,10 @@ namespace a._PakClassified.WebApp.Entities.Entities.UserEntities
         public DateTime? LastModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
+        //Forget Password Utilities
+        public string? ResetToken { get; set; }
+        public DateTime? ResetTokenExpiry { get; set; }
+
         //Associations
         public Role Role { get; set; }
         public int RoleId { get; set; }

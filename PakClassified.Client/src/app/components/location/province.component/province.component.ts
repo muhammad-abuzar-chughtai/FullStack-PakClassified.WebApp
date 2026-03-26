@@ -7,11 +7,12 @@ import { ProvinceService } from '../../../core/services/location/province-servic
 import { Country } from '../../../core/models/location/country-model';
 import { CountryService } from '../../../core/services/location/country-service';
 import { AuthService } from '../../../core/services/auth/auth-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-province',
   standalone: true,
-  imports: [CommonModule, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule, RouterModule],
   templateUrl: './province.component.html',
   styleUrls: ['./province.component.css']
 })
@@ -26,8 +27,19 @@ export class ProvinceComponent implements OnInit {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  selectedCountryId = signal<number>(0);
+  filteredProvinces = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const countryId = this.selectedCountryId();
 
-
+    return this.provinces().filter(p => {
+      const matchesName = !q || p.name.toLowerCase().includes(q);
+      const matchesCountry = countryId === 0 || p.countryId === countryId;
+      return matchesName && matchesCountry;
+    });
+  });
 
   constructor(private provinceService: ProvinceService, private countryService: CountryService, private auth: AuthService) { }
 
@@ -35,14 +47,6 @@ export class ProvinceComponent implements OnInit {
     // this.loadProvinces();
     this.load();
   }
-
-  // --- Load provinces ---
-  // loadProvinces() {
-  //   this.provinceService.getAll().subscribe((data) => {
-  //     this.provinces.set(data); // signal update triggers template
-  //   });
-  // }
-
 
   // --- Fetching Parent Data ---
   load() {

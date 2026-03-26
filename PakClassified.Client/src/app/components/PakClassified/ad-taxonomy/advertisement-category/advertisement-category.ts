@@ -4,10 +4,12 @@ import { AdvertisementCategoryService } from '../../../../core/services/pakClass
 import { AuthService } from '../../../../core/services/auth/auth-service';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../../../shared/modal.component/modal.component';
+import { FormsModule } from '@angular/forms';
+import { required } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-advertisement-category',
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './advertisement-category.html',
   styleUrl: './advertisement-category.css',
 })
@@ -21,6 +23,16 @@ export class AdvertisementCategoryComponent implements OnInit {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
+// Search Filter based on keyword
+  searchQuery = signal('');
+  filteredCategories = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.categories();
+    return this.categories().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
+
 
   constructor(private categoryService: AdvertisementCategoryService, private auth: AuthService) { }
 
@@ -37,7 +49,7 @@ export class AdvertisementCategoryComponent implements OnInit {
 
   categoryFields = [
     { key: 'name', label: 'Category Name', type: 'text' },
-    { key: 'Description', label: 'Description', type: 'textarea' }
+    { key: 'description', label: 'Description', type: 'textarea', required: false }
   ];
 
   // --- Add Category ---

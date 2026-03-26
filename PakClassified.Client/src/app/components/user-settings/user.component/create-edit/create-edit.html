@@ -1,0 +1,104 @@
+<div class="modal-backdrop">
+  <div class="modal" *ngIf="model">
+
+    <h3>{{ mode === 'create' ? 'Add ' + entityName : 'Update ' + entityName }}</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- ERROR BANNER — same as your working example -->
+      <div class="error-banner" *ngIf="formError()">
+        <i class="fas fa-circle-exclamation"></i> {{ formError() }}
+      </div>
+
+      <div class="modal-scroll">
+        <div
+          *ngFor="let field of fields"
+          class="field-row d-flex justify-content-between align-items-start full-width"
+        >
+          <!-- LABEL -->
+          <label *ngIf="field.type !== 'pass' || mode === 'create'">
+            {{ field.label }}
+          </label>
+
+          <div class="input-wrapper">
+
+            <!-- Text -->
+            <input
+              *ngIf="field.type === 'text'"
+              type="text"
+              [formControlName]="field.key"
+              [placeholder]="field.label"
+              [class.input-error]="showError(field.key)"
+            />
+
+            <!-- Number -->
+            <input
+              *ngIf="field.type === 'number'"
+              type="number"
+              [formControlName]="field.key"
+              [placeholder]="field.label"
+              [class.input-error]="showError(field.key)"
+            />
+
+            <!-- Date -->
+            <input
+              *ngIf="field.type === 'Date'"
+              type="date"
+              [formControlName]="field.key"
+              [class.input-error]="showError(field.key)"
+            />
+
+            <!-- Email -->
+            <input
+              *ngIf="field.type === 'email'"
+              type="email"
+              [formControlName]="field.key"
+              [placeholder]="field.label"
+              [class.input-error]="showError(field.key)"
+            />
+
+            <!-- Password (create only) -->
+            <input
+              *ngIf="field.type === 'pass' && mode === 'create'"
+              type="password"
+              [formControlName]="field.key"
+              [placeholder]="field.label"
+              [class.input-error]="showError(field.key)"
+            />
+
+            <!-- File -->
+            <input
+              *ngIf="field.type === 'File'"
+              type="file"
+              (change)="onFileChange($event, field.key)"
+            />
+
+            <!-- Select -->
+            <select
+              *ngIf="field.type === 'select'"
+              [formControlName]="field.key"
+              [class.input-error]="showError(field.key)"
+            >
+              <option [ngValue]="null" disabled>Select {{ field.label }}</option>
+              <option *ngFor="let option of field.options()" [ngValue]="option.id">
+                {{ option.name }}
+              </option>
+            </select>
+
+            <!-- ERROR MESSAGE — same pattern as your working example -->
+            <span class="field-error" *ngIf="showError(field.key)">
+              {{ errorMsg(field.key) }}
+            </span>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="save-btn">Save</button>
+        <button type="button" class="cancel-btn" (click)="close.emit()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
+</div>

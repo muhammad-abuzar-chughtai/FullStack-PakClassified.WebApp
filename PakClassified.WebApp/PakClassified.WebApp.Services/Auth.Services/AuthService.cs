@@ -4,6 +4,7 @@ using a._PakClassified.WebApp.Entities.Entities.UserEntities;
 using AutoMapper;
 using Azure.Core;
 using b._PakClassified.WebApp.Services.Enitities.Services.UserServices;
+using c._PakClassified.WebApp.DTOs.Auth.DTO;
 using c._PakClassified.WebApp.DTOs.User.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,10 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
     {
         Task<AuthResult> SignUpAsync(SignupModel model);
         Task<AuthResult> SignInAsync(SigninModel model);
+        Task<string> VerifySecurityAsync(ForgetPassDto dto);
+        Task ResetPasswordAsync(ResetPasswordDto dto);
+
+
 
     }
     public class AuthService : IAuthService
@@ -153,6 +158,34 @@ namespace b._PakClassified.WebApp.Services.Auth.Services
         }
 
 
+        public async Task<string> VerifySecurityAsync(ForgetPassDto dto)
+        {
+            var user = await _dBContext.Users.Where(u => u.Email == dto.Email && u.SecQues == dto.SecQues && u.SecAns == dto.SecAns).FirstOrDefaultAsync();
 
+            if (user == null)
+                throw new UnauthorizedAccessException("Invalid credentials.");
+
+            var token = Guid.NewGuid().ToString("N");
+            user.ResetToken = token;
+            user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15);
+            await _dBContext.SaveChangesAsync();
+
+            return token;
+        }
+
+        public async Task ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var user = await _dBContext.Users
+                .FirstOrDefaultAsync(u => u.ResetToken == dto.ResetToken);
+
+            if (user == null || user.ResetTokenExpiry < DateTime.UtcNow)
+                throw new UnauthorizedAccessException("Invalid or expired token.");
+
+            user.Password = dto.NewPassword;
+            user.ResetToken = null;
+            user.ResetTokenExpiry = null;
+
+            await _dBContext.SaveChangesAsync();
+        }
     }
 }

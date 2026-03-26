@@ -1,7 +1,11 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth/auth-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AdvertisementService } from '../../../core/services/pakClassified/advertisement-service';
+import { Advertisement, AdvertisementGetPost } from '../../../core/models/pakClassified/advertisement-model';
+import { UserGet } from '../../../core/models/user/user-model';
+import { UserService } from '../../../core/services/user/user-service';
 
 @Component({
   selector: 'app-welcome-admin',
@@ -11,22 +15,26 @@ import { CommonModule } from '@angular/common';
   styleUrl: './welcome-admin.css',
 })
 export class WelcomeAdmin {
-  private auth = inject(AuthService);
 
-  isLoggedIn = computed(() => this.auth.isAuthenticated());
-  currentUser = computed(() => this.auth.user()?.name ?? '[admin]');
+  private authService = inject(AuthService);
+  private adService = inject(AdvertisementService);
+  private userService = inject(UserService);
 
-  notes: string = '';
+  isLoggedIn = computed(() => this.authService.isAuthenticated());
+  currentUser = computed(() => this.authService.user()?.name ?? '[admin]');
+
+  totalAds = signal<AdvertisementGetPost[]>([]);
+  totalUsers = signal<UserGet[]>([]);
+  totalAdCount = computed(() => this.totalAds().length);
+  totalUserCount = computed(() => this.totalUsers().length);
 
   ngOnInit() {
-    const savedNotes = localStorage.getItem('dev_notes');
-    if (savedNotes) {
-      this.notes = savedNotes;
-    }
+    this.adService.getAll().subscribe((data) => {
+      this.totalAds.set(data);
+    });
+    this.userService.getAll().subscribe((data) => {
+      this.totalUsers.set(data);
+    });
   }
-
-  autoSave() {
-    localStorage.setItem('dev_notes', this.notes);
-  }
-
 }
+

@@ -4,11 +4,12 @@ import { ModalComponent } from '../../../../shared/modal.component/modal.compone
 import { AdvertisementStatus } from '../../../../core/models/pakClassified/advertisement-status-model';
 import { AdvertisementStatusService } from '../../../../core/services/pakClassified/advertisement-status-service';
 import { AuthService } from '../../../../core/services/auth/auth-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './advertisement-status.html',
   styleUrl: './advertisement-status.css'
 })
@@ -19,11 +20,18 @@ export class AdvertisementStatusComponent implements OnInit {
   selectedStatus = signal<AdvertisementStatus | null>(null);
   modalOpen = signal(false);
   modalMode = signal<'create' | 'update'>('create');
-
   // -------- Auth Signals --------
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
-
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  filteredStatuses = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.statuses();
+    return this.statuses().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
   constructor(
     private statusService: AdvertisementStatusService,
     private auth: AuthService

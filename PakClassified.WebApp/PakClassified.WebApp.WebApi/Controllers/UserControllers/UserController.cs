@@ -81,7 +81,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.UserControllers
 
 
             string LoginUser = User.FindFirstValue(ClaimTypes.Name);     // Login User, Extracted from Token
-            modelrequest.CreatedBy = "Login";
+            modelrequest.CreatedBy = LoginUser;
 
             _logger.LogInformation("MemoryStream Converting IFormFile to Byte[]....");
 

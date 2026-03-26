@@ -7,11 +7,12 @@ import { CityAreaService } from '../../../core/services/location/cityarea-servic
 import { City } from '../../../core/models/location/city-model';
 import { CityService } from '../../../core/services/location/city-service';
 import { AuthService } from '../../../core/services/auth/auth-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cityarea',
   standalone: true,
-  imports: [CommonModule, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule, RouterModule],
   templateUrl: './cityarea.component.html',
   styleUrls: ['./cityarea.component.css']
 })
@@ -24,37 +25,50 @@ export class CityAreaComponent implements OnInit {
   selectedCityArea = signal<CityArea | null>(null);
   modalOpen = signal(false);
   modalMode = signal<'create' | 'update'>('create');
-   // --- Auth Signals ---
+  // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  selectedCityId = signal<number>(0);
+  filteredCityareas = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const cityId = this.selectedCityId();
+
+    return this.cityareas().filter(ca => {
+      const matchesName = !q || ca.name.toLowerCase().includes(q);
+      const matchesCity = cityId === 0 || ca.cityId === cityId;
+      return matchesName && matchesCity;
+    });
+  });
 
   constructor(private cityareaService: CityAreaService, private cityService: CityService, private auth: AuthService) { }
 
   ngOnInit() {
-      // this.loadCityareas();
+    // this.loadCityareas();
+    this.loadParent();
+  }
+
+  // --- Load Cityareas ---
+  loadParent() {
+    this.cityService.getAll().subscribe((data: City[]) => {
+      this.cities.set(data);
       this.load();
-    }
-  
-    // --- Load Cityareas ---
-    load() {
-      this.cityService.getAll().subscribe((data: City[]) => {
-        this.cities.set(data);
-        this.loadParent();
-      });
-    }
-    loadParent() {
-      this.cityareaService.getAll().subscribe((cityareaData) => {
-  
-        const cityList = this.cities();
-  
-        const enrichedCityareas = cityareaData.map(c => ({
-          ...c,
-          cityName: cityList.find(ca => ca.id === c.cityId)?.name || ''
-        }));
-  
-        this.cityareas.set(enrichedCityareas);
-      });
-    }
+    });
+  }
+  load() {
+    this.cityareaService.getAll().subscribe((cityareaData) => {
+
+      const cityList = this.cities();
+
+      const enrichedCityareas = cityareaData.map(c => ({
+        ...c,
+        cityName: cityList.find(ca => ca.id === c.cityId)?.name || ''
+      }));
+
+      this.cityareas.set(enrichedCityareas);
+    });
+  }
 
   cityAreaFields = [
     { key: 'name', label: 'Area Name', type: 'text' },
@@ -80,19 +94,19 @@ export class CityAreaComponent implements OnInit {
   // --- Delete CityArea ---
   deleteCityArea(id: number) {
     if (!confirm('Delete this city area?')) return;
-    this.cityareaService.delete(id).subscribe(() => this.loadParent());
+    this.cityareaService.delete(id).subscribe(() => this.load());
   }
 
   // --- Save CityArea ---
   saveCityArea(cityarea: CityArea) {
     if (this.modalMode() === 'create') {
       this.cityareaService.create(cityarea).subscribe(() => {
-        this.loadParent();
+        this.load();
         this.modalOpen.set(false);
       });
     } else {
       this.cityareaService.update(cityarea.id, cityarea).subscribe(() => {
-        this.loadParent();
+        this.load();
         this.modalOpen.set(false);
       });
     }

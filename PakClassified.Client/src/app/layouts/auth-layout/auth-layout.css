@@ -1,21 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
 .auth-wrapper {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f1f5f9;
+  padding: 20px;
 }
 
 .auth-card {
-  width: 1300px;
-  max-height: 700px; 
+  width: min(1300px, 100%);
   display: flex;
   border-radius: 14px;
   border: #3b82f6 2px solid;
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.344);
   background: white;
-  transition: max-height 0.5s ease; 
+  /* transition: max-height 0.5s ease;  */
 }
 
 /* LEFT BRAND SIDE */
@@ -27,25 +31,27 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+  z-index: 1;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
 }
 
 .auth-brand h1 {
-  font-family: Segoe UIa;
-  font-weight: 600px;
-  font-size: 32px;
-  margin-bottom: 15px;
+  font-family: Segoe UI;
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 32px);
+  margin-bottom: 10px;
 }
 
 .tagline {
-  font-size: 16px;
+  font-size: clamp(13px, 1.5vw, 16px);
   font-weight: 500;
-  margin-top: -15px;
   margin-bottom: 20px;
   color: #93c5fd;
 }
 
 .description {
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   line-height: 1.6;
   letter-spacing: 0.75px;
   opacity: 0.85;
@@ -62,45 +68,29 @@
 /* RIGHT FORM SIDE */
 .auth-form {
   width: 50%;
-  padding: 50px;
+  padding: clamp(24px, 4vw, 50px);
   background: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-/* Divider Line */
-.auth-brand {
-  position: relative;
-}
-
-/* Rotated Divider */
-.auth-brand {
-  width: 50%;
-  background: #1e293b;
-  color: white;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  position: relative;
-  z-index: 1;
-
-  /* 👇 This creates the lean effect */
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    85% 100%,
-    0% 100%
-  );
+  justify-content: flex-start;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .auth-form h1 {
-  font-family: Segoe UIa;
+  font-family: Segoe UI;
   font-weight: 600px;
+  font-size: clamp(20px, 2.5vw, 26px);
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+}
+
+.form-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: -14px;
+  margin-bottom: 18px;
 }
 
 /* FORM */
@@ -139,9 +129,33 @@ button:hover {
   background: #334155;
 }
 
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .switch-mode {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
   margin-top: 18px;
-  text-align: center;
+  /* text-align: center; */
   font-size: 14px;
 }
 
@@ -151,21 +165,85 @@ button:hover {
   font-weight: 600;
 }
 
+.error-msg {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.field-error {
+  display: block;
+  font-size: 12px;
+  color: #b91c1c;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+input.input-error {
+  border-color: #f87171;
+}
+
+input.input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+
+
+/* === TABLET (≤900px) === */
 @media (max-width: 900px) {
   .auth-card {
     flex-direction: column;
-    width: 95%;
-    height: auto;
-  }
-
-  .auth-brand,
-  .auth-form {
     width: 100%;
   }
 
   .auth-brand {
+    width: 100%;
+    clip-path: none; 
+    padding: 30px 24px;
     text-align: center;
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .description {
+    max-width: 100%;
+  }
+
+  .auth-form {
+    width: 100%;
+    max-height: none;  
+    overflow-y: visible;
+    padding: 30px 24px;
+  }
+}
+
+/* === MOBILE (≤480px) === */
+@media (max-width: 480px) {
+  .auth-wrapper {
+    padding: 12px;
+  }
+
+  .auth-brand {
+    padding: 22px 18px;
+  }
+
+  .auth-form {
+    padding: 22px 18px;
+  }
+
+  .auth-form h1 {
+    font-size: 20px;
+  }
+
+  input,
+  button {
+    font-size: 15px; /* easier tap targets */
+  }
+
+  .switch-mode {
+    flex-direction: column;
+    align-items: center;
   }
 }

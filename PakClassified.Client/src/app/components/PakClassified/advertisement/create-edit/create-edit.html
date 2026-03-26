@@ -10,7 +10,7 @@
       <a class="breadcrumb-link" routerLink="/admin/advertisements">
         Advertisements
       </a>
-      / Ad Taxonomy
+      / Post New
     </p>
   </div>
 
@@ -20,170 +20,148 @@
 
 </div>
 
+<div class="warn-message">
+  <span *ngIf="mode() === 'create'">Images will be Uploaded from the section of Ad Media.</span>
+  <span *ngIf="mode() === 'update'">Images will be Edited from the section of Ad Media.</span>
+</div>
 
 
-<div class="form-page m-0">
+
+<form [formGroup]="adForm" (ngSubmit)="save()">
 
   <!-- BASIC INFO -->
   <div class="form-section">
-
     <h3>Basic Information</h3>
-
     <div class="form-grid">
 
       <div class="form-field">
         <label>Name</label>
-        <input [(ngModel)]="advertisement().name" placeholder="Advertisement Name">
+        <input formControlName="name" placeholder="Advertisement Name" [class.input-error]="showError('name')" />
+        <span class="field-error" *ngIf="showError('name')">{{ errorMsg('name') }}</span>
       </div>
 
       <div class="form-field">
         <label>Title</label>
-        <input [(ngModel)]="advertisement().title" placeholder="Advertisement Title">
+        <input formControlName="title" placeholder="Advertisement Title" [class.input-error]="showError('title')" />
+        <span class="field-error" *ngIf="showError('title')">{{ errorMsg('title') }}</span>
       </div>
 
       <div class="form-field full-width">
         <label>Description</label>
-        <textarea rows="10" [(ngModel)]="advertisement().description"
-          placeholder="Write a detailed description"></textarea>
+        <textarea rows="10" formControlName="description" placeholder="Write a detailed description"></textarea>
       </div>
 
     </div>
-
   </div>
-
-
 
   <!-- PRICE + DATE -->
   <div class="form-section">
-
     <h3>Pricing & Schedule</h3>
-
     <div class="form-grid">
 
       <div class="form-field full-width">
         <label>Price</label>
-        <input type="number" [(ngModel)]="advertisement().price">
+        <input type="number" formControlName="price" [class.input-error]="showError('price')" />
         <small class="hint">Enter product price (e.g. 5000)</small>
+        <span class="field-error" *ngIf="showError('price')">{{ errorMsg('price') }}</span>
       </div>
 
       <div class="form-field">
         <label>Starts On</label>
-        <input type="date" [value]="toDateInput(advertisement().startsOn)"
-          (change)="onStartsOnChange($any($event.target).value)">
+        <input type="date" formControlName="startsOn" [class.input-error]="showError('startsOn')" />
+        <span class="field-error" *ngIf="showError('startsOn')">{{ errorMsg('startsOn') }}</span>
       </div>
 
       <div class="form-field">
         <label>Ends On</label>
-        <input type="date" [value]="toDateInput(advertisement().endsOn)"
-          (change)="onEndsOnChange($any($event.target).value)">
+        <input type="date" formControlName="endsOn" [class.input-error]="showError('endsOn')" />
+        <span class="field-error" *ngIf="showError('endsOn')">{{ errorMsg('endsOn') }}</span>
       </div>
 
     </div>
-
   </div>
-
-
 
   <!-- CATEGORY -->
   <div class="form-section">
-
     <h3>Category & Location</h3>
-
     <div class="form-grid">
 
       <div class="form-field">
-        <label>Sub Category</label>
-        <select [(ngModel)]="advertisement().subCategoryId">
-          <option [ngValue]="0" selected disabled>Select Sub Category</option>
-          <option *ngFor="let sc of subCategories()" [ngValue]="sc.id">
-            {{ sc.name }}
-          </option>
+        <label>Category</label>
+        <select formControlName="categoryId" (change)="onCategoryChange(+$any($event.target).value)"
+          [class.input-error]="showError('categoryId')">
+          <option [value]="0">Select Category</option>
+          <option *ngFor="let c of categories()" [value]="c.id">{{ c.name }}</option>
         </select>
+        <span class="field-error" *ngIf="showError('categoryId')">{{ errorMsg('categoryId') }}</span>
+      </div>
+
+      <div class="form-field">
+        <label>Sub Category</label>
+        <select formControlName="subCategoryId" [class.input-error]="showError('subCategoryId')">
+          <option [ngValue]="0" disabled>Select Sub Category</option>
+          <option *ngFor="let sc of filteredSubCategories()" [ngValue]="sc.id">{{ sc.name }}</option>
+        </select>
+        <span class="field-error" *ngIf="showError('subCategoryId')">{{ errorMsg('subCategoryId') }}</span>
       </div>
 
       <div class="form-field">
         <label>City Area</label>
-        <select [(ngModel)]="advertisement().cityAreaId">
-          <option [ngValue]="0" disabled selected>Select City Area</option>
-          <option *ngFor="let c of cityAreas()" [ngValue]="c.id">
-            {{ c.name }}
-          </option>
+        <select formControlName="cityAreaId" [class.input-error]="showError('cityAreaId')">
+          <option [ngValue]="0" disabled>Select City Area</option>
+          <option *ngFor="let c of cityAreas()" [ngValue]="c.id">{{ c.name }}</option>
         </select>
+        <span class="field-error" *ngIf="showError('cityAreaId')">{{ errorMsg('cityAreaId') }}</span>
       </div>
 
     </div>
-
   </div>
-
-
 
   <!-- SETTINGS -->
   <div class="form-section">
-
     <h3>Advertisement Settings</h3>
-
     <div class="settings-grid">
 
-      <!-- LEFT COLUMN -->
       <div>
-
         <div class="form-field">
           <label>Status</label>
-          <select [(ngModel)]="advertisement().statusId">
-            <option [ngValue]="0" disabled selected>Select Status</option>
-            <option *ngFor="let s of statuses()" [ngValue]="s.id">
-              {{ s.name }}
-            </option>
+          <select formControlName="statusId" [class.input-error]="showError('statusId')">
+            <option [ngValue]="0" disabled>Select Status</option>
+            <option *ngFor="let s of statuses()" [ngValue]="s.id">{{ s.name }}</option>
           </select>
+          <span class="field-error" *ngIf="showError('statusId')">{{ errorMsg('statusId') }}</span>
         </div>
 
         <div class="form-field">
           <label>Type</label>
-          <select [(ngModel)]="advertisement().typeId">
-            <option [ngValue]="0" disabled selected>Select Type</option>
-            <option *ngFor="let t of types()" [ngValue]="t.id">
-              {{ t.name }}
-            </option>
+          <select formControlName="typeId" [class.input-error]="showError('typeId')">
+            <option [ngValue]="0" disabled>Select Type</option>
+            <option *ngFor="let t of types()" [ngValue]="t.id">{{ t.name }}</option>
           </select>
+          <span class="field-error" *ngIf="showError('typeId')">{{ errorMsg('typeId') }}</span>
         </div>
-
       </div>
 
-
-
-      <!-- RIGHT COLUMN -->
+      <!-- tags stay as-is, no validation needed -->
       <div class="tag-container">
-
         <label>Tags</label>
-
         <div class="tag-list">
-
           <div class="tag-chip" *ngFor="let tag of tags()" (click)="toggleTag(tag.id)"
             [class.active]="advertisement().tagsId?.includes(tag.id)">
             {{ tag.name }}
           </div>
-
         </div>
-
       </div>
 
     </div>
-
   </div>
-
-
 
   <!-- ACTIONS -->
   <div class="form-actions Justify-content-between">
-
-    <button class="cancel-btn" (click)="back()">
-      Cancel
-    </button>
-
-    <button class="save-btn" (click)="save()">
+    <button type="button" class="cancel-btn" (click)="back()">Cancel</button>
+    <button type="submit" class="save-btn">
       {{ mode() === 'create' ? 'Create Advertisement' : 'Update Advertisement' }}
     </button>
-
   </div>
 
-</div>
+</form>

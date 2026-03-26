@@ -1,30 +1,121 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
 <div class="dashboard-container">
-  <div class="card-header">
-    <h1>Admin Dashboard</h1>
-    <p>Welcome Dear <b class="bold-primary" title="Active Admin">"{{ currentUser() }}"</b>. Hope you're doing great.
-      Here's your Admin
-      Dashboard of Pak Classified...</p>
 
-    <div class="notes-card">
-      <h3><i class="fas fa-pen"></i> Daily Release Notes</h3>
-
-      <p rows="12" placeholder="Write your daily Release Notes Here....." class="normal-text">
-        "Images will Upload from Ad Media. Message" <br>
-        "Error Message in Fields of Signin. Required messages in all forms, Loader on API Wait." <br>
-        "Category Field Add in Create form. Images Testing in Advertisement"  <br>
-        "Notification Boxes to show messages"  <br>
-        <b>Admin will have:</b>
-        <br>
-        - Locations BreadCrumbs, Search Remaining. Add icons to sidebar options. <br>
-        - Reduce the text size in Category and SubCategory description Column. <br>
-        - Advertisement SearchBar is not functional <br>
-        - Advertisement Image SearchBar is not functional <br>
-
-        <b>Customer will have:</b>
-        <br>
-        - View Only Access to Advertisement Cards.  <br>
-        - SearchBars and Search Query
-      </p>
+  <!-- Welcome Header -->
+  <div class="welcome-header">
+    <div class="welcome-text">
+      <span class="greeting-tag">Admin Console</span>
+      <h1>Welcome back, <span class="highlight">{{ currentUser() }}</span></h1>
+      <p class="subtitle">Here's what's happening on PakClassified today.</p>
+    </div>
+    <div class="status-pill">
+      <span class="live-dot"></span>
+      Dev Envoironment
     </div>
   </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <i class="fas fa-list-alt"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalAdCount() }}</span>
+        <span class="stat-label">Total Advertisements</span>
+      </div>
+      <span class="stat-trend up">↑ 12%</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalUserCount() }}</span>
+        <span class="stat-label">Registered Users</span>
+      </div>
+      <span class="stat-trend up">↑ 8%</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon amber">
+        <i class="fas fa-eye"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">92,400</span>
+        <span class="stat-label">Ad Impressions</span>
+      </div>
+      <span class="stat-trend up">↑ 21%</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon coral">
+        <i class="fas fa-flag"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">38</span>
+        <span class="stat-label">Pending Review</span>
+      </div>
+      <span class="stat-trend down">↓ 3%</span>
+    </div>
+  </div>
+
+  <!-- Bottom Row -->
+  <div class="bottom-row">
+
+    <!-- Release Notes -->
+    <div class="notes-card">
+      <div class="notes-header">
+        <i class="fas fa-pen"></i>
+        <h3>Daily Release Notes</h3>
+      </div>
+      <div class="notes-body">
+        <div class="half-width">
+          <div class="note-tag bug">Bug</div>
+          <p class="normal-text ps-2">
+            Advertisement Filters is not functional <br><br>
+          </p>
+        </div>
+
+        <div class="half-width">
+          <div class="note-tag task">Task</div>
+          <p class="normal-text ps-2">
+            <b>Customer will have:</b><br>
+            - View Only Access to Advertisement Cards. <br>
+            - SearchBars and Search Query
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions-card">
+      <div class="d-flex justify-content-center">
+        <h3>TECHSTACK</h3>
+      </div>
+      
+      <div class="action-list">
+        <button class="action-btn">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg"
+            style="width: 50px; height: 50px; margin: -7px;" />
+          <span>ASP.NET WebApi — Backend</span>
+        </button>
+        <button class="action-btn">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg"
+            style="width: 30px; height: 30px; margin: -5px; margin-left: 0px; margin-right: 0px;" />
+          <span>Angular 21 — Frontend</span>
+        </button>
+        <button class="action-btn">
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg"
+            style="width: 30px; height: 30px; margin: -5px; margin-left: 1px; margin-right: -3px;" />
+          <span>SQL Server — SSMS</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
 </div>

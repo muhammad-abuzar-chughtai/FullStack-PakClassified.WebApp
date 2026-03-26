@@ -11,70 +11,79 @@
             </button>
         </div>
 
-        <!-- BODY -->
-        <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="onSave()">
 
-            <!-- LEFT: Image -->
-            <div class="image-panel">
-                <div class="image-frame">
-                    <img *ngIf="previewUrl" [src]="previewUrl" [alt]="form.name" />
-                    <div *ngIf="!previewUrl" class="no-preview">
-                        <i class="fas fa-image"></i>
-                        <span>No image selected</span>
+            <!-- ERROR MESSAGE BANNER -->
+            <div class="error-banner" *ngIf="formError()">
+                <i class="fas fa-circle-exclamation"></i> {{ formError() }}
+            </div>
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <!-- LEFT: Image -->
+                <div class="image-panel">
+                    <div class="image-frame" [class.frame-error]="fileError()">
+                        <img *ngIf="previewUrl" [src]="previewUrl" [alt]="form" />
+                        <div *ngIf="!previewUrl" class="no-preview">
+                            <i class="fas fa-image"></i>
+                            <span>No image selected</span>
+                        </div>
+                    </div>
+
+                    <label *ngIf="mode === 'edit' || mode === 'create'" class="upload-label"
+                        (click)="$event.stopPropagation()">
+                        <i class="fas fa-cloud-arrow-up"></i> {{ mode === 'create' ? 'Select Image' : 'Replace Image' }}
+                        <input type="file" accept="image/*" (change)="onFileChange($event)" hidden />
+                    </label>
+
+                    <div class="field-group" *ngIf="mode !== 'create'">
+                        <p class="normal-text">Uploaded By {{ image?.createdBy }}</p>
                     </div>
                 </div>
 
-                <label *ngIf="mode === 'edit' || mode === 'create'" class="upload-label"
-                    (click)="$event.stopPropagation()">
-                    <i class="fas fa-cloud-arrow-up"></i> {{ mode === 'create' ? 'Select Image' : 'Replace Image' }}
-                    <input type="file" accept="image/*" (change)="onFileChange($event)" hidden />
-                </label>
+                <!-- RIGHT: Fields -->
+                <div class="fields-panel">
 
-                <div class="field-group" *ngIf="mode !== 'create'">
-                    <p class="normal-text">Uploaded By {{ image?.createdBy }}</p>
-                </div>
-            </div>
+                    <div class="field-group">
+                        <label>Name</label>
+                        <input *ngIf="mode === 'edit' || mode === 'create'" type="text" formControlName="name"
+                            placeholder="Image name" [class.input-error]="showError('name')" />
+                        <span class="field-error" *ngIf="showError('name')">{{ errorMsg('name') }}</span>
+                        <p *ngIf="mode === 'view'" class="field-value">{{ image?.name }}</p>
+                    </div>
 
-            <!-- RIGHT: Fields -->
-            <div class="fields-panel">
+                    <div class="field-group">
+                        <label>Advertisement</label>
+                        <select *ngIf="mode === 'edit' || mode === 'create'" formControlName="advertisementId"
+                            [class.input-error]="showError('advertisementId')">
+                            <option [ngValue]="0" disabled>Select Advertisement</option>
+                            <option *ngFor="let ad of advertisements" [value]="ad.id">{{ ad.name }}</option>
+                        </select>
+                        <span class="field-error" *ngIf="showError('advertisementId')">{{ errorMsg('advertisementId')
+                            }}</span>
+                        <p *ngIf="mode === 'view'" class="field-value">{{ image?.advertisement || '—' }}</p>
+                    </div>
 
-                <div class="field-group">
-                    <label>Name</label>
-                    <input *ngIf="mode === 'edit' || mode === 'create'" type="text" [(ngModel)]="form.name"
-                        placeholder="Image name" />
-                    <p *ngIf="mode === 'view'" class="field-value">{{ image?.name }}</p>
-                </div>
+                    <div class="field-group full-width">
+                        <label>Caption</label>
+                        <textarea *ngIf="mode === 'edit' || mode === 'create'" formControlName="caption" rows="3"
+                            placeholder="Optional caption"></textarea>
+                        <p *ngIf="mode === 'view'" class="field-value">{{ image?.caption || '—' }}</p>
+                    </div>
 
-                <div class="field-group">
-                    <label>Advertisement</label>
-                    <select *ngIf="mode === 'edit' || mode === 'create'" [(ngModel)]="form.advertisementId">
-                        <option value="0">Select Advertisement</option>
-                        <option *ngFor="let ad of advertisements" [value]="ad.id">{{ ad.name }}</option>
-                    </select>
-                    <p *ngIf="mode === 'view'" class="field-value">{{ image?.advertisement || '—' }}</p>
-                </div>
-
-
-
-                <!-- Caption spans full width -->
-                <div class="field-group full-width">
-                    <label>Caption</label>
-                    <textarea *ngIf="mode === 'edit' || mode === 'create'" [(ngModel)]="form.caption" rows="3"
-                        placeholder="Optional caption"></textarea>
-                    <p *ngIf="mode === 'view'" class="field-value">{{ image?.caption || '—' }}</p>
                 </div>
 
             </div>
 
-        </div>
-
-        <!-- FOOTER -->
-        <div class="modal-actions">
-            <button class="save-btn" *ngIf="mode === 'edit' || mode === 'create'" (click)="onSave()">
-                {{ mode === 'create' ? 'Upload' : 'Save' }}
-            </button>
-            <button class="cancel-btn" (click)="onClose()">{{ mode === 'view' ? 'Close' : 'Cancel' }}</button>
-        </div>
+            <!-- FOOTER -->
+            <div class="modal-actions">
+                <button type="submit" class="save-btn" *ngIf="mode === 'edit' || mode === 'create'">
+                    {{ mode === 'create' ? 'Upload' : 'Save' }}
+                </button>
+                <button type="button" class="cancel-btn" (click)="onClose()">
+                    {{ mode === 'view' ? 'Close' : 'Cancel' }}
+                </button>
+            </div>
+        </form>
     </div>
-
 </div>

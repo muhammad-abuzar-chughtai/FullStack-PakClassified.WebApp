@@ -1,36 +1,42 @@
 <div class="modal-backdrop">
-  <div class="modal" *ngIf="model">
-    <!-- <div class="modal"> -->
-      <h3>
-        {{ mode === 'create' ? 'Add ' + entityName : 'Update ' + entityName }}
-      </h3>
+  <div class="modal" *ngIf="model && form">
 
-      <!-- <form action="post" (ngSubmit)="submit()"> -->
-        <div *ngFor="let field of fields">
+    <h3>
+      {{ mode === 'create' ? 'Add ' + entityName : 'Update ' + entityName }}
+    </h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div *ngFor="let field of fields">
 
         <label>{{ field.label }}</label>
 
-        <!-- Text Input -->
-        <input *ngIf="field.type === 'text'" [(ngModel)]="model[field.key]" placeholder="{{ field.label }}" />
-        
-        <!-- Text Area Input -->
-        <textarea rows="8" *ngIf="field.type === 'textarea'" [(ngModel)]="model[field.key]" placeholder="{{ field.label }}"></textarea>
+        <input *ngIf="field.type === 'text'" [formControlName]="field.key" placeholder="{{ field.label }}"
+          [class.input-error]="showError(field.key)" />
+        <span class="field-error" *ngIf="showError(field.key)">{{ errorMsg(field.key) }}</span>
 
-        <!-- Dropdown -->
-        <select *ngIf="field.type === 'select'" [(ngModel)]="model[field.key]">
-          <option value="0">Select {{ field.label }}</option>
-          <option *ngFor="let option of field.options()" [value]="option.id">
+        <textarea rows="8" *ngIf="field.type === 'textarea'" [formControlName]="field.key"
+          placeholder="{{ field.label }}" [class.input-error]="showError(field.key)"></textarea>
+        <span class="field-error" *ngIf="field.type === 'textarea' && showError(field.key)">{{ errorMsg(field.key)
+          }}</span>
+
+        <select *ngIf="field.type === 'select'" [formControlName]="field.key"
+          [class.input-error]="showError(field.key)">
+          <option [ngValue]="0" disabled>Select {{ field.label }}</option>
+          <option *ngFor="let option of field.options()" [ngValue]="option.id">
             {{ option.name }}
           </option>
         </select>
+        <span class="field-error" *ngIf="field.type === 'select' && showError(field.key)">{{ errorMsg(field.key)
+          }}</span>
 
       </div>
-      <!-- </form> -->
 
       <div class="modal-actions">
-        <button class="save-btn" (click)="submit()">Save</button>
-        <button class="cancel-btn" (click)="close.emit()">Cancel</button>
+        <button type="submit" class="save-btn">Save</button>
+        <button type="button" class="cancel-btn" (click)="onClose()">Cancel</button>
       </div>
-    </div>
+
+    </form>
   </div>
-<!-- </div> -->
+</div>

@@ -68,7 +68,12 @@ namespace b._PakClassified.WebApp.Services.z._ModelHelper
             CreateMap<User, UserModel>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name))
                 .ReverseMap()
-                .ForMember(dest => dest.Password, opt => opt.Ignore());
+                .ForMember(dest => dest.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.Role, opt => opt.Ignore())           
+                .ForMember(dest => dest.Advertisements, opt => opt.Ignore()) 
+                .ForMember(dest => dest.IsActive, opt => opt.Ignore())     
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())   
+                .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore());
             CreateMap<Role, RoleModel>().ReverseMap();
 
             #endregion

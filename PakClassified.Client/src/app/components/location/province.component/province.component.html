@@ -1,17 +1,30 @@
 <div class="table-wrapper">
 
   <div class="table-header">
-    <h2>Province Management</h2>
+    <div class="page-header">
+      <h2>Province Management</h2>
+      <p class="breadcrumb mt-2"><a class="breadcrumb-link" routerLink="/admin">Home</a> / Location / Province
+        Management</p>
+    </div>
 
-    <button *ngIf="isAdmin()" 
-    class="primary-btn" (click)="addProvince()">
-      <i class="fas fa-plus plus"></i> Add 
+    <button *ngIf="isAdmin()" class="primary-btn" (click)="addProvince()">
+      <i class="fas fa-plus plus"></i> Add
     </button>
+  </div>
+
+  <div class="d-flex col-12 mb-3 pe-2">
+    <input class="search-input col-8" type="text" placeholder="Search Province..." [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
+
+    <select class="filter-select col-4" [ngModel]="selectedCountryId()" (ngModelChange)="selectedCountryId.set(+$event)">
+      <option value="0">Search by Country</option>
+      <option *ngFor="let c of countries()" [value]="c.id">{{ c.name }}</option>
+    </select>
   </div>
 
   <div class="table-container">
     <table class="component-table">
-    
+
       <thead>
         <tr>
           <th>#</th>
@@ -21,16 +34,19 @@
           <th *ngIf="isAdmin()">Actions</th>
         </tr>
       </thead>
-     
+
       <tbody>
-        <tr *ngFor="let province of provinces(); let i = index">
+
+        <!-- <tr *ngIf="filteredProvinces().length === 0"> -->
+        <tr *ngFor="let province of filteredProvinces(); let i = index">
+
           <td>{{ i + 1 }}</td>
           <td>{{ province.name }}</td>
-          
+
           <td>{{ province.countryName }}</td>
-          
+
           <td>{{ province.createdBy || '' }}</td>
-          
+
           <td *ngIf="isAdmin()" class="actions">
             <button class="edit-btn" (click)="editProvince(province)"><i class="fas fa-edit icon"></i></button>
             <button class="delete-btn" (click)="deleteProvince(province.id)"><i class="fas fa-trash icon"></i></button>
@@ -38,7 +54,7 @@
 
         </tr>
 
-        <tr *ngIf="provinces().length === 0">
+        <tr *ngIf="filteredProvinces().length === 0">
           <td colspan="5" class="empty">No provinces found.</td>
         </tr>
       </tbody>
@@ -47,12 +63,6 @@
 
 </div>
 
-<app-modal
-  *ngIf="modalOpen()"
-  [fields]="provinceFields"
-  [model]="selectedProvince() || {}"
-  [mode]="modalMode()"
-  entityName="Province"
-  (save)="saveProvince($event)"
-  (close)="modalOpen.set(false)">
+<app-modal *ngIf="modalOpen()" [fields]="provinceFields" [model]="selectedProvince() || {}" [mode]="modalMode()"
+  entityName="Province" (save)="saveProvince($event)" (close)="modalOpen.set(false)">
 </app-modal>

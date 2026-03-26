@@ -5,11 +5,12 @@ import { ModalComponent } from '../../../shared/modal.component/modal.component'
 import { Country } from '../../../core/models/location/country-model';
 import { CountryService } from '../../../core/services/location/country-service';
 import { AuthService } from '../../../core/services/auth/auth-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-country',
   standalone: true,
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, RouterModule, FormsModule],
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.css']
 })
@@ -23,7 +24,15 @@ export class CountryComponent implements OnInit {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
-
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  filteredCountries = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.countries();
+    return this.countries().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
 
 
   constructor(private countryService: CountryService, private auth: AuthService) { }

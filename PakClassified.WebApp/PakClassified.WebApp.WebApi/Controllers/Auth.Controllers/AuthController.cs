@@ -79,9 +79,9 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
         [Route("Signin/")]
         public async Task<IActionResult> Signin([FromBody] SigninModel request)
         {
-           
+
             var response = await _authService.SignInAsync(request);
-            if(response.userModel == null || response.Token == null)
+            if (response.userModel == null || response.Token == null)
             {
                 return NotFound("Invalid Credentials, User Not Found.");
             }
@@ -94,5 +94,24 @@ namespace PakClassified.WebApp.WebApi.Controllers.Auth.Controllers
             return Ok(new { Token = token, Payload = responseModel });
 
         }
+
+
+        [AllowAnonymous]
+        [HttpPost("verify-security")]
+        public async Task<IActionResult> VerifySecurity([FromBody] ForgetPassDto forgetPassDto)
+        {
+            var token = await _authService.VerifySecurityAsync(forgetPassDto);
+            return Ok(new { resetToken = token });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            await _authService.ResetPasswordAsync(dto);
+            return Ok(new { message = "Password reset successfully." });
+        }
+
+
     }
 }

@@ -6,14 +6,15 @@ import { AdvertisementImageGet, AdvertisementImagePost } from '../../../core/mod
 import { AdvertisementService } from '../../../core/services/pakClassified/advertisement-service';
 import { AuthService } from '../../../core/services/auth/auth-service';
 import { AdvertisementImageService } from '../../../core/services/pakClassified/advertisement-image-service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, single } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ViewModal } from "./view-modal/view-modal";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-advertisement-image',
   standalone: true,
-  imports: [RouterModule, CommonModule, ImageCard, ViewModal],
+  imports: [RouterModule, CommonModule, ImageCard, ViewModal, FormsModule],
   templateUrl: './advertisement-image.html',
   styleUrl: './advertisement-image.css',
 })
@@ -34,6 +35,21 @@ export class AdvertisementImageComponent {
   isAdmin = computed(() => this.roleName() === 'Admin');
   // --- Parent Data ---
   advertisements = signal<Advertisement[]>([]);
+  // --- Loader ---
+  isLoading = signal(false);
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  selectedAdvertisemnetId = signal<number>(0);
+  filteredImages = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const advertisemnetId = this.selectedAdvertisemnetId();
+
+    return this.imagesGet().filter(i => {
+      const matchesName = !q || i.name.toLowerCase().includes(q);
+      const matchesCountry = advertisemnetId === 0 || i.advertisementId === advertisemnetId;
+      return matchesName && matchesCountry;
+    });
+  });
 
   constructor(
     private adService: AdvertisementService,
@@ -48,6 +64,7 @@ export class AdvertisementImageComponent {
 
   // --- Fetching Parent Data ---
   loadParent() {
+    this.isLoading.set(true);
     forkJoin({
       ads: this.adService.getAll()
     }).subscribe(({ ads, }) => {
@@ -69,6 +86,8 @@ export class AdvertisementImageComponent {
 
       this.imagesGet.set(enrichedImages);
     });
+    this.isLoading.set(false);
+
   }
 
   // --- View Image ---

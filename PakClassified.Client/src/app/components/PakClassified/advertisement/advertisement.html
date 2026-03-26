@@ -14,20 +14,19 @@
 
   <!-- TOOLBAR -->
   <div class="toolbar col-12">
-    <input class="search-input col-10" type="text" placeholder="Search Advertisement...">
-
-    <select class="filter-select col-2">
-      <option>Apply Filters</option>
-      <option>Active</option>
-      <option>Inactive</option>
-      <option>Pending</option>
-    </select>
+    <input class="search-input col-10" type="text" placeholder="Search Advertisement..." [(ngModel)]="searchTerm"
+      (input)="searchTerm.set($event.target.value)">
+    <button class="filter-select col-2"><i class="fa-solid fa-filter"></i> Apply Filters</button>
   </div>
 
   <!-- CATALOGUE SECTION -->
-  <div class="catalogue">
+  <div *ngIf="isLoading()" class="loading-spinner">
+    <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+    <p class="mt-3 text-secondary">Loading...</p>
+  </div>
+  <div *ngIf="!isLoading()" class="catalogue">
 
-    <app-ad-card *ngFor="let ad of advertisements()" [ad]="ad" (view)="viewAdvertisement($event)"
+    <app-ad-card *ngFor="let ad of filteredAdvertisements()" [ad]="ad" (view)="viewAdvertisement($event)"
       (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
     </app-ad-card>
 

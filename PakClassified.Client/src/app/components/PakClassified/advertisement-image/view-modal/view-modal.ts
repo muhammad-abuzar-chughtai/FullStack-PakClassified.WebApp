@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, signal, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { AdvertisementImageGet, AdvertisementImagePost } from '../../../../core/models/pakClassified/advertisement-image-model';
 import { Advertisement } from '../../../../core/models/pakClassified/advertisement-model';
@@ -7,7 +8,7 @@ import { Advertisement } from '../../../../core/models/pakClassified/advertiseme
 @Component({
   selector: 'app-view-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './view-modal.html',
   styleUrl: './view-modal.css',
 })
@@ -20,26 +21,51 @@ export class ViewModal implements OnChanges {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<AdvertisementImagePost>();
 
-  form: Partial<AdvertisementImagePost> = {};
   previewUrl: string | null = null;
   selectedFile: File | null = null;
+  formError = signal('');
+  fileError = signal(false);
+
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    name: ['', Validators.required],
+    caption: [''],
+    advertisementId: [0, [Validators.required, Validators.min(1)]],
+  });
+
+  // ── same helpers ──
+  ctrl(name: string): AbstractControl {
+    return (this.form as any).get(name)!;
+  }
+  showError(name: string): boolean {
+    const c = this.ctrl(name);
+    return c.invalid && c.touched;
+  }
+  errorMsg(name: string): string {
+    const errors = this.ctrl(name).errors;
+    if (!errors) return '';
+    if (errors['required']) return 'This field is required.';
+    if (errors['min']) return 'Please select an advertisement.';
+    return 'Invalid value.';
+  }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.formError.set('');
+    this.fileError.set(false);
+
     if (changes['mode'] && this.mode === 'create') {
-      // blank form for create
-      this.form = { id: 0, name: '', caption: '', advertisementId: 0, createdBy: 'string' };
+      this.form.reset({ name: '', caption: '', advertisementId: 0 });
       this.previewUrl = null;
       this.selectedFile = null;
       return;
     }
     if ((changes['image'] || changes['mode']) && this.image) {
-      this.form = {
-        id: this.image.id,
+      this.form.patchValue({
         name: this.image.name,
         caption: this.image.caption ?? '',
         advertisementId: this.image.advertisementId,
-        createdBy: this.image.createdBy,
-      };
+      });
       this.previewUrl = `data:image/jpeg;base64,${this.image.content}`;
       this.selectedFile = null;
     }
@@ -49,42 +75,58 @@ export class ViewModal implements OnChanges {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
     this.selectedFile = input.files[0];
+    this.fileError.set(false);
     const reader = new FileReader();
     reader.onload = () => (this.previewUrl = reader.result as string);
     reader.readAsDataURL(this.selectedFile);
   }
 
   onSave() {
-    if (!this.form.name || !this.form.advertisementId) return;
-    if (!this.selectedFile && this.mode === 'create') return; // file required for create
+    this.form.markAllAsTouched();
+    this.formError.set('');
+    this.fileError.set(false);
 
+    if (this.form.invalid) {
+      this.formError.set('Please fill in all required fields.');
+      return;
+    }
+
+    if (!this.selectedFile && this.mode === 'create') {
+      this.formError.set('Please select an image file.');
+      this.fileError.set(true);
+      return;
+    }
+
+    const val = this.form.getRawValue();
     const contentToSend: File = this.selectedFile
       ? this.selectedFile
       : this.base64ToFile(this.image!.content, this.image!.name);
 
     this.save.emit({
-      id: this.form.id ?? 0,
-      name: this.form.name!,
-      caption: this.form.caption ?? '',
-      advertisementId: Number(this.form.advertisementId),
-      createdBy: this.form.createdBy ?? '',
+      id: this.image?.id ?? 0,
+      name: val.name!,
+      caption: val.caption ?? '',
+      advertisementId: Number(val.advertisementId),
+      createdBy: this.image?.createdBy ?? '',
       contentFile: contentToSend,
     } as AdvertisementImagePost);
   }
 
-  // Convert existing base64 back to File so API accepts it
   private base64ToFile(base64: string, filename: string): File {
     const byteString = atob(base64);
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
+    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
     const blob = new Blob([ab], { type: 'image/jpeg' });
     return new File([blob], filename + '.jpg', { type: 'image/jpeg' });
   }
 
   onClose() {
+    this.form.reset({ name: '', caption: '', advertisementId: 0 });
+    this.previewUrl = null;
+    this.selectedFile = null;
+    this.formError.set('');
+    this.fileError.set(false);
     this.close.emit();
   }
 }

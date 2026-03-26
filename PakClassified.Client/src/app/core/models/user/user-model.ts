@@ -5,8 +5,8 @@ export interface UserGet {
   profilePic: string;
   contactNo: number;
   dob: Date;
-  secQuestion?: string;
-  secAnswer?: string;
+  secQues?: string;
+  secAns?: string;
   createdBy: string;
   lastmodifiedBy?: string;
   roleId: number;
@@ -21,8 +21,8 @@ export interface UserPost {
   profilePic: File;
   contactNo: number;
   dob: Date;
-  secQuestion?: string;
-  secAnswer?: string;
+  secQues?: string;
+  secAns?: string;
   createdBy: string;
   lastmodifiedBy?: string;
   roleId: number;

@@ -1,12 +1,19 @@
 <div class="table-wrapper">
 
   <div class="table-header">
-    <h2>Country Management</h2>
+    <div class="page-header">
+      <h2>Country Management</h2>
+      <p class="breadcrumb mt-2"><a class="breadcrumb-link" routerLink="/admin">Home</a> / Location / Country Management
+      </p>
+    </div>
 
     <button *ngIf="isAdmin()" class="primary-btn" (click)="addCountry()">
       <i class="fas fa-plus plus"></i> Add
     </button>
   </div>
+
+    <input class="search-input col-12 mb-3" type="text" placeholder="Search Country..." [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
 
   <div class="table-container">
     <table class="component-table">
@@ -21,7 +28,8 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let country of countries(); let i = index">
+        <!-- <tr *ngIf="filteredCountries().length === 0"> -->
+        <tr *ngFor="let country of filteredCountries(); let i = index">
 
           <td>{{ i + 1 }}</td>
           <td>{{ country.name }}</td>
@@ -34,7 +42,7 @@
 
         </tr>
 
-        <tr *ngIf="countries().length === 0">
+        <tr *ngIf="filteredCountries().length === 0">
           <td colspan="4" class="empty">
             No countries found.
           </td>

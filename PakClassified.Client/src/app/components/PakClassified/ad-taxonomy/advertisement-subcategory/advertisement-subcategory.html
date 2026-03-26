@@ -9,6 +9,16 @@
     </button>
   </div>
 
+  <div class="d-flex col-12 mb-3 pe-2">
+    <input class="search-input col-8" type="text" placeholder="Search Sub Category..."  [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
+  
+  <select class="filter-select col-4" [ngModel]="selectedCategoryId()" (ngModelChange)="selectedCategoryId.set(+$event)">
+      <option value="0">Search by Category</option>
+        <option *ngFor="let c of categories()" [value]="c.id">{{ c.name }}</option>
+    </select>
+  </div>
+
   <div class="table-container">
     <table class="component-table">
     
@@ -24,10 +34,10 @@
       </thead>
      
       <tbody>
-        <tr *ngFor="let subCategory of subCategories(); let i = index">
+        <tr *ngFor="let subCategory of filteredSubCategories(); let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ subCategory.name }}</td>
-          <td>{{ subCategory.description }}</td>   
+          <td class="normal-text">{{ subCategory.description }}</td>   
           <td>{{ subCategory.categoryName }}</td>   
           <td>{{ subCategory.createdBy || '' }}</td>
           
@@ -38,7 +48,7 @@
 
         </tr>
 
-        <tr *ngIf="subCategories().length === 0">
+        <tr *ngIf="filteredSubCategories().length === 0">
           <td colspan="5" class="empty">No sub-categories found.</td>
         </tr>
       </tbody>

@@ -14,35 +14,6 @@
   margin-bottom: 4px;
 }
 
-/* TOOLBAR */
-
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  margin-bottom: 20px;
-}
-
-
-.search-input {
-  padding: 8px 12px;
-  /* width: 260px; */
-  margin-right: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-}
-
-.filter-select {
-  padding: 8px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-}
-
-
 /* ADD BUTTON */
 
 .add-btn {
@@ -76,6 +47,14 @@
   grid-auto-rows: 1fr;
   gap: 10px;
 }
+
+/* Loader */
+.loading-spinner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 /* Tab */
 @media (max-width: 992px) {

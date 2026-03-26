@@ -22,8 +22,8 @@ namespace a._PakClassified.WebApp.Entities.Mapping.UserEntities
                    .HasMaxLength(100);
 
             builder.Property(c => c.Email)
-                  .IsRequired()
-                  .HasMaxLength(100);
+                   .IsRequired()
+                   .HasMaxLength(100);
             builder.HasIndex(c => c.Email)
                   .IsUnique();
 
@@ -36,9 +36,9 @@ namespace a._PakClassified.WebApp.Entities.Mapping.UserEntities
                    .HasColumnType("varbinary(max)");
 
             builder.Property(u => u.ContactNo)
-                .IsRequired()
-                .HasColumnType("int")
-                .HasMaxLength(15);
+                   .IsRequired()
+                   .HasColumnType("int")
+                   .HasMaxLength(15);
 
             builder.Property(c => c.DOB)
                    .IsRequired()
@@ -65,8 +65,16 @@ namespace a._PakClassified.WebApp.Entities.Mapping.UserEntities
                    .HasColumnType("datetime2");
 
             builder.Property(c => c.IsActive)
-                .IsRequired()
-                .HasColumnType("bit");
+                   .IsRequired()
+                   .HasColumnType("bit");
+
+            builder.Property(u => u.ResetToken)
+                   .HasColumnType("nvarchar(50)")
+                   .IsRequired(false);
+
+            builder.Property(u => u.ResetTokenExpiry)
+                   .HasColumnType("datetime2")
+                   .IsRequired(false);
 
             builder.HasOne(c => c.Role)
                    .WithMany(r => r.Users)

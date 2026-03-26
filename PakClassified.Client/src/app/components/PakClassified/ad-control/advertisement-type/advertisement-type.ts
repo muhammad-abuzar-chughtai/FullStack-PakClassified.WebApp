@@ -4,10 +4,11 @@ import { AdvertisementTypeService } from '../../../../core/services/pakClassifie
 import { AuthService } from '../../../../core/services/auth/auth-service';
 import { AdvertisementType } from '../../../../core/models/pakClassified/advertisement-type-model';
 import { ModalComponent } from "../../../../shared/modal.component/modal.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-advertisement-type',
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './advertisement-type.html',
   styleUrl: './advertisement-type.css',
 })
@@ -23,6 +24,16 @@ export class AdvertisementTypeComponent implements OnInit {
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
   
+// Search Filter based on keyword
+  searchQuery = signal('');
+  filteredTypes = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.types();
+    return this.types().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
+
   constructor(
     private typeService: AdvertisementTypeService,
     private auth: AuthService

@@ -1,90 +1,185 @@
 <div class="auth-wrapper">
-
   <div class="auth-card">
 
     <!-- LEFT BRAND SIDE -->
     <div class="auth-brand">
       <h1>PakClassified</h1>
-      <p class="tagline">
-        Geo-Targeting Advertisement WebApp
-      </p>
-
+      <p class="tagline">Geo-Targeting Advertisement WebApp</p>
       <p class="description">
-        PakClassified is a smart geo-location based advertisement platform 
-        that allows users to post, discover and manage classified ads 
-        targeted to specific cities and areas across Pakistan. 
+        PakClassified is a smart geo-location based advertisement platform
+        that allows users to post, discover and manage classified ads
+        targeted to specific cities and areas across Pakistan.
         It ensures precise visibility, better reach, and localized engagement.
       </p>
-
-      <p class="normal-text">
-        Design & Developed by Muhammad Abuzar Chughtai
-      </p>
+      <p class="normal-text">Design & Developed by Muhammad Abuzar Chughtai</p>
     </div>
 
     <!-- RIGHT FORM SIDE -->
     <div class="auth-form">
 
+      <!-- ── SIGN IN / SIGN UP ── -->
+      @if (!isForgotPassword()) {
+
       <h1>{{ title() }}</h1>
+
+      <!-- ✅ API error banner -->
+      @if (apiError()) {
+      <div class="error-msg">{{ apiError() }}</div>
+      }
 
       <form [formGroup]="form" (ngSubmit)="submit()">
 
         @if (isSignUp()) {
-          <div class="form-group">
-            <input type="text" placeholder="Full Name" formControlName="name">
-          </div>
+        <div class="form-group">
+          <!-- ✅ validation bindings added -->
+          <input type="text" placeholder="Full Name" formControlName="name" [class.input-error]="showError('name')" />
+          <span class="field-error" *ngIf="showError('name')">{{ errorMsg('name') }}</span>
+        </div>
         }
 
         <div class="form-group">
-          <input type="email" placeholder="Email" formControlName="email">
+          <input type="email" placeholder="Email" formControlName="email" [class.input-error]="showError('email')" />
+          <span class="field-error" *ngIf="showError('email')">{{ errorMsg('email') }}</span>
         </div>
 
         <div class="form-group">
-          <input type="password" placeholder="Password" formControlName="pass">
+          <input type="password" placeholder="Password" formControlName="pass"
+            [class.input-error]="showError('pass')" />
+          <span class="field-error" *ngIf="showError('pass')">{{ errorMsg('pass') }}</span>
         </div>
 
         @if (isSignUp()) {
+        <div class="form-group">
+          <input type="file" (change)="onFileChange($event)" />
+        </div>
 
-          <div class="form-group">
-            <input type="file" (change)="onFileChange($event)">
-          </div>
+        <div class="form-group">
+          <input type="number" placeholder="Contact No" formControlName="contactNo"
+            [class.input-error]="showError('contactNo')" />
+          <span class="field-error" *ngIf="showError('contactNo')">{{ errorMsg('contactNo') }}</span>
+        </div>
 
-          <div class="form-group">
-            <input type="number" placeholder="Contact No" formControlName="contactNo">
-          </div>
+        <div class="form-group">
+          <input type="date" formControlName="dob" [class.input-error]="showError('dob')" />
+          <span class="field-error" *ngIf="showError('dob')">{{ errorMsg('dob') }}</span>
+        </div>
 
-          <div class="form-group">
-            <input type="date" formControlName="dob">
-          </div>
+        <div class="form-group">
+          <input type="text" placeholder="Security Question" formControlName="secQuestion"
+            [class.input-error]="showError('secQuestion')" />
+          <span class="field-error" *ngIf="showError('secQuestion')">{{ errorMsg('secQuestion') }}</span>
+        </div>
 
-          <div class="form-group">
-            <input type="text" placeholder="Security Question" formControlName="secQuestion">
-          </div>
-
-          <div class="form-group">
-            <input type="text" placeholder="Security Answer" formControlName="secAnswer">
-          </div>
+        <div class="form-group">
+          <input type="text" placeholder="Security Answer" formControlName="secAnswer"
+            [class.input-error]="showError('secAnswer')" />
+          <span class="field-error" *ngIf="showError('secAnswer')">{{ errorMsg('secAnswer') }}</span>
+        </div>
         }
 
-        <button type="submit">
+        <button type="submit" [disabled]="isLoading()"
+          style="display:flex; align-items:center; justify-content:center; gap:8px;">
+          @if (isLoading()) {
+          <span class="btn-spinner"></span>
+          {{ isSignUp() ? 'Registering...' : 'Signing in...' }}
+          } @else {
           {{ buttonText() }}
+          }
         </button>
 
       </form>
 
       <div class="switch-mode">
         @if (!isSignUp()) {
-          <span>Don't have an account?
-            <a (click)="toggleMode()">Sign Up</a>
-          </span>
+        <span>Don't have an account? <a (click)="toggleMode()">Sign Up</a></span>
+        <span><a (click)="goToForgotPassword()">Forgot Password?</a></span>
         } @else {
-          <span>Already have an account?
-            <a (click)="toggleMode()">Sign In</a>
-          </span>
+        <span>Already have an account? <a (click)="toggleMode()">Sign In</a></span>
         }
       </div>
 
+      }
+
+      <!-- ── FORGOT PASSWORD: STEP 1 ── -->
+      @if (isForgotPassword() && forgotStep() === 1) {
+
+      <h1>Forgot Password</h1>
+      <p class="form-subtitle">Verify your identity to continue</p>
+
+      @if (forgotError()) {
+      <div class="error-msg">{{ forgotError() }}</div>
+      }
+
+      <form [formGroup]="forgotForm" (ngSubmit)="verifyIdentity()">
+
+        <div class="form-group">
+          <input type="email" placeholder="Email" formControlName="email"
+            [class.input-error]="showError('email', 'forgot')" />
+          <span class="field-error" *ngIf="showError('email', 'forgot')">{{ errorMsg('email', 'forgot') }}</span>
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder="Security Question" formControlName="secQues"
+            [class.input-error]="showError('secQues', 'forgot')" />
+          <span class="field-error" *ngIf="showError('secQues', 'forgot')">{{ errorMsg('secQues', 'forgot') }}</span>
+        </div>
+
+        <div class="form-group">
+          <input type="text" placeholder="Security Answer" formControlName="secAns"
+            [class.input-error]="showError('secAns', 'forgot')" />
+          <span class="field-error" *ngIf="showError('secAns', 'forgot')">{{ errorMsg('secAns', 'forgot') }}</span>
+        </div>
+
+        <button type="submit" [disabled]="forgotLoading()">
+          {{ forgotLoading() ? 'Verifying...' : 'Verify' }}
+        </button>
+
+      </form>
+
+      <div class="switch-mode">
+        <span>Remembered it? <a (click)="backToLogin()">Back to Login</a></span>
+      </div>
+
+      }
+
+      <!-- ── FORGOT PASSWORD: STEP 2 ── -->
+      @if (isForgotPassword() && forgotStep() === 2) {
+
+      <h1>Reset Password</h1>
+      <p class="form-subtitle">Choose a new password</p>
+
+      @if (forgotError()) {
+      <div class="error-msg">{{ forgotError() }}</div>
+      }
+
+      <form [formGroup]="resetForm" (ngSubmit)="resetPassword()">
+
+        <div class="form-group">
+          <input type="password" placeholder="New Password" formControlName="newPassword"
+            [class.input-error]="showError('newPassword', 'reset')" />
+          <span class="field-error" *ngIf="showError('newPassword', 'reset')">{{ errorMsg('newPassword', 'reset')
+            }}</span>
+        </div>
+
+        <div class="form-group">
+          <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"
+            [class.input-error]="showError('confirmPassword', 'reset')" />
+          <span class="field-error" *ngIf="showError('confirmPassword', 'reset')">{{ errorMsg('confirmPassword',
+            'reset') }}</span>
+        </div>
+
+        <button type="submit" [disabled]="forgotLoading()">
+          {{ forgotLoading() ? 'Resetting...' : 'Reset Password' }}
+        </button>
+
+      </form>
+
+      <div class="switch-mode">
+        <span>Wrong account? <a (click)="goToForgotPassword()">Start Over</a></span>
+      </div>
+
+      }
+
     </div>
-
   </div>
-
 </div>

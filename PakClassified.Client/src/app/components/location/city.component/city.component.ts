@@ -7,11 +7,12 @@ import { CityService } from '../../../core/services/location/city-service';
 import { Province } from '../../../core/models/location/province-model';
 import { ProvinceService } from '../../../core/services/location/province-service';
 import { AuthService } from '../../../core/services/auth/auth-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-city',
   standalone: true,
-  imports: [CommonModule, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule, RouterModule],
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
@@ -26,6 +27,19 @@ export class CityComponent implements OnInit {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
+// Search Filter based on keyword
+  searchQuery = signal('');
+  selectedProvinceId = signal<number>(0);
+  filteredCities = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const provinceId = this.selectedProvinceId();
+
+    return this.cities().filter(p => {
+      const matchesName = !q || p.name.toLowerCase().includes(q);
+      const matchesCountry = provinceId === 0 || p.provinceId === provinceId;
+      return matchesName && matchesCountry;
+    });
+  });
 
   constructor(private cityService: CityService, private provinceService: ProvinceService, private auth: AuthService) { }
 

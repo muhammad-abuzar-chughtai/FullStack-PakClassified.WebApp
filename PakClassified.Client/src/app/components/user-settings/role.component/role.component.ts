@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Role } from '../../../core/models/user/role-model';
 import { AuthService } from '../../../core/services/auth/auth-service';
 import { RoleService } from '../../../core/services/user/role-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-role.component',
   standalone: true,
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './role.component.html',
   styleUrl: './role.component.css',
 })
@@ -22,7 +23,15 @@ export class RoleComponent implements OnInit {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
-
+// Search Filter based on keyword
+  searchQuery = signal('');
+  filteredRoles = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.roles();
+    return this.roles().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
   
   constructor(private roleService: RoleService, private auth: AuthService) { }
 

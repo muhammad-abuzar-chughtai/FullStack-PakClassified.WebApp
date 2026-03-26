@@ -8,6 +8,9 @@
         </button>
     </div>
 
+    <input class="search-input col-12 mb-3" type="text" placeholder="Search Type..."  [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
+
     <div class="table-container">
         <table class="component-table">
 
@@ -21,7 +24,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let type of types(); let i = index">
+                <tr *ngFor="let type of filteredTypes(); let i = index">
 
                     <td>{{ i + 1 }}</td>
                     <td>{{ type.name }}</td>
@@ -35,7 +38,7 @@
 
                 </tr>
 
-                <tr *ngIf="types().length === 0">
+                <tr *ngIf="filteredTypes().length === 0">
                     <td colspan="4" class="empty">
                         No types found.
                     </td>

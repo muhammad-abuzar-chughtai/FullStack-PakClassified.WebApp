@@ -16,15 +16,16 @@ import { AdvertisementSubCategoryService } from '../../../core/services/pakClass
 import { AdvertisementTypeService } from '../../../core/services/pakClassified/advertisement-type-service';
 import { AdvertisementTagService } from '../../../core/services/pakClassified/advertisement-tag-service';
 import { AdvertisementStatusService } from '../../../core/services/pakClassified/advertisement-status-service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { AdvertisementImageGet } from '../../../core/models/pakClassified/advertisement-image-model';
 import { AdvertisementImageService } from '../../../core/services/pakClassified/advertisement-image-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-advertisement',
   standalone: true,
-  imports: [CommonModule, AdCardComponent],
+  imports: [CommonModule, FormsModule, AdCardComponent],
   templateUrl: './advertisement.html',
   styleUrl: './advertisement.css',
 })
@@ -51,6 +52,23 @@ export class AdvertisementComponent {
   tags = signal<AdvertisementTag[]>([]);
   // --- Images ---
   images = signal<AdvertisementImageGet[]>([]);
+  // Add signal
+  searchTerm = signal('');
+  // Loading
+  isLoading = signal(false);
+
+
+  // Add filtered computed signal
+  filteredAdvertisements = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    if (!term) return this.advertisements();
+
+    return this.advertisements().filter(ad =>
+      ad.name?.toLowerCase().includes(term) ||
+      ad.title?.toLowerCase().includes(term) ||
+      ad.description?.toLowerCase().includes(term)
+    );
+  });
 
 
   constructor(
@@ -72,42 +90,35 @@ export class AdvertisementComponent {
 
   // --- Fetching Parent Data ---
   loadParent() {
-    forkJoin({
+    // Build the base observables
+    const base$ = forkJoin({
       cityAreas: this.cityAreaService.getAll(),
       statuses: this.statusService.getAll(),
       subCategories: this.subCategoryService.getAll(),
       types: this.typeService.getAll(),
       tags: this.tagService.getAll(),
       images: this.imageService.getAll(),
-    }).subscribe(({ cityAreas, statuses, subCategories, types, tags, images }) => {
-      // Set all signals FIRST
+    });
+
+    // Conditionally include users for admins
+    const users$ = this.isAdmin()
+      ? this.postedByService.getAll()
+      : of<UserGet[]>([]);
+
+    this.isLoading.set(true);
+    forkJoin({ base: base$, users: users$ }).subscribe(({ base, users }) => {
+      const { cityAreas, statuses, subCategories, types, tags, images } = base;
+
       this.cityAreas.set(cityAreas);
       this.statuses.set(statuses);
       this.subCategories.set(subCategories);
       this.types.set(types);
       this.tags.set(tags);
       this.images.set(images);
+      this.users.set(users);
 
-      // THEN load and enrich advertisements
-      this.loadUsers();
       this.load();
     });
-  }
-  loadUsers() {
-    if (this.isAdmin()) {
-      this.postedByService.getAll().subscribe({
-        next: (users) => this.users.set(users),
-        error: () => this.users.set([]),  // graceful fallback
-      });
-    }
-    // } else {
-    //   // Non-admins: fetch only their own user profile
-    //   this.postedByService.getById(this.auth.userId()).subscribe({
-    //     next: (user) => this.users.set([user]),
-    //     error: () => this.users.set([]),
-    //     complete: () => this.load()
-    //   });
-    // }
   }
 
 
@@ -136,6 +147,7 @@ export class AdvertisementComponent {
 
       this.advertisements.set(enrichedAdvertisements);
     });
+    this.isLoading.set(false);
   }
 
 

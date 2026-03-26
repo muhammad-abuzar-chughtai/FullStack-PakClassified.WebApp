@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManagerLayout } from './manager-layout';
+import { CreateEdit } from './create-edit';
 
-describe('ManagerLayout', () => {
-  let component: ManagerLayout;
-  let fixture: ComponentFixture<ManagerLayout>;
+describe('CreateEdit', () => {
+  let component: CreateEdit;
+  let fixture: ComponentFixture<CreateEdit>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ManagerLayout]
+      imports: [CreateEdit]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ManagerLayout);
+    fixture = TestBed.createComponent(CreateEdit);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -23,20 +23,20 @@
 
     <div class="ad-meta">
       <span>
-        📍 {{ ad.cityArea }}
+        <i class="fa-solid fa-map-location-dot sub-icons"></i> {{ ad.cityArea }}
       </span>
 
       <span>
-        {{ ad.subCategory }}
+        <i class="fa-solid fa-sitemap sub-icons"></i> {{ ad.subCategory }}
       </span>
     </div>
 
     <div class="ad-footer">
 
       <span class="ad-date">
-        Started: {{ ad.startsOn | date:'dd MMM yyyy' }}
+        <i class="fa fa-calendar sub-icon"></i> Started: {{ ad.startsOn | date:'dd MMM yyyy' }}
         <br>
-        Ended: {{ ad.endsOn | date:'dd MMM yyyy' }}
+        <i class="fa fa-calendar sub-icon"></i> Ended: {{ ad.endsOn | date:'dd MMM yyyy' }}
       </span>
 
       <div class="actions">

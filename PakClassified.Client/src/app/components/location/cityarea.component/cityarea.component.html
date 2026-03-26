@@ -1,12 +1,25 @@
 <div class="table-wrapper">
 
   <div class="table-header">
-    <h2>City Area Management</h2>
+    <div class="page-header">
+      <h2>City Area Management</h2>
+      <p class="breadcrumb mt-2"><a class="breadcrumb-link" routerLink="/admin">Home</a> / Location / City Area Management</p>
+    </div>
 
     <button *ngIf="isAdmin()" 
     class="primary-btn" (click)="addCityArea()">
       <i class="fas fa-plus plus"></i> Add 
     </button>
+  </div>
+
+  <div class="d-flex col-12 mb-3 pe-2">
+    <input class="search-input col-8" type="text" placeholder="Search City Area..." [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
+
+    <select class="filter-select col-4" [ngModel]="selectedCityId()" (ngModelChange)="selectedCityId.set(+$event)">
+      <option value="0">Search by City</option>
+        <option *ngFor="let c of cities()" [value]="c.id">{{ c.name }}</option>
+    </select>
   </div>
 
   <div class="table-container">
@@ -23,7 +36,7 @@
       </thead>
      
       <tbody>
-        <tr *ngFor="let cityarea of cityareas(); let i = index">
+        <tr *ngFor="let cityarea of filteredCityareas(); let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ cityarea.name }}</td>
           
@@ -38,7 +51,7 @@
 
         </tr>
 
-        <tr *ngIf="cityareas().length === 0">
+        <tr *ngIf="filteredCityareas().length === 0">
           <td colspan="5" class="empty">No city areas found.</td>
         </tr>
       </tbody>

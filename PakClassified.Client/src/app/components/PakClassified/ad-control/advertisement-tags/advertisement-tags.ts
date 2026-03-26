@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../../../shared/modal.component/modal.component';
 import { AdvertisementTagService } from '../../../../core/services/pakClassified/advertisement-tag-service';
 import { AuthService } from '../../../../core/services/auth/auth-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-advertisement-tags',
-  imports: [CommonModule, ModalComponent],
+  imports: [CommonModule, ModalComponent, FormsModule],
   templateUrl: './advertisement-tags.html',
   styleUrl: './advertisement-tags.css',
 })
@@ -23,6 +24,16 @@ export class AdvertisementTagsComponent {
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
   
+// Search Filter based on keyword
+  searchQuery = signal('');
+  filteredTags = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    if (!q) return this.tags();
+    return this.tags().filter(c =>
+      c.name.toLowerCase().includes(q)
+    );
+  });
+
   constructor(
     private tagService: AdvertisementTagService,
     private auth: AuthService

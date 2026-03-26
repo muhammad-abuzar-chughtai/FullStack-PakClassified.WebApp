@@ -25,6 +25,19 @@ export class AdvertisementSubcategoryComponent {
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
   isAdmin = computed(() => this.roleName() === 'Admin');
+  // Search Filter based on keyword
+  searchQuery = signal('');
+  selectedCategoryId = signal<number>(0);
+  filteredSubCategories = computed(() => {
+    const q = this.searchQuery().trim().toLowerCase();
+    const categoryId = this.selectedCategoryId();
+
+    return this.subCategories().filter(sc => {
+      const matchesName = !q || sc.name.toLowerCase().includes(q);
+      const matchesCountry = categoryId === 0 || sc.categoryId === categoryId;
+      return matchesName && matchesCountry;
+    });
+  });
 
   constructor(private subCategoryService: AdvertisementSubCategoryService, private categoryService: AdvertisementCategoryService, private auth: AuthService) { }
 
@@ -63,7 +76,7 @@ export class AdvertisementSubcategoryComponent {
   subCategoryFields = [
     { key: 'name', label: 'Category Name', type: 'text' },
     { key: 'categoryId', label: 'Parent Category', type: 'select', options: this.categories },
-    { key: 'description', label: 'Description', type: 'textarea' },
+    { key: 'description', label: 'Description', type: 'textarea', required: false },
   ];
 
   // --- Add Category ---

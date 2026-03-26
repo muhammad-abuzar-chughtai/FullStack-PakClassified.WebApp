@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthGuard } from './auth.guard';
+import { DefaultLayout } from './default-layout';
 
-describe('AuthGuard', () => {
-  let component: AuthGuard;
-  let fixture: ComponentFixture<AuthGuard>;
+describe('DefaultLayout', () => {
+  let component: DefaultLayout;
+  let fixture: ComponentFixture<DefaultLayout>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthGuard]
+      imports: [DefaultLayout]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AuthGuard);
+    fixture = TestBed.createComponent(DefaultLayout);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

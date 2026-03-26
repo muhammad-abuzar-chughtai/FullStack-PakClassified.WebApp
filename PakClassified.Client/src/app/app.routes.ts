@@ -4,8 +4,8 @@ import { CountryComponent } from './components/location/country.component/countr
 import { ProvinceComponent } from './components/location/province.component/province.component';
 import { CityComponent } from './components/location/city.component/city.component';
 import { CityAreaComponent } from './components/location/cityarea.component/cityarea.component';
-import { authGuard } from './core/guards/auth.guard/auth.guard';
-import { roleGuard } from './core/guards/role.guard/role.guard';
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 import { WelcomeAdmin } from './layouts/admin-layout/welcome-admin/welcome-admin';
 import { AdControl } from './components/PakClassified/ad-control/ad-control';
 import { AdvertisementStatusComponent } from './components/PakClassified/ad-control/advertisement-status/advertisement-status';
@@ -21,6 +21,8 @@ import { CreateEdit } from './components/PakClassified/advertisement/create-edit
 import { UserSettings } from './components/user-settings/user-settings';
 import { UserComponent } from './components/user-settings/user.component/user.component';
 import { RoleComponent } from './components/user-settings/role.component/role.component';
+import { guestGuard } from './core/guards/guest.guard';
+import { CustomerLayout } from './layouts/customer-layout/customer-layout';
 
 export const routes: Routes = [
   {
@@ -74,10 +76,11 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: CustomerLayout },
 
   {
     path: 'login',
+    canActivate: [guestGuard],   // ← add this
     loadComponent: () =>
       import('./layouts/auth-layout/auth-layout')
         .then(m => m.AuthComponent)

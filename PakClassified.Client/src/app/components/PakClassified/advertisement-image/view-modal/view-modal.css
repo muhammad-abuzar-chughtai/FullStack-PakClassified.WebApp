@@ -200,10 +200,52 @@
   color: #cbd5e1;
 }
 
+.error-banner {
+  grid-column: 1 / -1;
+  width: 100%;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-error {
+  display: block;
+  font-size: 12px;
+  color: #b91c1c;
+  margin-top: 4px;
+}
+
+.input-error {
+  border-color: #f87171 !important;
+}
+
+.frame-error {
+  border-color: #f87171 !important;
+}
+
+.field-group input.input-error,
+.field-group select.input-error,
+.field-group textarea.input-error {
+  border-color: #f87171 !important;
+}
+
 /* ANIMATION */
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* RESPONSIVE */

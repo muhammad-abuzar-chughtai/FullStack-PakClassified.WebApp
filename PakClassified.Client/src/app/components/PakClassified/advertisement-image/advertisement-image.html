@@ -15,22 +15,25 @@
 
 
   <!-- TOOLBAR -->
-  <div class="toolbar col-12">
-    <input class="search-input col-8" type="text" placeholder="Search Image...">
+  <div class="d-flex col-12 mb-3 pe-2">
+    <input class="search-input col-8" type="text" placeholder="Search Image..." [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)" (keydown.enter)="searchQuery.set(searchQuery())" />
 
-    <select class="filter-select col-4">
-      <option>Search by Advertisement</option>
-      <option>Active</option>
-      <option>Inactive</option>
-      <option>Pending</option>
+    <select class="filter-select col-4"  [ngModel]="selectedAdvertisemnetId()" (ngModelChange)="selectedAdvertisemnetId.set(+$event)">
+      <option value="0">Search by Advertisement</option>
+      <option *ngFor="let a of advertisements()" [value]="a.id">{{ a.title }}</option>
     </select>
   </div>
 
 
   <!-- CATALOGUE SECTION -->
+   <div *ngIf="isLoading()" class="loading-spinner">
+    <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+    <p class="mt-3 text-secondary">Loading...</p>
+  </div>
   <div class="catalogue">
 
-    <app-image-card *ngFor="let image of imagesGet()" [image]="image" (view)="viewImage($event)"
+    <app-image-card *ngFor="let image of filteredImages()" [image]="image" (view)="viewImage($event)"
       (edit)="editImage($event)" (delete)="deleteImage($event)">
 
     </app-image-card>
