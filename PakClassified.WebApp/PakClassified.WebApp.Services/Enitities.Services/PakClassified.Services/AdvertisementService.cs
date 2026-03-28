@@ -21,7 +21,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
         Task<AdvertisementModel> CreateAsync(AdvertisementModel advertisement);
         Task<AdvertisementModel?> UpdateAsync(int id, AdvertisementModel advertisement);
         Task<AdvertisementModel?> DeleteAsync(int id, string username);
-        Task<IEnumerable<AdvertisementModel>> SearchAsync(AdvertisementSearchFilterModel filter);
     }
     public class AdvertisementService : IAdvertisementService
     {
@@ -259,50 +258,6 @@ namespace b._PakClassified.WebApp.Services.Enitities.Services.PakClassified.Serv
                 throw;
             }
         }
-
-        public async Task<IEnumerable<AdvertisementModel>> SearchAsync(AdvertisementSearchFilterModel filter)    //Used to Filter Advertisements based on SubCategory, Type, Status, Tags, PostedBy and CityArea.
-        {
-            var query = _dbContext.Advertisements.AsNoTracking().AsQueryable();
-
-            // SubCategory filter
-            if (filter.SubCategoryId.HasValue)
-            {
-                query = query.Where(a => a.SubCategoryId == filter.SubCategoryId.Value);
-            }
-
-            // Type filter
-            if (filter.TypeId.HasValue)
-            {
-                query = query.Where(a => a.TypeId == filter.TypeId.Value);
-            }
-
-            // Status filter
-            if (filter.StatusId.HasValue)
-            {
-                query = query.Where(a => a.StatusId == filter.StatusId.Value);
-            }
-
-            // Tag filter
-            if (filter.TagIds?.Any() == true)
-            {
-                query = query.Where(a => a.Tags.Any(at => filter.TagIds.Contains(at.Id)));
-            }
-
-            // PostedBy filter
-            if (filter.PostedById.HasValue)
-            {
-                query = query.Where(a => a.PostedById == filter.PostedById.Value);
-            }
-
-            // CityArea filter
-            if (filter.CityAreaId.HasValue)
-            {
-                query = query.Where(a => a.CityAreaId == filter.CityAreaId.Value);
-            }
-
-            return _mapper.Map<IEnumerable<AdvertisementModel>>(await query.OrderByDescending(a => a.CreatedDate).ToListAsync());
-        }
-
         
     }
 }
