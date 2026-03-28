@@ -107,7 +107,7 @@ export class ViewModal implements OnChanges {
       name: val.name!,
       caption: val.caption ?? '',
       advertisementId: Number(val.advertisementId),
-      createdBy: this.image?.createdBy ?? '',
+      createdBy: this.image?.createdBy ?? 'dfds',
       contentFile: contentToSend,
     } as AdvertisementImagePost);
   }

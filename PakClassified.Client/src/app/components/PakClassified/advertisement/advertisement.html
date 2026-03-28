@@ -16,8 +16,120 @@
   <div *ngIf="showToolbar()" class="toolbar col-12">
     <input class="search-input col-10" type="text" placeholder="Search Advertisement..." [(ngModel)]="searchTerm"
       (input)="searchTerm.set($event.target.value)">
-    <button class="filter-select col-2"><i class="fa-solid fa-filter"></i> Apply Filters</button>
+    <button class="filter-select" (click)="ShowFilter()"><i class="fa-solid fa-filter"></i> Apply Filters</button>
   </div>
+  <!-- 
+
+  <ng-container id="FilterPannel" *ngIf="showFilter()">
+    <app-filter-pannel (close)="CloseFilter()" (applyFilter)="onFiltersApplied($event)">
+    </app-filter-pannel>
+  </ng-container> -->
+  <!-- FILTER DRAWER -->
+  <div class="filter-overlay" *ngIf="showFilter()" (click)="CloseFilter()"></div>
+
+  <aside class="filter-drawer" [class.open]="showFilter()">
+
+    <div class="filter-header">
+      <div class="header-left">
+        <div class="filter-icon-wrap"><i class="fa-solid fa-sliders"></i></div>
+        <div>
+          <h2 class="filter-title">Filters</h2>
+          <span class="filter-subtitle">
+            {{ activeFilterCount > 0 ? activeFilterCount + ' applied' : 'Refine your results' }}
+          </span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="CloseFilter()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="filter-body">
+
+      <div class="filter-group">
+        <label class="filter-label"><i class="fa-solid fa-location-dot"></i> City / Area</label>
+        <div class="select-wrap">
+          <select class="filter-select" [ngModel]="filterCityArea()" (ngModelChange)="filterCityArea.set($event)">
+            <option value="">All Cities</option>
+            <option *ngFor="let c of cityAreas()" [value]="c.name">{{ c.name }}</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="filter-group" *ngIf="isAdmin()">
+        <label class="filter-label"><i class="fa-solid fa-user"></i> Posted By</label>
+        <div class="select-wrap">
+          <select class="filter-select" [ngModel]="filterPostedBy()" (ngModelChange)="filterPostedBy.set($event)">
+            <option value="">Anyone</option>
+            <option *ngFor="let u of users()" [value]="u.id">{{ u.name }}</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label"><i class="fa-solid fa-circle-half-stroke"></i> Status</label>
+        <div class="select-wrap">
+          <select class="filter-select" [ngModel]="filterStatus()" (ngModelChange)="filterStatus.set($event)">
+            <option value="">All Statuses</option>
+            <option *ngFor="let s of statuses()" [value]="s.name">{{ s.name }}</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label"><i class="fa-solid fa-layer-group"></i> Type</label>
+        <div class="select-wrap">
+          <select class="filter-select" [ngModel]="filterType()" (ngModelChange)="filterType.set($event)">
+            <option value="">All Types</option>
+            <option *ngFor="let t of types()" [value]="t.name">{{ t.name }}</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label"><i class="fa-solid fa-tags"></i> Sub Category</label>
+        <div class="select-wrap">
+          <select class="filter-select" [ngModel]="filterSubCategory()" (ngModelChange)="filterSubCategory.set($event)">
+            <option value="">All Sub Categories</option>
+            <option *ngFor="let sc of subCategories()" [value]="sc.name">{{ sc.name }}</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="filter-group">
+        <label class="filter-label">
+          <i class="fa-solid fa-hashtag"></i> Tags
+          <span class="tag-count" *ngIf="filterTags().length > 0">{{ filterTags().length }} selected</span>
+        </label>
+        <div class="tags-grid">
+          <button *ngFor="let tag of tags()" class="tag-chip" [class.tag-active]="filterTags().includes(tag.name)"
+            (click)="toggleTag(tag.name)">
+            <i class="fa-solid fa-check tag-check" *ngIf="filterTags().includes(tag.name)"></i>
+            {{ tag.name }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="filter-footer">
+      <button class="btn-reset" (click)="resetFilters()">
+        <i class="fa-solid fa-rotate-left"></i> Reset
+      </button>
+      <button class="btn-apply" (click)="CloseFilter()">
+        Apply
+        <span class="apply-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+      </button>
+    </div>
+
+  </aside>
+  <!-- -------------------------------------------------------------------------------------------------- -->
+
 
   <!-- CATALOGUE SECTION -->
   <div *ngIf="isLoading()" class="loading-spinner">
@@ -25,13 +137,13 @@
     <p class="mt-3 text-secondary">Loading...</p>
   </div>
   <div *ngIf="!isLoading()" class="catalogue">
-    
+
     @if(filteredAdvertisements().length === 0){
-      <p class="mt-3 text-secondary">No Advertisement Found...</p>
+    <p class="mt-3 text-secondary">No Advertisement Found...</p>
     }
     <app-ad-card *ngFor="let ad of filteredAdvertisements()" [ad]="ad" (view)="viewAdvertisement($event)"
-    (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
-  </app-ad-card>
-  
-</div>
+      (edit)="editAdvertisement($event)" (delete)="deleteAdvertisement($event)">
+    </app-ad-card>
+
+  </div>
 </div>

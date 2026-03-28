@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { AdvertisementImageGet } from '../../../core/models/pakClassified/advertisement-image-model';
 import { AdvertisementImageService } from '../../../core/services/pakClassified/advertisement-image-service';
 import { FormsModule } from '@angular/forms';
+import { SearchFilterModal } from '../../../core/models/pakClassified/advertisement-search-filter-model';
 
 @Component({
   selector: 'app-advertisement',
@@ -34,11 +35,13 @@ export class AdvertisementComponent {
   @Output() view = new EventEmitter();
   @Output() edit = new EventEmitter();
   @Output() delete = new EventEmitter();
+  @Output() applyFilter = new EventEmitter<SearchFilterModal[]>();
 
   // --- Signals ---
   advertisements = signal<Advertisement[]>([]);
   selectedAdvertisement = signal<Advertisement | null>(null);
   modalOpen = signal(false);
+  showFilter = signal(false);
   modalMode = signal<'create' | 'update'>('create');
   // --- Auth Signals ---
   roleName = computed(() => this.auth.roleName());
@@ -58,21 +61,39 @@ export class AdvertisementComponent {
   isLoading = signal(false);
   // Toolbar Hide on default page
   showToolbar = input<boolean>(true);
+  // --- Filter Signals ---
+  filterCityArea = signal('');
+  filterPostedBy = signal('');
+  filterStatus = signal('');
+  filterType = signal('');
+  filterSubCategory = signal('');
+  filterTags = signal<string[]>([]);
 
   // Add filtered computed signal
   filteredAdvertisements = computed(() => {
-    if (!this.showToolbar()) {
-      return this.advertisements();
-    }
-    const term = this.searchTerm().toLowerCase();
-    if (!term) return this.advertisements();
+    if (!this.showToolbar()) return this.advertisements();
 
-    return this.advertisements().filter(ad =>
-      ad.name?.toLowerCase().includes(term) ||
-      ad.title?.toLowerCase().includes(term) ||
-      ad.description?.toLowerCase().includes(term)
-    );
+    const term = this.searchTerm().toLowerCase();
+    const cityArea = this.filterCityArea();
+    const postedBy = this.filterPostedBy();
+    const status = this.filterStatus();
+    const type = this.filterType();
+    const subCategory = this.filterSubCategory();
+    const tags = this.filterTags();
+
+    return this.advertisements().filter(ad => {
+      const matchesSearch = !term || ad.name?.toLowerCase().includes(term) || ad.title?.toLowerCase().includes(term) || ad.description?.toLowerCase().includes(term);
+      const matchesCityArea = !cityArea || ad.cityArea === cityArea;
+      const matchesPostedBy = !postedBy || ad.postedBy?.id === Number(postedBy);
+      const matchesStatus = !status || ad.status === status;
+      const matchesType = !type || ad.type === type;
+      const matchesSubCat = !subCategory || ad.subCategory === subCategory;
+      const matchesTags = tags.length === 0 || tags.every(t => ad.tagNames?.includes(t));
+
+      return matchesSearch && matchesCityArea && matchesPostedBy && matchesStatus && matchesType && matchesSubCat && matchesTags;
+    });
   });
+
 
 
   constructor(
@@ -198,4 +219,39 @@ export class AdvertisementComponent {
       });
     }
   }
+
+  // --- Show Filter Pannel ---
+  ShowFilter() {
+    this.showFilter.set(true);
+  }
+
+  CloseFilter() {
+    this.showFilter.set(false);
+  }
+
+  onFiltersApplied(filtered: Advertisement[]) {
+    this.advertisements.set(filtered);
+  }
+
+  toggleTag(tagName: string): void {
+    this.filterTags.update(tags =>
+      tags.includes(tagName) ? tags.filter(t => t !== tagName) : [...tags, tagName]
+    );
+  }
+
+  resetFilters(): void {
+    this.filterCityArea.set('');
+    this.filterPostedBy.set('');
+    this.filterStatus.set('');
+    this.filterType.set('');
+    this.filterSubCategory.set('');
+    this.filterTags.set([]);
+  }
+
+  get activeFilterCount(): number {
+    return [this.filterCityArea(), this.filterPostedBy(), this.filterStatus(),
+    this.filterType(), this.filterSubCategory()].filter(Boolean).length
+      + this.filterTags().length;
+  }
+
 }

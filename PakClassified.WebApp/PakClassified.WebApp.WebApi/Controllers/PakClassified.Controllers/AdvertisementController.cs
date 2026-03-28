@@ -29,7 +29,7 @@ namespace PakClassified.WebApp.WebApi.Controllers.PakClassified.Controllers
         {
             _logger.LogInformation("Fetching all Advertisements.");
 
-            var response = (await _advertisementService.GetAllAsync());
+            var response = await _advertisementService.GetAllAsync();
 
             if (response.Count() <= 0)
             {
